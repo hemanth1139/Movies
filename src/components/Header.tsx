@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { BookOpen, Film, Home, Plus, Search, Sparkles, Tv } from 'lucide-react';
 import type { AppView } from './Sidebar';
 
 interface HeaderProps {
@@ -10,12 +10,12 @@ interface HeaderProps {
   onViewChange: (view: AppView) => void;
 }
 
-const links: Array<{ label: string; view: AppView }> = [
-  { label: 'Home', view: 'Home' },
-  { label: 'Movies', view: 'Movies' },
-  { label: 'Series', view: 'Series' },
-  { label: 'Anime', view: 'Anime' },
-  { label: 'Logbook', view: 'Logbook' },
+const links: Array<{ label: string; view: AppView; icon: typeof Home }> = [
+  { label: 'Home', view: 'Home', icon: Home },
+  { label: 'Movies', view: 'Movies', icon: Film },
+  { label: 'Series', view: 'Series', icon: Tv },
+  { label: 'Anime', view: 'Anime', icon: Sparkles },
+  { label: 'Logbook', view: 'Logbook', icon: BookOpen },
 ];
 
 export default function Header({ searchQuery, onSearchChange, onAddClick, activeView, onViewChange }: HeaderProps) {
@@ -53,23 +53,27 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
         <h1 className="watchlog-logo"><img src="/watchlog-logo.png?v=2" alt="Watchlog" /></h1>
 
         <ul className="netflix-nav-links" aria-label="Main navigation">
-          {links.map((item) => (
-            <li key={item.view}>
+          {links.map((item) => {
+            const Icon = item.icon;
+            return <li key={item.view}>
               <button type="button" className={`netflix-nav-link ${activeView === item.view ? 'active' : ''}`} aria-current={activeView === item.view ? 'page' : undefined} onClick={() => onViewChange(item.view)}>
-                {item.label}
+                <Icon className="mobile-nav-icon" aria-hidden="true" />
+                <span>{item.label}</span>
               </button>
-            </li>
-          ))}
+            </li>;
+          })}
         </ul>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <div
-          className="netflix-search-container"
+          className={`netflix-search-container${isSearchExpanded ? ' search-expanded' : ''}`}
           onMouseEnter={() => setIsSearchExpanded(true)}
           onMouseLeave={() => setIsSearchExpanded(false)}
         >
-          <Search size={20} color="#B3B3B3" />
+          <button type="button" className="netflix-search-toggle" aria-label="Search titles" aria-expanded={isSearchExpanded} onClick={() => setIsSearchExpanded((expanded) => !expanded)}>
+            <Search size={20} aria-hidden="true" />
+          </button>
           {isSearchExpanded && (
             <input
               type="text"
@@ -81,8 +85,8 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
           )}
         </div>
 
-        <button onClick={onAddClick} className="netflix-add-button">
-          + Log Watched
+        <button type="button" onClick={onAddClick} className="netflix-add-button">
+          <Plus aria-hidden="true" /><span>Log Watched</span>
         </button>
 
         <div className="netflix-avatar">
