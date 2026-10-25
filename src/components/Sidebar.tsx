@@ -24,8 +24,8 @@ export default function Sidebar({ activeView, isOpen, onViewChange, onLogWatch, 
       {isOpen && <button className="sidebar-scrim" onClick={onClose} aria-label="Close navigation" />}
       <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-brand">
-          <span className="brand-mark"><Clapperboard className="h-5 w-5" /></span>
-          <span>Watch<span className="brand-light">Log</span></span>
+          <span className="watchlog-logo-mark"><Clapperboard aria-hidden="true" /></span>
+          <span className="watchlog-logo-name" aria-label="Watchlog">{'Watchlog'.split('').map((letter, index) => <span key={`${letter}-${index}`}>{letter}</span>)}</span>
           <button type="button" className="sidebar-close icon-button" onClick={onClose} aria-label="Close menu"><X className="h-4 w-4" /></button>
         </div>
 

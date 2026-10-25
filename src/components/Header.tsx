@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { Clapperboard, Search } from 'lucide-react';
 import type { AppView } from './Sidebar';
 
 interface HeaderProps {
@@ -50,7 +50,10 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
   return (
     <header className={`netflix-navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-        <h1 className="netflix-logo">WATCHLOG</h1>
+        <h1 className="watchlog-logo" aria-label="Watchlog">
+          <span className="watchlog-logo-mark"><Clapperboard aria-hidden="true" /></span>
+          <span className="watchlog-logo-name" aria-hidden="true">{'Watchlog'.split('').map((letter, index) => <span key={`${letter}-${index}`}>{letter}</span>)}</span>
+        </h1>
 
         <ul className="netflix-nav-links" aria-label="Main navigation">
           {links.map((item) => (

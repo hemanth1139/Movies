@@ -14,9 +14,15 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const genres = uniqueGenres(movies.flatMap((movie) => movie.genres))
+  const hasMcuMovies = movies.some((movie) => /marvel/i.test(movie.universe || movie.franchise || ''));
+  const genres = uniqueGenres([
+    ...movies.flatMap((movie) => movie.genres),
+    ...(hasMcuMovies ? ['MCU'] : []),
+  ])
     .filter((genre) => !excludeAnime || genre.toLowerCase() !== 'anime');
-  const countForGenre = (genre: string) => movies.filter((movie) => movie.genres.some((item) => item.toLowerCase() === genre.toLowerCase())).length;
+  const countForGenre = (genre: string) => movies.filter((movie) => genre.toLowerCase() === 'mcu'
+    ? /marvel/i.test(movie.universe || movie.franchise || '') || movie.genres.some((item) => item.toLowerCase() === 'mcu')
+    : movie.genres.some((item) => item.toLowerCase() === genre.toLowerCase())).length;
 
   useEffect(() => {
     const element = scrollRef.current;

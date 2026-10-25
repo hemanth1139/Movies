@@ -235,7 +235,9 @@ export default function App() {
   const filteredMovies = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     const matchingMovies = categoryMovies.filter((movie) => {
-      if (selectedGenres.length && !selectedGenres.some((genre) => movie.genres.some((item) => normalizeGenreName(item).toLowerCase().includes(normalizeGenreName(genre).toLowerCase())))) return false;
+      if (selectedGenres.length && !selectedGenres.some((genre) => genre.toLowerCase() === 'mcu'
+        ? /marvel/i.test(movie.universe || movie.franchise || '') || movie.genres.some((item) => item.toLowerCase() === 'mcu')
+        : movie.genres.some((item) => normalizeGenreName(item).toLowerCase().includes(normalizeGenreName(genre).toLowerCase())))) return false;
       return !query || movie.title.toLowerCase().includes(query);
     });
     const titles = dedupeMovies(matchingMovies);
