@@ -353,7 +353,7 @@ export default function App() {
     const rotateBillboard = window.setInterval(() => {
       if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       setFeaturedIndex((index) => (index + 1) % featuredMovies.length);
-    }, 7000);
+    }, 5000);
     return () => window.clearInterval(rotateBillboard);
   }, [activeView, searchQuery, featuredMovies.length]);
 

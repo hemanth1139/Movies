@@ -1006,7 +1006,9 @@ body { margin: 0; background: #141414; color: #F5F5F5; }
 .home-hero-wrap { position: relative; }
 .hero-carousel-dots { position: absolute; z-index: 4; right: clamp(22px,5vw,72px); bottom: 38px; display: flex; align-items: center; gap: 7px; }
 .hero-carousel-dots button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 999px; background: rgba(255,255,255,.45); cursor: pointer; transition: width 180ms ease,background 180ms ease; }
-.hero-carousel-dots button[aria-current="true"] { width: 22px; background: #fff; }
+.hero-carousel-dots button[aria-current="true"] { width: 22px; background: #fff; animation: billboard-dot-progress 5s linear both; }
+@keyframes billboard-dot-progress { from { width: 7px; } to { width: 22px; } }
+@media (prefers-reduced-motion: reduce) { .hero-carousel-dots button[aria-current="true"] { animation: none; } }
 .home-page-content { padding-top: 20px; }
 .quick-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 2px 0 30px; }
 .quick-stats > div { display: flex; min-height: 74px; flex-direction: column; justify-content: center; gap: 5px; padding: 13px 16px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.02)); }
