@@ -1,7 +1,8 @@
 import type { Movie, TMDBSearchResult, TMDBMovieDetails } from '../types/movie';
 import { mapTmdbGenreIds, normalizeGenreName } from './genres';
+import cachedMoviePosterJson from './cachedMoviePosters.json?raw';
 
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || 'd1f84770a56590e1da24cc9f449c44d7';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 const TMDB_CACHE_KEY = 'watchlog.tmdb-csv-metadata.v8';
@@ -10,6 +11,13 @@ const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 type TmdbMetadata = Pick<Movie, 'tmdb_id' | 'poster_path' | 'backdrop_path' | 'release_year' | 'overview' | 'original_language' | 'origin_country'>;
 type CachedMetadata = { checkedAt: number; metadata: TmdbMetadata | null };
 type MetadataCache = Record<string, CachedMetadata>;
+type BundledPosterMetadata = Pick<Movie, 'tmdb_id' | 'poster_path' | 'release_year' | 'overview'>;
+const BUNDLED_MOVIE_POSTERS = JSON.parse(cachedMoviePosterJson) as Record<string, BundledPosterMetadata>;
+
+function getBundledPoster(movie: Pick<Movie, 'title' | 'type'>): BundledPosterMetadata | undefined {
+  const title = movie.title.trim().toLowerCase().replace(/\s+/g, ' ');
+  return BUNDLED_MOVIE_POSTERS[`${movie.type.toLowerCase()}:${title}`];
+}
 
 const KNOWN_METADATA_FALLBACKS: Record<string, TmdbMetadata> = {
   'the backrooms': {
@@ -24,11 +32,13 @@ const KNOWN_METADATA_FALLBACKS: Record<string, TmdbMetadata> = {
     release_year: 2026,
     overview: 'An aspiring young filmmaker goes missing while investigating the disappearance of a child and finds himself in an unsettling, otherworldly realm of infinite empty rooms.',
   },
+  'perfect blue': {
+    tmdb_id: 10494,
+    poster_path: '/7FRO4N5nQ7D1B7m1202eD33j0kM.jpg',
+    release_year: 1997,
+    overview: 'A pop idol sheds her "good girl" image to venture into the acting world, but she quickly finds that the darker side of fame and obsession can be devastating to her sanity.',
+  },
 };
-
-if (!TMDB_API_KEY) {
-  console.warn('TMDB API key not found. Some features may not work.');
-}
 
 export type TMDBSearchError = 'missing-key' | 'offline' | 'api' | null;
 
@@ -56,13 +66,15 @@ export function applyCachedTmdbMetadata(movies: Movie[]): Movie[] {
   const cache = readMetadataCache();
   return movies.map((movie) => {
     const fallback = KNOWN_METADATA_FALLBACKS[movie.title.trim().toLowerCase()];
+    const bundledPoster = getBundledPoster(movie);
     const cached = cache[movieCacheKey(movie)];
     if (!cached?.metadata || Date.now() - cached.checkedAt > CACHE_TTL_MS) {
-      if (fallback && !movie.poster_path) {
+      if ((fallback || bundledPoster) && !movie.poster_path) {
         return {
           ...movie,
           ...fallback,
-          release_year: movie.release_year ?? fallback.release_year,
+          ...bundledPoster,
+          release_year: movie.release_year ?? bundledPoster?.release_year ?? fallback?.release_year,
         };
       }
       return movie;
@@ -71,9 +83,9 @@ export function applyCachedTmdbMetadata(movies: Movie[]): Movie[] {
     return {
       ...movie,
       ...cached.metadata,
-      poster_path: cached.metadata.poster_path || fallback?.poster_path || movie.poster_path,
-      tmdb_id: cached.metadata.tmdb_id || fallback?.tmdb_id || movie.tmdb_id,
-      release_year: movie.release_year ?? cached.metadata.release_year ?? fallback?.release_year,
+      poster_path: cached.metadata.poster_path || bundledPoster?.poster_path || fallback?.poster_path || movie.poster_path,
+      tmdb_id: cached.metadata.tmdb_id || bundledPoster?.tmdb_id || fallback?.tmdb_id || movie.tmdb_id,
+      release_year: movie.release_year ?? cached.metadata.release_year ?? bundledPoster?.release_year ?? fallback?.release_year,
     };
   });
 }
@@ -104,6 +116,7 @@ export async function enrichMoviesFromTMDB(
 
   const cache = readMetadataCache();
   const queue = movies.filter((movie) => {
+    if (movie.poster_path || getBundledPoster(movie)?.poster_path) return false;
     const cached = cache[movieCacheKey(movie)];
     const cacheExpired = !cached || Date.now() - cached.checkedAt > CACHE_TTL_MS;
     const posterMissingFromCache = Boolean(cached && !movie.poster_path && !cached.metadata?.poster_path
@@ -248,6 +261,7 @@ export function getPosterUrl(
   size: PosterSize = 'w500'
 ): string | undefined {
   if (!path) return undefined;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }
 
