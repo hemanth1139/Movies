@@ -1425,7 +1425,7 @@ body,.watch-app { background: #0b0b0e; }
   .category-heading h2 { font-size: 17px; }
   .category-heading span { font-size: 10px; }
   .poster-rail { gap: 10px; }
-  .poster-rail-item { flex-basis: calc((100vw - 44px)/2); width: calc((100vw - 44px)/2); }
+  .poster-rail-item { flex-basis: clamp(140px,38vw,200px); width: clamp(140px,38vw,200px); }
   .genre-toolbar { padding: 10px; }
   .genre-toolbar-heading { gap: 8px; }
   .genre-toolbar-heading > div { gap: 4px; }

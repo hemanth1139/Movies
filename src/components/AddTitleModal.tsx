@@ -177,12 +177,12 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   const genreOptions = uniqueGenres([...GENRES, ...selectedGenres]);
 
   return (
-    <div className="modal-backdrop fixed inset-0 z-50 flex items-end justify-center bg-background/80 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+    <div className="modal-backdrop fixed inset-0 z-50 flex items-start justify-center bg-background/80 px-0 pb-3 pt-[calc(82px+env(safe-area-inset-top))] backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="add-title-heading"
-        className="glass-modal flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-wl bg-surface border border-border sm:rounded-wl"
+        className="glass-modal flex max-h-[calc(100dvh-96px-env(safe-area-inset-top))] w-full max-w-2xl flex-col overflow-hidden rounded-wl bg-surface border border-border sm:max-h-[92vh]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
