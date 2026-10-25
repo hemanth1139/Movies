@@ -24,7 +24,7 @@ export default function Sidebar({ activeView, isOpen, onViewChange, onLogWatch, 
       {isOpen && <button className="sidebar-scrim" onClick={onClose} aria-label="Close navigation" />}
       <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-brand">
-          <img className="sidebar-logo-image" src="/watchlog-logo.png" alt="Watchlog" />
+          <img className="sidebar-logo-image" src="/watchlog-logo.png?v=2" alt="Watchlog" />
           <button type="button" className="sidebar-close icon-button" onClick={onClose} aria-label="Close menu"><X className="h-4 w-4" /></button>
         </div>
 

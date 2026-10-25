@@ -50,7 +50,7 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
   return (
     <header className={`netflix-navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-        <h1 className="watchlog-logo"><img src="/watchlog-logo.png" alt="Watchlog" /></h1>
+        <h1 className="watchlog-logo"><img src="/watchlog-logo.png?v=2" alt="Watchlog" /></h1>
 
         <ul className="netflix-nav-links" aria-label="Main navigation">
           {links.map((item) => (
