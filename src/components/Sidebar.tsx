@@ -1,4 +1,4 @@
-import { Clapperboard, Film, Home, Plus, Sparkles, Tv, X, BookOpen } from 'lucide-react';
+import { Film, Home, Plus, Sparkles, Tv, X, BookOpen } from 'lucide-react';
 
 export type AppView = 'Home' | 'Movies' | 'Series' | 'Anime' | 'Logbook';
 
@@ -24,8 +24,7 @@ export default function Sidebar({ activeView, isOpen, onViewChange, onLogWatch, 
       {isOpen && <button className="sidebar-scrim" onClick={onClose} aria-label="Close navigation" />}
       <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-brand">
-          <span className="watchlog-logo-mark"><Clapperboard aria-hidden="true" /></span>
-          <span className="watchlog-logo-name" aria-label="Watchlog">{'Watchlog'.split('').map((letter, index) => <span key={`${letter}-${index}`}>{letter}</span>)}</span>
+          <img className="sidebar-logo-image" src="/watchlog-logo.png" alt="Watchlog" />
           <button type="button" className="sidebar-close icon-button" onClick={onClose} aria-label="Close menu"><X className="h-4 w-4" /></button>
         </div>
 
