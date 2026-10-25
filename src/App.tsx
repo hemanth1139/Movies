@@ -398,13 +398,6 @@ export default function App() {
           </section>}
         </main>
 
-        <footer className="app-footer">
-          <span>Watchlog · Your personal cinema</span>
-          <a className="tmdb-attribution" href="https://www.themoviedb.org/about/logos-attribution" target="_blank" rel="noreferrer">
-            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" alt="TMDB" />
-            <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
-          </a>
-        </footer>
       </div>
 
       {showBackToTop && <button type="button" className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top"><ArrowDown className="h-4 w-4 rotate-180" /></button>}

@@ -38,8 +38,11 @@ function GenrePills({ genres }: { genres: string[] }) {
 
 export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, style, onOpen, rank, watchLogEntry, isFavorite = false }: PosterCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const posterUrl = getPosterUrl(movie.poster_path, variant === 'list' ? 'w185' : 'w500');
+  const hasPosterPath = Boolean(movie.poster_path);
+  const imagePath = movie.poster_path || movie.backdrop_path;
+  const posterUrl = getPosterUrl(imagePath, variant === 'list' ? (hasPosterPath ? 'w185' : 'w300') : (hasPosterPath ? 'w500' : 'w780'));
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType !== 'mouse') return;
@@ -92,21 +95,31 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
       loading="lazy"
       decoding="async"
       onLoad={() => setImageLoaded(true)}
+      onError={() => setImageFailed(true)}
       className={`h-full w-full object-cover transition-[opacity,transform] duration-700 group-hover:scale-[1.04] ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
     />
   ) : (
-    <div className="flex h-full w-full items-center justify-center bg-surface-2">
-      <Film className="h-10 w-10 text-secondary/40" aria-hidden="true" />
+    <div className="poster-fallback">
+      <Film aria-hidden="true" />
+      <span>{movie.title}</span>
+      <small>{movie.release_year || movie.type}</small>
     </div>
   );
+  const posterContent = imageFailed ? (
+    <div className="poster-fallback">
+      <Film aria-hidden="true" />
+      <span>{movie.title}</span>
+      <small>{movie.release_year || movie.type}</small>
+    </div>
+  ) : poster;
 
   if (variant === 'list') {
     return (
       <>
         <article style={style} className="poster-enter row-glass group relative flex cursor-pointer items-center gap-3 rounded-wl bg-surface p-2.5 pr-14 transition-all duration-300 hover:translate-x-1 hover:bg-surface-2 hover:shadow-md" onClick={() => onOpen?.(movie)}>
           <div className="relative h-16 w-11 shrink-0 overflow-hidden rounded-md bg-surface-2">
-            {!imageLoaded && posterUrl && <div className="poster-skeleton absolute inset-0" />}
-            {poster}
+            {!imageLoaded && posterUrl && !imageFailed && <div className="poster-skeleton absolute inset-0" />}
+            {posterContent}
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="truncate text-sm font-medium text-primary">{movie.title}</h3>
@@ -144,8 +157,8 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
       >
         {rank !== undefined && <span className="poster-rank" aria-hidden="true">{rank}</span>}
         <div className="poster-frame relative aspect-[2/3] overflow-hidden rounded-lg bg-surface shadow-md transition-all duration-300 group-hover:scale-[1.05] group-hover:shadow-2xl group-hover:shadow-black">
-          {!imageLoaded && posterUrl && <div className="poster-skeleton absolute inset-0" />}
-          {poster}
+          {!imageLoaded && posterUrl && !imageFailed && <div className="poster-skeleton absolute inset-0" />}
+          {posterContent}
           {isFavorite && <span className="poster-favorite-badge active" aria-label="Favorite"><Heart aria-hidden="true" /></span>}
           {watchLogEntry?.rewatch && <span className="poster-rewatch-badge">↻ Rewatched</span>}
           {movie.type === 'TV Series' && Boolean(watchLogEntry?.watchedSeasons.length) && <span className="poster-seasons-badge">✓ {watchLogEntry?.watchedSeasons.length} seasons watched</span>}

@@ -105,7 +105,11 @@ export async function enrichMoviesFromTMDB(
   const cache = readMetadataCache();
   const queue = movies.filter((movie) => {
     const cached = cache[movieCacheKey(movie)];
-    return !cached || Date.now() - cached.checkedAt > CACHE_TTL_MS;
+    const cacheExpired = !cached || Date.now() - cached.checkedAt > CACHE_TTL_MS;
+    const posterMissingFromCache = Boolean(cached && !movie.poster_path && !cached.metadata?.poster_path
+      && !KNOWN_METADATA_FALLBACKS[movie.title.trim().toLowerCase()]?.poster_path
+      && Date.now() - cached.checkedAt > 24 * 60 * 60 * 1000);
+    return cacheExpired || posterMissingFromCache;
   });
   let nextIndex = 0;
   let consecutiveFailures = 0;
@@ -237,7 +241,7 @@ async function getBestPosterPath(tmdbId: number, type: 'movie' | 'tv'): Promise<
   }
 }
 
-export type PosterSize = 'w92' | 'w185' | 'w500' | 'w780' | 'original';
+export type PosterSize = 'w92' | 'w185' | 'w300' | 'w500' | 'w780' | 'original';
 
 export function getPosterUrl(
   path: string | null | undefined,

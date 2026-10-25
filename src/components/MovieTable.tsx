@@ -2,7 +2,6 @@
 import { ChevronDown, ChevronRight, Search } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogMap } from '../types/watchLog';
-import { getPosterUrl } from '../lib/tmdb';
 
 type GroupSection = 'Movies' | 'TV Series';
 interface MovieTableProps { movies: Movie[]; watchLog: WatchLogMap; onOpen: (movie: Movie) => void; }
@@ -125,7 +124,7 @@ export default function MovieTable({ movies, watchLog, onOpen }: MovieTableProps
               {group.movies.map((movie, index) => {
                 return <article className="vault-row" key={movie.id} role="button" tabIndex={0} aria-label={`Edit watch log for ${movie.title}`} onClick={() => onOpen(movie)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen(movie); } }}>
                   <span className="vault-row-number">{index + 1}</span>
-                  <div className="vault-title-cell"><img src={getPosterUrl(movie.poster_path, 'w92')} alt="" loading="lazy" /><strong>{movie.title}</strong></div>
+                  <div className="vault-title-cell"><strong>{movie.title}</strong></div>
                 </article>;
               })}
             </div>}
