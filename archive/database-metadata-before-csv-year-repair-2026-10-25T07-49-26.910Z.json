@@ -1,0 +1,106 @@
+[
+  {
+    "id": "9f7040bb-6601-4843-85d3-daa33cb51d33",
+    "title": "Deadpool",
+    "type": "Movie",
+    "release_year": 2024,
+    "tmdb_id": 533535,
+    "poster_path": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"
+  },
+  {
+    "id": "0760178f-2da9-45fa-b7d0-527b73eed11a",
+    "title": "Guardians of the Galaxy",
+    "type": "Movie",
+    "release_year": 2023,
+    "tmdb_id": 447365,
+    "poster_path": "/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg"
+  },
+  {
+    "id": "220b8095-e448-46b9-938c-1736dfe9edf7",
+    "title": "Home Alone",
+    "type": "Movie",
+    "release_year": 1997,
+    "tmdb_id": 9714,
+    "poster_path": "/6uOadrCfle0n2LOOxHbgWEdnrm2.jpg"
+  },
+  {
+    "id": "8f471170-a5a2-46ae-a403-52bf609b7aeb",
+    "title": "Moana",
+    "type": "Movie",
+    "release_year": 2026,
+    "tmdb_id": 1108427,
+    "poster_path": "/gaet1xQ2nxrG0V1Ep9T20ZMNEIC.jpg"
+  },
+  {
+    "id": "3f59d6f2-3ddb-46e3-ade1-97ffb2ae7bb5",
+    "title": "Oldboy",
+    "type": "Movie",
+    "release_year": 2013,
+    "tmdb_id": 87516,
+    "poster_path": "/iX93YdBrZA1EpGbphmjf4ARj1Za.jpg"
+  },
+  {
+    "id": "072cf1ed-13f7-4a43-818e-e2f096eefb6a",
+    "title": "Paradise",
+    "type": "TV Series",
+    "release_year": 2011,
+    "tmdb_id": 41956,
+    "poster_path": "/u7t6vCyqAdD5hE4eEfTrZmVljDi.jpg"
+  },
+  {
+    "id": "b6444522-d4d0-44e6-9825-6eba63949815",
+    "title": "Perfect Blue",
+    "type": "Movie",
+    "release_year": 1998,
+    "tmdb_id": 10494,
+    "poster_path": "/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg"
+  },
+  {
+    "id": "28494028-2b65-4286-88b8-3d31bcc9f47b",
+    "title": "Pete's Dragon",
+    "type": "Movie",
+    "release_year": 2016,
+    "tmdb_id": 294272,
+    "poster_path": "/A9x4Ogk8KUXTfU649NS6lS9TCmu.jpg"
+  },
+  {
+    "id": "9eadfb4a-cc55-4bac-93b7-9e1613d746f1",
+    "title": "Snow White and the Seven Dwarfs",
+    "type": "Movie",
+    "release_year": 1938,
+    "tmdb_id": 408,
+    "poster_path": "/3VAHfuNb6Z7UiW12iYKANSPBl8m.jpg"
+  },
+  {
+    "id": "0a73757f-a058-4c82-8a34-69aeb03e9c5c",
+    "title": "The Backrooms",
+    "type": "Movie",
+    "release_year": 2022,
+    "tmdb_id": 1712054,
+    "poster_path": "/9mSqCdi1ZzVEEu00wY8X8HE2QoE.jpg"
+  },
+  {
+    "id": "071b7cf6-0057-405f-aa9a-626db64895f1",
+    "title": "The Invisible Guest",
+    "type": "Movie",
+    "release_year": 2017,
+    "tmdb_id": 411088,
+    "poster_path": "/fptnZJbLzKUHeNlYrAynbyoL5YJ.jpg"
+  },
+  {
+    "id": "91e27281-0d4b-4ba2-94b1-5c1fdbe96ccc",
+    "title": "The Lion King",
+    "type": "Movie",
+    "release_year": 1994,
+    "tmdb_id": 8587,
+    "poster_path": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg"
+  },
+  {
+    "id": "96602294-f58b-4e0c-b1bb-f1c1d8b50c9a",
+    "title": "The Monster",
+    "type": "Movie",
+    "release_year": 1987,
+    "tmdb_id": 13509,
+    "poster_path": "/8EVuqCcqFzQvc7X8E3fx3w4B5Td.jpg"
+  }
+]

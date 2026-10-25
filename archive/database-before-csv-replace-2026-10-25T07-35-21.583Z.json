@@ -1,0 +1,3388 @@
+[
+  {
+    "id": "00064a01-31fa-47f8-9a98-542802aabb6a",
+    "title": "Eternals",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 524434,
+    "poster_path": "/lFByFSLV5WDJEv3KabbdAF959F2.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:01.404338+00:00"
+  },
+  {
+    "id": "0010697c-884f-4c93-bc60-1a0681304a61",
+    "title": "Enemy",
+    "type": "Movie",
+    "genres": [
+      "Psychological Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 181886,
+    "poster_path": "/vf40tyDRKZsBmaLsYeopzfFLzLx.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:35.19087+00:00"
+  },
+  {
+    "id": "0099fd23-af63-44c4-8749-5d223377eb24",
+    "title": "Backrooms",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 1083381,
+    "poster_path": "/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:53.648853+00:00"
+  },
+  {
+    "id": "00ef575e-4efa-4eb2-be25-a9640797a341",
+    "title": "Prisoners",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 146233,
+    "poster_path": "/uhviyknTT5cEQXbn6vWIqfM4vGm.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:45.677067+00:00"
+  },
+  {
+    "id": "0346fd36-0d8c-47b0-b83b-d4fae68e26e4",
+    "title": "Gifted",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 400928,
+    "poster_path": "/7YB2YrMwIm1g8FyZtlvmVDfRnAT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:07.11076+00:00"
+  },
+  {
+    "id": "03af9a17-0b8b-4a19-8ab7-f86830b1430d",
+    "title": "Five Feet Apart",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 527641,
+    "poster_path": "/kreTuJBkUjVWePRfhHZuYfhNE1T.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.231818+00:00"
+  },
+  {
+    "id": "05e28d11-81c7-48bf-b7a2-cdd4fc6aadd9",
+    "title": "The Intern",
+    "type": "Movie",
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 257211,
+    "poster_path": "/bTQ46fupPbjBfFBHuzfD3hxxL0Q.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.337715+00:00"
+  },
+  {
+    "id": "0a08db65-7fc0-4afc-b7a0-d4844583ee84",
+    "title": "Kung Fu Panda 2",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2011,
+    "tmdb_id": 49444,
+    "poster_path": "/mtqqD00vB4PGRt20gWtGqFhrkd0.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:24.55771+00:00"
+  },
+  {
+    "id": "0a863273-bad6-4687-be0c-6feec59f2d4d",
+    "title": "Don't Come Home",
+    "type": "TV Series",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 273081,
+    "poster_path": "/mtIm0qbFnQ3oqqDrVpPTJDS6EZK.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.115727+00:00"
+  },
+  {
+    "id": "0d0bb1bf-dad1-4328-bdc4-8be491478634",
+    "title": "Spy x Family",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 120089,
+    "poster_path": "/7NAvPYPAu7MeHwP8E9sn81PqsRh.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:51.717674+00:00"
+  },
+  {
+    "id": "0db37070-3228-4cdf-97f7-61f4c40100cf",
+    "title": "From",
+    "type": "TV Series",
+    "genres": [
+      "Horror",
+      "Mystery"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 124364,
+    "poster_path": "/pRtJagIxpfODzzb0T0NAvZSzErC.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:04.263351+00:00"
+  },
+  {
+    "id": "0e127afd-8586-438d-96c2-e348ea39e81c",
+    "title": "Maleficent",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 102651,
+    "poster_path": "/ik8PugpL41s137RAWEGTAWu0dPo.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:38.679967+00:00"
+  },
+  {
+    "id": "0e365d03-af68-4f9d-b8fd-56957d8b7933",
+    "title": "Past Lives",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 666277,
+    "poster_path": "/k3waqVXSnvCZWfJYNtdamTgTtTA.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:43.828708+00:00"
+  },
+  {
+    "id": "0f77605b-72fa-479e-a58a-23cbfce9e929",
+    "title": "Shutter Island",
+    "type": "Movie",
+    "genres": [
+      "Psychological Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2010,
+    "tmdb_id": 11324,
+    "poster_path": "/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:48.217186+00:00"
+  },
+  {
+    "id": "114737fa-d5c5-4ba1-bb83-4d9e7ee0c4ea",
+    "title": "When Evil Lurks",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 744857,
+    "poster_path": "/iQ7G9LhP7NRRIUM4Vlai3eOxBAc.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.482755+00:00"
+  },
+  {
+    "id": "11487a13-af69-47e1-9aa4-c27984fb8074",
+    "title": "Doctor Strange in the Multiverse of Madness",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 453395,
+    "poster_path": "/ddJcSKbcp4rKZTmuyWaMhuwcfMz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:04.407088+00:00"
+  },
+  {
+    "id": "11f56332-195e-440e-902d-9b21fca49b77",
+    "title": "Shogun",
+    "type": "TV Series",
+    "genres": [
+      "Historical Drama"
+    ],
+    "franchise": null,
+    "release_year": null,
+    "tmdb_id": null,
+    "poster_path": null,
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T06:41:05.680069+00:00"
+  },
+  {
+    "id": "1210d20f-e319-40d7-9eb2-69d56b95ec60",
+    "title": "The Good Nurse",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 541134,
+    "poster_path": "/rSq6cq0LCcbro10jbEaPTEb3WmW.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.998959+00:00"
+  },
+  {
+    "id": "15c73743-6dae-422b-ab58-fa29b3567aa4",
+    "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2003,
+    "tmdb_id": 22,
+    "poster_path": "/poHwCZeWzJCShH7tOjg8RIoyjcw.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:47.980853+00:00"
+  },
+  {
+    "id": "163c0704-446e-4462-bc99-65ae800bf0e3",
+    "title": "Arrival",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 329865,
+    "poster_path": "/pEzNVQfdzYDzVK0XqxERIw2x2se.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:52.796982+00:00"
+  },
+  {
+    "id": "1661f385-85bf-420c-a893-a6f4f6d46583",
+    "title": "Dan Da Dan",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 240411,
+    "poster_path": "/6qfZAOEUFIrbUH3JvePclx1nXzz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:57.736284+00:00"
+  },
+  {
+    "id": "1691a352-f56a-42c7-ac53-528d54e855c3",
+    "title": "Forrest Gump",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 1994,
+    "tmdb_id": 13,
+    "poster_path": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:04.934578+00:00"
+  },
+  {
+    "id": "18a99a91-97e7-4f59-aec1-f792da37bb11",
+    "title": "Insidious: The Red Door",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 614479,
+    "poster_path": "/d07phJqCx6z5wILDYqkyraorDPi.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:37.073008+00:00"
+  },
+  {
+    "id": "193117e1-ab0b-453e-9f76-bf2a3452ec99",
+    "title": "Passengers (2016)",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": null,
+    "tmdb_id": null,
+    "poster_path": null,
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:40:02.064247+00:00"
+  },
+  {
+    "id": "1a5d4eb4-13a3-4a50-9ad0-864f243b6f9d",
+    "title": "The Creator",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 670292,
+    "poster_path": "/3dSivDtOuyxLDxPH4v2tcNG1fP7.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.894183+00:00"
+  },
+  {
+    "id": "1a65d992-a407-442d-952f-e880efff838c",
+    "title": "Death Note",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2006,
+    "tmdb_id": 13916,
+    "poster_path": "/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:59.267003+00:00"
+  },
+  {
+    "id": "1b61a9b7-8d4d-4bac-9c3f-afb3b7ece71d",
+    "title": "Atonement",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 4347,
+    "poster_path": "/hMRIyBjPzxaSXWM06se3OcNjIQa.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:32.055552+00:00"
+  },
+  {
+    "id": "1b9cdc1b-65c1-43e8-b995-cef338783509",
+    "title": "Marvel's The Avengers",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2012,
+    "tmdb_id": 24428,
+    "poster_path": "/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:35.230715+00:00"
+  },
+  {
+    "id": "1cd8ddf6-8a99-4711-b4a4-3e4da5e5883e",
+    "title": "Guardians of the Galaxy",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 447365,
+    "poster_path": "/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.054662+00:00"
+  },
+  {
+    "id": "1d0ecd88-3602-4b41-9ca7-7e906fa71957",
+    "title": "Mama",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 132232,
+    "poster_path": "/eo8BhR8Q5STmWE9sMLsEPagxmy6.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:28.527088+00:00"
+  },
+  {
+    "id": "1d3283f5-0245-4521-8a79-73d5120e7679",
+    "title": "Train to Busan",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 396535,
+    "poster_path": "/vNVFt6dtcqnI7hqa6LFBUibuFiw.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.092996+00:00"
+  },
+  {
+    "id": "1f8cd628-25d9-458e-96ff-e2bd5886274c",
+    "title": "3 Body Problem",
+    "type": "TV Series",
+    "genres": [
+      "Sci-Fi"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 108545,
+    "poster_path": "/ykZ7hlShkdRQaL2aiieXdEMmrLb.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:31.434773+00:00"
+  },
+  {
+    "id": "1ff9368e-75f8-4ac9-9db9-8fb366fc815e",
+    "title": "Oldboy",
+    "type": "Movie",
+    "genres": [
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 87516,
+    "poster_path": "/iX93YdBrZA1EpGbphmjf4ARj1Za.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:39.08966+00:00"
+  },
+  {
+    "id": "20ef9391-c6ea-47ff-b554-71a747d424d9",
+    "title": "Deadpool",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 533535,
+    "poster_path": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:59.086779+00:00"
+  },
+  {
+    "id": "2127241a-cc68-48ab-a80f-0df83268932e",
+    "title": "Into the Wild",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 5915,
+    "poster_path": "/jnLnLYP5pGDfri04gxtAqAvkHMw.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.269778+00:00"
+  },
+  {
+    "id": "21cd5e40-4165-47ed-8ca0-54fb031d23ff",
+    "title": "The Matrix",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 1999,
+    "tmdb_id": 603,
+    "poster_path": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.372472+00:00"
+  },
+  {
+    "id": "21f523ce-df40-4c1b-b5b4-c08505fd0262",
+    "title": "The Lion King",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1994,
+    "tmdb_id": 8587,
+    "poster_path": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.713874+00:00"
+  },
+  {
+    "id": "23a37f18-eb3e-4198-85bf-0e0df798ec2b",
+    "title": "The Fault in Our Stars",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 222935,
+    "poster_path": "/kcVuktIlrn9SAN1uBmPDnocTQmF.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.046595+00:00"
+  },
+  {
+    "id": "23d915e5-aa25-4b65-8e12-345a57a16984",
+    "title": "Call Me by Your Name",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 398818,
+    "poster_path": "/gXiE0WveDnT0n5J4sW9TMxXF4oT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:33.285767+00:00"
+  },
+  {
+    "id": "23efca5b-621c-4c42-a85e-db3861f1e13b",
+    "title": "Soulmate",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 617882,
+    "poster_path": "/iL0jvWpSVW1uFn9aAoUh3UwzdYA.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.379476+00:00"
+  },
+  {
+    "id": "23f6eed4-57cb-40a3-bfd0-995f697bb06d",
+    "title": "Stranger Things",
+    "type": "TV Series",
+    "genres": [
+      "Sci-Fi",
+      "Horror"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 66732,
+    "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.454173+00:00"
+  },
+  {
+    "id": "23fe2589-cfb8-4485-8ba3-b8ec7cd5f9fc",
+    "title": "The Adam Project",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 696806,
+    "poster_path": "/wFjboE0aFZNbVOF05fzrka9Fqyx.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.008374+00:00"
+  },
+  {
+    "id": "2645079d-64ac-449a-9a01-49952c4f7873",
+    "title": "Dune",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 438631,
+    "poster_path": "/v1tRXZ4JtD2Iv6fjkPvT4GiwslV.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:02.435427+00:00"
+  },
+  {
+    "id": "26dec085-271f-456e-9348-c4c0e2e948fb",
+    "title": "Frozen",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 109445,
+    "poster_path": "/itAKcobTYGpYT8Phwjd8c9hleTo.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.82841+00:00"
+  },
+  {
+    "id": "26e61c89-401c-45f6-9758-86254ce6a1dc",
+    "title": "The Ring",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2002,
+    "tmdb_id": 565,
+    "poster_path": "/AeRpUynJKDpJveklBJipOYrVxCS.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.267736+00:00"
+  },
+  {
+    "id": "27c5bbda-e8b2-46b3-92f5-65382faee8ee",
+    "title": "Dark",
+    "type": "TV Series",
+    "genres": [
+      "Sci-Fi",
+      "Mystery"
+    ],
+    "franchise": null,
+    "release_year": 1966,
+    "tmdb_id": 2883,
+    "poster_path": "/eRtnI7qTJIiPUmlY3J8TTM3jlT7.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.147254+00:00"
+  },
+  {
+    "id": "2aa6c568-a45e-4bd6-8bf5-6c69be455d00",
+    "title": "Smile",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 882598,
+    "poster_path": "/aPqcQwu4VGEewPhagWNncDbJ9Xp.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:47.325457+00:00"
+  },
+  {
+    "id": "2d2d2338-bc27-4c70-9e59-481b5ae012df",
+    "title": "Kung Fu Panda",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2008,
+    "tmdb_id": 9502,
+    "poster_path": "/wWt4JYXTg5Wr3xBW2phBrMKgp3x.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:37.341572+00:00"
+  },
+  {
+    "id": "2dac24c6-dd73-4fc3-a7f4-2dfafe0ec6fe",
+    "title": "Bring Her Back",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1151031,
+    "poster_path": "/1Q3GlCXGYWELifxANYZ5OVMRVZl.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:32.530387+00:00"
+  },
+  {
+    "id": "2ec871bf-b3e6-467e-9875-17b6fd73cee5",
+    "title": "Adolescence",
+    "type": "TV Series",
+    "genres": [
+      "Crime",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 249042,
+    "poster_path": "/20i4nShZZg1g1VFHSB8xpaYM4r7.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:50.765626+00:00"
+  },
+  {
+    "id": "2f764f29-3980-4399-a2d6-e87867817f0d",
+    "title": "A Quiet Place",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 447332,
+    "poster_path": "/nAU74GmpUk7t5iklEp3bufwDq4n.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:31.44349+00:00"
+  },
+  {
+    "id": "2fb5ba05-c7e2-4274-9072-6b42e5e04310",
+    "title": "Toy Story",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1995,
+    "tmdb_id": 862,
+    "poster_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.615787+00:00"
+  },
+  {
+    "id": "2ff3a219-40a2-42c5-9dcd-f7ebf9695149",
+    "title": "Mulan",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1998,
+    "tmdb_id": 10674,
+    "poster_path": "/jAbexAtB0aSfP5Ay4TpWHARyVnG.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:34.823375+00:00"
+  },
+  {
+    "id": "30226ba4-40b5-430f-a1ee-38db1df804f3",
+    "title": "Avengers: Age of Ultron",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 99861,
+    "poster_path": "/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:53.274065+00:00"
+  },
+  {
+    "id": "313ac214-6bd9-40de-9171-4ab07d61ee0e",
+    "title": "Game of Thrones",
+    "type": "TV Series",
+    "genres": [
+      "Fantasy"
+    ],
+    "franchise": null,
+    "release_year": 2011,
+    "tmdb_id": 1399,
+    "poster_path": "/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:06.634384+00:00"
+  },
+  {
+    "id": "315acdb3-d042-4cb8-904f-092a5e1f5a6d",
+    "title": "Naruto",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2002,
+    "tmdb_id": 46260,
+    "poster_path": "/xppeysfvDKVx775MFuH8Z9BlpMk.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:35.85877+00:00"
+  },
+  {
+    "id": "321c8141-bc04-48de-94ae-c3700112bb71",
+    "title": "Locke & Key",
+    "type": "TV Series",
+    "genres": [
+      "Fantasy",
+      "Mystery"
+    ],
+    "franchise": null,
+    "release_year": 2020,
+    "tmdb_id": 86423,
+    "poster_path": "/zuxGfRKziGHPogipnEXXykdDmyT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.803381+00:00"
+  },
+  {
+    "id": "332edf86-1669-461a-b623-e6fe29f2e91c",
+    "title": "The Monster",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 1987,
+    "tmdb_id": 13509,
+    "poster_path": "/8EVuqCcqFzQvc7X8E3fx3w4B5Td.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.188648+00:00"
+  },
+  {
+    "id": "366b7e1d-6993-433b-97b1-6f026e8a939c",
+    "title": "Glass Onion: A Knives Out Mystery",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Crime"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 661374,
+    "poster_path": "/vDGr1YdrlfbU9wxTOdpf3zChmv9.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T06:42:27.77201+00:00"
+  },
+  {
+    "id": "370039c9-7643-4fa5-9b13-3514662dce3c",
+    "title": "The Shannara Chronicles",
+    "type": "TV Series",
+    "genres": [
+      "Fantasy"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 64122,
+    "poster_path": "/yzoaoBSMww5D22Kfrd2LEJumIzl.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.215113+00:00"
+  },
+  {
+    "id": "380a670f-e67a-41b8-bcba-f88f17bdcbc5",
+    "title": "Wednesday",
+    "type": "TV Series",
+    "genres": [
+      "Mystery",
+      "Comedy"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 119051,
+    "poster_path": "/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.035798+00:00"
+  },
+  {
+    "id": "39c1fc4a-1f77-4e69-a375-8d3cab8e9a45",
+    "title": "Frankenstein",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1062722,
+    "poster_path": "/g4JtvGlQO7DByTI6frUobqvSL3R.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:05.352918+00:00"
+  },
+  {
+    "id": "39d8ce52-7022-4e14-960f-063293ed2d6d",
+    "title": "The Blind Side",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2009,
+    "tmdb_id": 22881,
+    "poster_path": "/PhpAdRopu0sOWf0BY7vVtxrRD3.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.745311+00:00"
+  },
+  {
+    "id": "3a9cf07b-aa86-42f0-b13f-e519099a1634",
+    "title": "Sore: A Wife from the Future",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1385536,
+    "poster_path": "/rpqkqiqv1nl9MbdnOLKLbqqkJSj.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:49.230098+00:00"
+  },
+  {
+    "id": "3bc1508a-547a-4833-9fb7-df3bcde18732",
+    "title": "Penthouse",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2020,
+    "tmdb_id": 99489,
+    "poster_path": "/wybv1VgIOMhcHdU3ooikn2LuR1o.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:41.233122+00:00"
+  },
+  {
+    "id": "3d047819-a491-466a-9574-949d9a0094af",
+    "title": "Jojo Rabbit",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 515001,
+    "poster_path": "/1mqL7VG4Ix8wmxwypmCA1HTHBky.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:32.712479+00:00"
+  },
+  {
+    "id": "3d3983fd-d01e-4a0b-82d8-1f4e0ebe4dc0",
+    "title": "Squid Game",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 93405,
+    "poster_path": "/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:51.743804+00:00"
+  },
+  {
+    "id": "3d4f989d-9822-406d-80e4-631df6038f9a",
+    "title": "Insidious: The Last Chapter",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 406563,
+    "poster_path": "/6c9ti2JcR3dHyR3qFXoZqVMx0SH.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:19.219926+00:00"
+  },
+  {
+    "id": "3d8484a0-8497-44fb-8961-f86ca88e00a6",
+    "title": "Put Your Head on My Shoulder",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 88548,
+    "poster_path": "/iuX0TRkczgbkd1tcJD01lvTWQRl.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.434685+00:00"
+  },
+  {
+    "id": "3de180d0-b8a5-4e93-aec0-e48371f9882a",
+    "title": "Perfect Blue",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 1998,
+    "tmdb_id": 10494,
+    "poster_path": "/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:41.501621+00:00"
+  },
+  {
+    "id": "3eb1e160-064e-4d3b-b068-d93a349b5a48",
+    "title": "Be With You",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 499028,
+    "poster_path": "/mvstNgM68EyCRWwpArakLhWvvtk.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:54.513067+00:00"
+  },
+  {
+    "id": "400f2063-9e47-46e8-8d5c-2a428308ddad",
+    "title": "Tall Girl",
+    "type": "Movie",
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 625450,
+    "poster_path": "/m0clsFEXidLVJ0TueqWOvvImOMh.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:51.883517+00:00"
+  },
+  {
+    "id": "41032931-e796-4bba-8b9d-2aeb91fbc53e",
+    "title": "Pirates of the Caribbean: Dead Men Tell No Tales",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 166426,
+    "poster_path": "/6lAPOAFYFWIO3SQRemEY2wInQMC.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:41.490887+00:00"
+  },
+  {
+    "id": "42ae07ec-d274-4a89-94cc-ba90f31368fd",
+    "title": "If Wishes Could Kill",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 285838,
+    "poster_path": "/2CfTNVaR8kZQkWtWWE3Cntaiq33.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:37.157516+00:00"
+  },
+  {
+    "id": "4320bdf3-92aa-42ce-b59c-72516e875654",
+    "title": "Beautiful Boy",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 451915,
+    "poster_path": "/u2Gfv0mz3xePsgyCPHovrnFL1sB.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:32.654418+00:00"
+  },
+  {
+    "id": "436c7eaa-4790-4964-bd1f-5c8388228b30",
+    "title": "Escape Room: Tournament of Champions",
+    "type": "Movie",
+    "genres": [
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 585216,
+    "poster_path": "/jBzkWU5z60AdqujOTL2ns26SLpj.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.710316+00:00"
+  },
+  {
+    "id": "43f69245-3b22-4174-93ab-4c191763bff5",
+    "title": "The Notebook",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2004,
+    "tmdb_id": 11036,
+    "poster_path": "/rNzQyW4f8B8cQeg7Dgj3n6eT5k9.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.847612+00:00"
+  },
+  {
+    "id": "484a2d9c-1493-4668-a37b-51a9069cb823",
+    "title": "Karma",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2020,
+    "tmdb_id": 328203,
+    "poster_path": "/uLSBzGVbKtq1VLW6AIagAtPS10O.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:28.526994+00:00"
+  },
+  {
+    "id": "4921083e-1a21-45a9-be12-29e13d7e6dbe",
+    "title": "The Nun II",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 968051,
+    "poster_path": "/5gzzkR7y3hnY8AD1wXjCnVlHba5.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:56.958209+00:00"
+  },
+  {
+    "id": "494978c8-0cd5-4ce2-85fb-bb6d44766412",
+    "title": "Dumbo",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1941,
+    "tmdb_id": 11360,
+    "poster_path": "/hKDdllslMtsU9JixAv5HR9biXlp.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:36.476209+00:00"
+  },
+  {
+    "id": "4b4cbf96-fcd5-4397-956f-78f7f276de03",
+    "title": "The Silence of the Lambs",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 1991,
+    "tmdb_id": 274,
+    "poster_path": "/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.333317+00:00"
+  },
+  {
+    "id": "4c882acb-48f7-426f-8567-fabac91cc0ba",
+    "title": "Black Swan",
+    "type": "Movie",
+    "genres": [
+      "Psychological Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2010,
+    "tmdb_id": 44214,
+    "poster_path": "/viWheBd44bouiLCHgNMvahLThqx.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:56.287826+00:00"
+  },
+  {
+    "id": "4cfab197-e677-4839-a7cd-692e6312133a",
+    "title": "Orphan: First Kill",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 760161,
+    "poster_path": "/pHkKbIRoCe7zIFvqan9LFSaQAde.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:40.91576+00:00"
+  },
+  {
+    "id": "4d28bdc9-b7a2-4340-a134-91b452b8867e",
+    "title": "Gone Girl",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 210577,
+    "poster_path": "/ts996lKsxvjkO2yiYG0ht4qAicO.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.424258+00:00"
+  },
+  {
+    "id": "4e47013d-72f7-464f-a2c8-fb8ab0b4e640",
+    "title": "Bird Box",
+    "type": "Movie",
+    "genres": [
+      "Thriller",
+      "Horror"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 405774,
+    "poster_path": "/rGfGfgL2pEPCfhIvqHXieXFn7gp.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:55.274029+00:00"
+  },
+  {
+    "id": "4f77ec1f-077d-4960-8767-dee8472a3c5a",
+    "title": "Life of Pi",
+    "type": "Movie",
+    "genres": [
+      "Adventure",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2012,
+    "tmdb_id": 87827,
+    "poster_path": "/iLgRu4hhSr6V1uManX6ukDriiSc.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:25.933568+00:00"
+  },
+  {
+    "id": "51c0c373-ec24-461c-90b2-2412ceeae3bc",
+    "title": "The Pursuit of Happyness",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2006,
+    "tmdb_id": 1402,
+    "poster_path": "/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:56.620893+00:00"
+  },
+  {
+    "id": "542762bf-30aa-4101-aad9-070f80c34fa7",
+    "title": "Zootopia",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 269149,
+    "poster_path": "/hlK0e0wAQ3VLuJcsfIYPvb4JVud.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.691808+00:00"
+  },
+  {
+    "id": "56754dd3-f452-43fa-8f41-ec4e9f90b818",
+    "title": "Encanto",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 568124,
+    "poster_path": "/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:01.24204+00:00"
+  },
+  {
+    "id": "571a1b57-131f-47d5-9cfe-920b34091e1b",
+    "title": "Until Dawn",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1232546,
+    "poster_path": "/bLY5yN4MKVynZ2HMZWElTOGBgBe.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.607193+00:00"
+  },
+  {
+    "id": "5966567f-ea2c-42e1-b8e0-427597ae022a",
+    "title": "The Prestige",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2006,
+    "tmdb_id": 1124,
+    "poster_path": "/Ag2B2KHKQPukjH7WutmgnnSNurZ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.804019+00:00"
+  },
+  {
+    "id": "59e7770f-3584-4699-90a4-c7c5a1d8d413",
+    "title": "Leave the World Behind",
+    "type": "Movie",
+    "genres": [
+      "Thriller",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 726209,
+    "poster_path": "/29rhl1xopxA7JlGVVsf1UHfYPvN.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.239095+00:00"
+  },
+  {
+    "id": "5b80d06a-205f-49ec-97bf-7d781eb73b21",
+    "title": "The Nun",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 439079,
+    "poster_path": "/sFC1ElvoKGdHJIWRpNB3xWJ9lJA.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:56.827018+00:00"
+  },
+  {
+    "id": "5bcc7f45-bdbd-4f44-8cb2-3b9f1e76a867",
+    "title": "Arcane",
+    "type": "TV Series",
+    "genres": [
+      "Animation",
+      "Fantasy"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 94605,
+    "poster_path": "/87C0wecB8bHb1PsrKBI4kJiEkgV.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:32.164932+00:00"
+  },
+  {
+    "id": "5c43b45c-a3c4-476b-9b45-2a7d88818b43",
+    "title": "A Quiet Place Part II",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 520763,
+    "poster_path": "/4q2hz2m8hubgvijz8Ez0T2Os2Yv.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:31.434171+00:00"
+  },
+  {
+    "id": "5d009d95-11e6-4916-8375-a5cb346ff7ba",
+    "title": "Final Destination",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": null,
+    "tmdb_id": null,
+    "poster_path": null,
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:40:02.064247+00:00"
+  },
+  {
+    "id": "61b3ca18-d395-4a95-8bee-c4ec71db2981",
+    "title": "Toy Story 2",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1999,
+    "tmdb_id": 863,
+    "poster_path": "/4rbcp3ng8n1MKHjpeqW0L7Fnpzz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.523722+00:00"
+  },
+  {
+    "id": "62378f25-535b-4dcd-b6d6-fd4c05ad13a5",
+    "title": "The Glory",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 136283,
+    "poster_path": "/uUM4LVlPgIrww07OoEKrGWlS1Ej.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.627186+00:00"
+  },
+  {
+    "id": "646a6677-9a1b-42a1-bd1c-25e02e6e8eed",
+    "title": "Pirates of the Caribbean: Dead Man's Chest",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2006,
+    "tmdb_id": 58,
+    "poster_path": "/uXEqmloGyP7UXAiphJUu2v2pcuE.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:48.752605+00:00"
+  },
+  {
+    "id": "67d5084b-e63e-4dc0-83f6-7b2151995f03",
+    "title": "The Truman Show",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 1998,
+    "tmdb_id": 37165,
+    "poster_path": "/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.287375+00:00"
+  },
+  {
+    "id": "6941b58c-c83c-4101-87d8-81a4c1399f82",
+    "title": "Your Name",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 372058,
+    "poster_path": "/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.645158+00:00"
+  },
+  {
+    "id": "69b8b72e-c17f-43d9-9916-7608a99cc405",
+    "title": "House of the Dragon",
+    "type": "TV Series",
+    "genres": [
+      "Fantasy"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 94997,
+    "poster_path": "/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:08.378726+00:00"
+  },
+  {
+    "id": "6a1084ba-0b7d-4b7f-9e37-4c28544c5555",
+    "title": "500 Days of Summer",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2009,
+    "tmdb_id": 19913,
+    "poster_path": "/qXAuQ9hF30sQRsXf40OfRVl0MJZ.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:31.434184+00:00"
+  },
+  {
+    "id": "6a9a158c-b175-4b61-a730-7a9331f0b119",
+    "title": "Avengers: Endgame",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 299534,
+    "poster_path": "/bR8ISy1O9XQxqiy0fQFw2BX72RQ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:54.513538+00:00"
+  },
+  {
+    "id": "6ab62042-6d58-4601-aa91-0d2db8f95dc6",
+    "title": "The Royal Treatment",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 790142,
+    "poster_path": "/mYAv0YUoXJzLxIdEirOken8Quwf.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.811617+00:00"
+  },
+  {
+    "id": "6ab74534-d8c1-4695-93e2-8f8d6833c7d5",
+    "title": "Panic Room",
+    "type": "Movie",
+    "genres": [
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2002,
+    "tmdb_id": 4547,
+    "poster_path": "/hANYbvfwxmkC9E4yY6YyJxYxlSJ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:35.928857+00:00"
+  },
+  {
+    "id": "6abe7a8c-bdfe-4f3a-8f11-84baac4df0b9",
+    "title": "Captain Marvel",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 299537,
+    "poster_path": "/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:32.811967+00:00"
+  },
+  {
+    "id": "6aceec6c-eb33-4e16-944b-4699c22d96a3",
+    "title": "Sherlock Holmes",
+    "type": "TV Series",
+    "genres": [
+      "Mystery",
+      "Crime"
+    ],
+    "franchise": null,
+    "release_year": 1984,
+    "tmdb_id": 799,
+    "poster_path": "/mVmGmdfdWxVZ2vSbC8De0UG5QJW.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.103994+00:00"
+  },
+  {
+    "id": "6da509a2-8c9d-4187-a356-151f8210b494",
+    "title": "Damsel",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 763215,
+    "poster_path": "/AgHbB9DCE9aE57zkHjSmseszh6e.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:33.719871+00:00"
+  },
+  {
+    "id": "6f03852c-a095-49e1-a7a7-503e75c38358",
+    "title": "Lee Cronin's The Mummy",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 1304313,
+    "poster_path": "/1q308iixueCU4pFtSYugNOevtNx.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:34.891133+00:00"
+  },
+  {
+    "id": "7020925f-4e3f-4da8-9e7f-a65ed13fed96",
+    "title": "Kung Fu Panda 3",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 140300,
+    "poster_path": "/oajNi4Su39WAByHI6EONu8G8HYn.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:37.714442+00:00"
+  },
+  {
+    "id": "70c966df-f95f-4533-bcf0-4caab698e3bf",
+    "title": "Requiem for a Dream",
+    "type": "Movie",
+    "genres": [
+      "Psychological Drama"
+    ],
+    "franchise": null,
+    "release_year": 2000,
+    "tmdb_id": 641,
+    "poster_path": "/9BTwsLaMVHOGFlmsSlx5QYCaXb.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:47.040955+00:00"
+  },
+  {
+    "id": "721f958e-97cc-4207-9f55-fa3a1e4b3417",
+    "title": "Paradise",
+    "type": "TV Series",
+    "genres": [
+      "Thriller",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2011,
+    "tmdb_id": 41956,
+    "poster_path": "/u7t6vCyqAdD5hE4eEfTrZmVljDi.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:39.965624+00:00"
+  },
+  {
+    "id": "73fbd9d1-ac4e-4020-b19c-3b7f71438b5c",
+    "title": "Bridge to Terabithia",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 1265,
+    "poster_path": "/ieIoNyJvtwQ6joyG6npTKxnCtGH.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:32.637465+00:00"
+  },
+  {
+    "id": "74154228-d5d9-40f1-9a33-dd68552e0f31",
+    "title": "Mission: Impossible",
+    "type": "Movie",
+    "genres": [
+      "Action",
+      "Spy"
+    ],
+    "franchise": null,
+    "release_year": 1996,
+    "tmdb_id": 954,
+    "poster_path": "/l5uxY5m5OInWpcExIpKG6AR3rgL.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:32.835069+00:00"
+  },
+  {
+    "id": "795152a2-4879-423e-a833-28a281a3ea90",
+    "title": "Cruella",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 337404,
+    "poster_path": "/hjS9mH8KvRiGHgjk6VUZH7OT0Ng.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:33.343257+00:00"
+  },
+  {
+    "id": "79720e76-45b3-4ebe-8497-4566e9146fc6",
+    "title": "Aladdin",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1992,
+    "tmdb_id": 812,
+    "poster_path": "/eLFfl7vS8dkeG1hKp5mwbm37V83.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:31.709782+00:00"
+  },
+  {
+    "id": "7a6959b0-4a2b-4a7c-b981-a5d53f64cf36",
+    "title": "Cinderella: Twist in Time",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 16119,
+    "poster_path": "/9QzKXbQfPp59iZ3rwnkKEAkPaXx.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:33.051639+00:00"
+  },
+  {
+    "id": "7b14e261-139d-43d5-a554-9459c501feb2",
+    "title": "Demon Slayer",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 85937,
+    "poster_path": "/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:00.53183+00:00"
+  },
+  {
+    "id": "7e06447a-67b0-4156-99b0-43fe6f0f5f11",
+    "title": "The Good Dinosaur",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 105864,
+    "poster_path": "/8RSkxOO80btfKjyiC5ZiTaCHIT8.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.057922+00:00"
+  },
+  {
+    "id": "7e670df2-218d-4db7-95fc-fe31774de0d1",
+    "title": "Anatomy of a Fall",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 915935,
+    "poster_path": "/1ho0d4LNZw3Y0voeKmSvPSgJOJ2.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:58.581657+00:00"
+  },
+  {
+    "id": "7ea9566c-ed81-4717-b7b5-f291ae9b3221",
+    "title": "Young Sheldon",
+    "type": "TV Series",
+    "genres": [
+      "Comedy"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 71728,
+    "poster_path": "/42dEkEZRVy1x36JH2LP12k6c9A.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.091131+00:00"
+  },
+  {
+    "id": "7ef741d8-2d26-4819-be64-d626cb46db4d",
+    "title": "Love, Rosie",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 200727,
+    "poster_path": "/2HOd431LX9ggqSpBIJ7qyYhATyo.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:36.138774+00:00"
+  },
+  {
+    "id": "7f6baf62-3b84-4d1b-adb4-381452d32a6d",
+    "title": "The Perks of Being a Wallflower",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2012,
+    "tmdb_id": 84892,
+    "poster_path": "/aKCvdFFF5n80P2VdS7d8YBwbCjh.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.768609+00:00"
+  },
+  {
+    "id": "809742ba-d7fb-440b-8991-353c61841396",
+    "title": "Snow White and the Seven Dwarfs",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1938,
+    "tmdb_id": 408,
+    "poster_path": "/3VAHfuNb6Z7UiW12iYKANSPBl8m.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.008374+00:00"
+  },
+  {
+    "id": "80ed45f2-1a16-4fa9-9a5f-61c7be46e345",
+    "title": "Black Widow",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 497698,
+    "poster_path": "/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:32.431876+00:00"
+  },
+  {
+    "id": "81460659-4af0-439d-8eb1-5f49355fddf5",
+    "title": "A Silent Voice",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 378064,
+    "poster_path": "/tuFaWiqX0TXoWu7DGNcmX3UW7sT.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:35.851159+00:00"
+  },
+  {
+    "id": "82f40914-7606-416d-bcfe-f02771daeb16",
+    "title": "Pirates of the Caribbean: At World's End",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 285,
+    "poster_path": "/jGWpG4YhpQwVmjyHEGkxEkeRf0S.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:47.969758+00:00"
+  },
+  {
+    "id": "83369614-ffce-4960-8e06-613543945ca2",
+    "title": "Marrowbone",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 399366,
+    "poster_path": "/iX77zMSqUv2Qt7ToEnN2mmEudEf.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:29.720271+00:00"
+  },
+  {
+    "id": "83684f5c-0ab7-43bf-a0c1-01b54ad592a4",
+    "title": "Carrie",
+    "type": "TV Series",
+    "genres": [
+      "Horror"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 288673,
+    "poster_path": "/6mUMquPQBFJGqTACS3Azkwwrx8d.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:56.508479+00:00"
+  },
+  {
+    "id": "83b2cbc7-575e-41a2-a1ac-0ecab44b2e0a",
+    "title": "Incendies",
+    "type": "Movie",
+    "genres": [
+      "Drama",
+      "Mystery"
+    ],
+    "franchise": null,
+    "release_year": 2010,
+    "tmdb_id": 46738,
+    "poster_path": "/yH6DAQVgbyj72S66gN4WWVoTjuf.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:37.604575+00:00"
+  },
+  {
+    "id": "83cef530-7bde-4ea3-bfbb-d112310f11ed",
+    "title": "M3GAN",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 536554,
+    "poster_path": "/d9nBoowhjiiYc4FBNtQkPY7c11H.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:34.316071+00:00"
+  },
+  {
+    "id": "8552a741-04e8-40ea-bacd-ff8ffe02b11c",
+    "title": "IT: Welcome to Derry",
+    "type": "TV Series",
+    "genres": [
+      "Horror"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 200875,
+    "poster_path": "/nyy3BITeIjviv6PFIXtqvc8i6xi.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.255647+00:00"
+  },
+  {
+    "id": "85daa291-fb39-477b-8188-cc671d394c0a",
+    "title": "The Sixth Sense",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 1999,
+    "tmdb_id": 745,
+    "poster_path": "/vOyfUXNFSnaTk7Vk5AjpsKTUWsu.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.392654+00:00"
+  },
+  {
+    "id": "873660a6-a28a-4bae-9ffe-8c7732254a5f",
+    "title": "Toy Story 3",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2010,
+    "tmdb_id": 10193,
+    "poster_path": "/AbbXspMOwdvwWZgVN0nabZq03Ec.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.761085+00:00"
+  },
+  {
+    "id": "87d0a050-5f83-48dc-a78a-df4620b876af",
+    "title": "The Wheel of Time",
+    "type": "TV Series",
+    "genres": [
+      "Fantasy"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 71914,
+    "poster_path": "/ihBi24EIr5kwAeY2PqmsgAcCj4n.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.348038+00:00"
+  },
+  {
+    "id": "889cb9cc-e54b-47d3-a2d8-c2b02af0c0a5",
+    "title": "Pete's Dragon",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 294272,
+    "poster_path": "/A9x4Ogk8KUXTfU649NS6lS9TCmu.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:42.882638+00:00"
+  },
+  {
+    "id": "8962b5cf-6196-496b-b03c-940570c05ea7",
+    "title": "Alice in Borderland",
+    "type": "TV Series",
+    "genres": [
+      "Thriller",
+      "Sci-Fi"
+    ],
+    "franchise": null,
+    "release_year": 2020,
+    "tmdb_id": 110316,
+    "poster_path": "/Ac8ruycRXzgcsndTZFK6ouGA0FA.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:31.701836+00:00"
+  },
+  {
+    "id": "89836367-31bd-4547-a717-497bfa189c01",
+    "title": "Tall Girl 2",
+    "type": "Movie",
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 772272,
+    "poster_path": "/eyKkLdst2vFRjCC89C3NqGCLpNE.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:51.905698+00:00"
+  },
+  {
+    "id": "89ceebcd-540a-4aaa-aae9-1358929f30ad",
+    "title": "Se7en",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 1995,
+    "tmdb_id": 807,
+    "poster_path": "/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.340707+00:00"
+  },
+  {
+    "id": "8a463233-4c34-4cfa-b9ad-ab3a40cb93f6",
+    "title": "Home Alone",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 1997,
+    "tmdb_id": 9714,
+    "poster_path": "/6uOadrCfle0n2LOOxHbgWEdnrm2.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:07.452866+00:00"
+  },
+  {
+    "id": "8a92bb97-afec-4de8-b9aa-1e906ba79e17",
+    "title": "Shōgun",
+    "type": "TV Series",
+    "genres": [
+      "Historical Drama"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 126308,
+    "poster_path": "/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:49.314009+00:00"
+  },
+  {
+    "id": "8b473c29-db7b-456e-9711-874487fb1fef",
+    "title": "The Mist",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 5876,
+    "poster_path": "/c4UgUKZjM0Qzy5t4hAXSOFHYsnb.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.553323+00:00"
+  },
+  {
+    "id": "8b68ea64-efd8-4eb7-be74-5c6dc43fca7d",
+    "title": "The Wild Robot",
+    "type": "Movie",
+    "genres": [
+      "Animation",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 1184918,
+    "poster_path": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.137269+00:00"
+  },
+  {
+    "id": "8d9c7f07-e082-4f78-93f2-20e22ad2b622",
+    "title": "The Curse of La Llorona",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 480414,
+    "poster_path": "/hETrPpoKs6BwoilK64YJ7Z5GcRT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.751602+00:00"
+  },
+  {
+    "id": "8db2dc07-ea52-4875-83d1-fd1baba1f8a2",
+    "title": "Grave of the Fireflies",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2005,
+    "tmdb_id": 76826,
+    "poster_path": "/im6u58cPa9HlH5DqSnZGy0O37l5.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.448018+00:00"
+  },
+  {
+    "id": "8f0216e2-d9dd-498e-93ed-b42585c3b42e",
+    "title": "Malignant",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 619778,
+    "poster_path": "/dGv2BWjzwAz6LB8a8JeRIZL8hSz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:37.94385+00:00"
+  },
+  {
+    "id": "8f43f4e7-b8d2-45be-aa14-2350b527fad9",
+    "title": "La La Land",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 313369,
+    "poster_path": "/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:28.637025+00:00"
+  },
+  {
+    "id": "8fdbabdb-0167-4337-824e-e6e4e3b28f16",
+    "title": "Weathering with You",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 568160,
+    "poster_path": "/qgrk7r1fV4IjuoeiGS5HOhXNdLJ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.835257+00:00"
+  },
+  {
+    "id": "9036bace-1b1d-4ca2-9ea1-9de97175738a",
+    "title": "Evil Dead Rise",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 713704,
+    "poster_path": "/5ik4ATKmNtmJU6AYD0bLm56BCVM.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:35.4064+00:00"
+  },
+  {
+    "id": "90bff039-cfc7-4839-99b7-0ff831142da7",
+    "title": "Pirates of the Caribbean: On Stranger Tides",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2011,
+    "tmdb_id": 1865,
+    "poster_path": "/keGfSvCmYj7CvdRx36OdVrAEibE.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:47.388179+00:00"
+  },
+  {
+    "id": "929e092f-1cf4-4416-9a9b-959cd030835d",
+    "title": "Knives Out",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Crime"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 546554,
+    "poster_path": "/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:25.829557+00:00"
+  },
+  {
+    "id": "9396747e-6858-48f4-bb1b-d84b551a6ce3",
+    "title": "The Martian",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 286217,
+    "poster_path": "/5BHuvQ6p9kfc091Z8RiFNhCwL4b.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.183218+00:00"
+  },
+  {
+    "id": "952902c2-5bb9-4d5d-823b-1bb2023a4958",
+    "title": "Guardians of the Galaxy Vol. 2",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 283995,
+    "poster_path": "/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.572842+00:00"
+  },
+  {
+    "id": "9816c979-f45b-4113-b46e-3e525eb03b88",
+    "title": "Zodiac",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 1949,
+    "poster_path": "/6YmeO4pB7XTh8P8F960O1uA14JO.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.755326+00:00"
+  },
+  {
+    "id": "9d02d31f-9a6c-42ee-b7eb-15f3857541fc",
+    "title": "The Ring Two",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2005,
+    "tmdb_id": 10320,
+    "poster_path": "/bHbz7z2pecTawhkqLpuC2m0qywe.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:57.446459+00:00"
+  },
+  {
+    "id": "9da42299-46a4-4222-b9cc-2f6b8c24ae27",
+    "title": "Loki",
+    "type": "TV Series",
+    "genres": [
+      "Superhero",
+      "Sci-Fi"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 84958,
+    "poster_path": "/kEl2t3OhXc3Zb9FBh1AuYzRTgZp.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:33.250722+00:00"
+  },
+  {
+    "id": "9de5bfa7-8f23-4c7a-9df9-2e3a488ad35d",
+    "title": "Where Stars Land",
+    "type": "TV Series",
+    "genres": [
+      "K-Drama"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 82298,
+    "poster_path": "/le2KWix9IojXI0xSYv4UhBvnqw5.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.88466+00:00"
+  },
+  {
+    "id": "9e2ff148-45fc-40ca-8d8c-d944d090ce5a",
+    "title": "Obsession",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 1339713,
+    "poster_path": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:38.523788+00:00"
+  },
+  {
+    "id": "9e80fc23-7d7d-44a8-8c61-8a21e4716fc5",
+    "title": "Final Destination Bloodlines",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 574475,
+    "poster_path": "/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:05.247319+00:00"
+  },
+  {
+    "id": "a02ee051-146a-42af-807e-ef8cca7929ff",
+    "title": "The Noel Diary",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 736918,
+    "poster_path": "/f6mMqxJfAD2Ao4sto7kOq6a7tWg.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.701214+00:00"
+  },
+  {
+    "id": "a15a9bf5-90da-4960-b393-702892b5120a",
+    "title": "The Batman",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 414906,
+    "poster_path": "/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.426036+00:00"
+  },
+  {
+    "id": "a65c8cce-00cd-421e-b612-6384c5d446c4",
+    "title": "Maleficent: Mistress of Evil",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 420809,
+    "poster_path": "/vloNTScJ3w7jwNwtNGoG8DbTThv.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:37.101523+00:00"
+  },
+  {
+    "id": "a921894b-0487-4424-b724-ed10292f48da",
+    "title": "Thor: Ragnarok",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 284053,
+    "poster_path": "/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.668779+00:00"
+  },
+  {
+    "id": "a9302726-996d-42b6-bb86-e6bebb583ca6",
+    "title": "Spider-Man: No Way Home",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 634649,
+    "poster_path": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:51.306908+00:00"
+  },
+  {
+    "id": "a9945dec-021b-4d0d-9d42-dedf0067bae5",
+    "title": "Solo Leveling",
+    "type": "TV Series",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 127532,
+    "poster_path": "/geCRueV3ElhRTr0xtJuEWJt6dJ1.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:50.134632+00:00"
+  },
+  {
+    "id": "aa0e9a1d-925c-4025-bb64-2f10912f1b5d",
+    "title": "The Conjuring 4",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 1022103,
+    "poster_path": "/dNr0mqVSLfIaPlhcmJNRJVzCQBs.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.123302+00:00"
+  },
+  {
+    "id": "aa42d532-4b07-4625-938b-910c816c034c",
+    "title": "Joker",
+    "type": "Movie",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 475557,
+    "poster_path": "/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:38.004278+00:00"
+  },
+  {
+    "id": "ab3446fd-6157-4f61-8f83-86e7341b839b",
+    "title": "My Fault",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 1010581,
+    "poster_path": "/w46Vw536HwNnEzOa7J24YH9DPRS.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:39.208702+00:00"
+  },
+  {
+    "id": "ab526d0e-9ff2-4918-8f34-b908a661da66",
+    "title": "Escape Room",
+    "type": "Movie",
+    "genres": [
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 522681,
+    "poster_path": "/8Ls1tZ6qjGzfGHjBB7ihOnf7f0b.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:01.739452+00:00"
+  },
+  {
+    "id": "ac9948a0-4017-466a-a56d-b81af7ad2413",
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2004,
+    "tmdb_id": 38,
+    "poster_path": "/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:04.999092+00:00"
+  },
+  {
+    "id": "acbd6672-25d8-465e-b0eb-bbeca0fea3ab",
+    "title": "WALL-E",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1398911,
+    "poster_path": "/1OsdhvbLNLUJEi9vqQCyhAXsaRX.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.416898+00:00"
+  },
+  {
+    "id": "afefaad3-a0ae-4bf6-acca-31c6ee3dda0a",
+    "title": "The Conjuring 3",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 423108,
+    "poster_path": "/xbSuFiJbbBWCkyCCKIMfuDCA4yV.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:56.830176+00:00"
+  },
+  {
+    "id": "b3dc4af1-8f95-4140-8884-f4f42ce01f9f",
+    "title": "Jungle Cruise",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 451048,
+    "poster_path": "/yKy9ELL8CON5sqDg4yIvBb5LTZL.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:22.018155+00:00"
+  },
+  {
+    "id": "b3fd470d-ca81-4bdc-a690-c71ff4d88e18",
+    "title": "Whiplash",
+    "type": "Movie",
+    "genres": [
+      "Drama",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 244786,
+    "poster_path": "/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.883604+00:00"
+  },
+  {
+    "id": "b427dadf-2cdd-4ff2-aca8-3baaeaddfc54",
+    "title": "Room",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 264644,
+    "poster_path": "/2hHDMeYyZjbGWn0BeNH1cTMxuM7.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.068095+00:00"
+  },
+  {
+    "id": "b60557c3-1348-4d24-b964-45e3271248f3",
+    "title": "M3GAN 2.0",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 1071585,
+    "poster_path": "/oekamLQrwlJjRNmfaBE4llIvkir.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:32.36577+00:00"
+  },
+  {
+    "id": "b69263e0-5a7e-4194-81f2-f5cca77c1264",
+    "title": "Lights Out",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 345911,
+    "poster_path": "/AjZXonSbqC3LdSr8xCUzMiQksrM.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:35.251332+00:00"
+  },
+  {
+    "id": "b6b5ce91-9d8f-4228-abdc-e62e235c4460",
+    "title": "Spider-Man: Far From Home",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 429617,
+    "poster_path": "/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.430993+00:00"
+  },
+  {
+    "id": "ba4738be-34d9-47ec-9544-3484f63178a9",
+    "title": "Annabelle Comes Home",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 521029,
+    "poster_path": "/qWsHMrbg9DsBY3bCMk9jyYCRVRs.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:31.868237+00:00"
+  },
+  {
+    "id": "bae26699-d168-4ee2-acec-1428661b1560",
+    "title": "Get Out",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 419430,
+    "poster_path": "/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.369426+00:00"
+  },
+  {
+    "id": "bcfcb2b7-7d19-44c5-a091-bb10c87ecb2c",
+    "title": "Frozen 2",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 490935,
+    "poster_path": "/53gC5mmxKHraEq8nfaBBY5r7eGf.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:37.836706+00:00"
+  },
+  {
+    "id": "be46d21d-88b5-4ba6-83cc-7b65d7dd9b39",
+    "title": "The Conjuring",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 138843,
+    "poster_path": "/wVYREutTvI2tmxr6ujrHT704wGF.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.969104+00:00"
+  },
+  {
+    "id": "be6c0b35-d715-4886-bd62-3a317a30e749",
+    "title": "Captain America: Civil War",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 271110,
+    "poster_path": "/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:33.408182+00:00"
+  },
+  {
+    "id": "c00c1685-55e8-4c1c-958d-a284dd9960af",
+    "title": "The Exorcist: Believer",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 807172,
+    "poster_path": "/fFXkAlMH2iQrNknv4eq7LGTkcti.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:55.674321+00:00"
+  },
+  {
+    "id": "c0276021-6163-4148-8f9a-352c420221e9",
+    "title": "Shang-Chi and the Legend of the Ten Rings",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 566525,
+    "poster_path": "/9f2Q0U3IOsLgrI2HkvldwSABZy5.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:50.409953+00:00"
+  },
+  {
+    "id": "c1cf9e9f-65f5-46bb-833e-6767dedd0459",
+    "title": "I Want to Eat Your Pancreas",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 504253,
+    "poster_path": "/qpV8kvRfAntV7D4aOOsLIz7OdPc.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.893132+00:00"
+  },
+  {
+    "id": "c3fbc295-222d-4da0-96d4-509f0b1836df",
+    "title": "Interstellar",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 157336,
+    "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:20.49995+00:00"
+  },
+  {
+    "id": "c5c7278d-41b6-478d-89fa-dd759929b89a",
+    "title": "Annabelle: Creation",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 396422,
+    "poster_path": "/tb86j8jVCVsdZnzf8I6cIi65IeM.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:52.365195+00:00"
+  },
+  {
+    "id": "c7d7ac26-ac80-4105-a3a1-883acb141add",
+    "title": "Final Destination 2",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2003,
+    "tmdb_id": 9358,
+    "poster_path": "/vnFgxRlLTA9fDNcGXLiHmgwmIEo.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:06.464166+00:00"
+  },
+  {
+    "id": "c937528a-4948-4e58-83c3-06ab68292300",
+    "title": "The Theory of Everything",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2014,
+    "tmdb_id": 266856,
+    "poster_path": "/7kwcLFNt887saoQAL7EY0XnW7VI.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.499032+00:00"
+  },
+  {
+    "id": "ca2c2058-8b43-47ff-9795-b6329d4b2f2f",
+    "title": "It",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 346364,
+    "poster_path": "/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:38.042858+00:00"
+  },
+  {
+    "id": "ca47c4ad-16d8-4dd5-afe7-aeed36f5ca78",
+    "title": "Parasite",
+    "type": "Movie",
+    "genres": [
+      "Thriller",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 496243,
+    "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:38.530549+00:00"
+  },
+  {
+    "id": "cb3ba77d-3bd0-4948-bafb-6a682805e340",
+    "title": "Mission: Impossible 2",
+    "type": "Movie",
+    "genres": [
+      "Action",
+      "Spy"
+    ],
+    "franchise": null,
+    "release_year": 2000,
+    "tmdb_id": 955,
+    "poster_path": "/hfnrual76gPeNFduhD4xzHWpfTw.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:35.325599+00:00"
+  },
+  {
+    "id": "cb3d870b-2877-4cb2-b68f-58e750223293",
+    "title": "Mad Max: Fury Road",
+    "type": "Movie",
+    "genres": [
+      "Action"
+    ],
+    "franchise": null,
+    "release_year": 2015,
+    "tmdb_id": 76341,
+    "poster_path": "/ulcAi4dKpAjHwYGS08vNyx9H6I9.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.227793+00:00"
+  },
+  {
+    "id": "cc4adaa5-3af5-4603-ab56-ae6b72319de5",
+    "title": "Iron Man",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2008,
+    "tmdb_id": 1726,
+    "poster_path": "/78lPtwv72eTNqFW9COBYI0dWDJa.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:13.184545+00:00"
+  },
+  {
+    "id": "d000b6d8-902f-457b-84c3-b0e36005668c",
+    "title": "Avengers: Infinity War",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 299536,
+    "poster_path": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:32.285996+00:00"
+  },
+  {
+    "id": "d07ae9ee-914b-4ce4-ac0a-25b9f01ec35a",
+    "title": "Inception",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2010,
+    "tmdb_id": 27205,
+    "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:37.916541+00:00"
+  },
+  {
+    "id": "d56bf767-4164-43d0-acc3-03aa718f8ee3",
+    "title": "Manchester by the Sea",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 334541,
+    "poster_path": "/o9VXYOuaJxCEKOxbA86xqtwmqYn.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:29.028075+00:00"
+  },
+  {
+    "id": "d7fa9546-b6f5-4433-b020-9606c00f2f28",
+    "title": "Smile 2",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 1100782,
+    "poster_path": "/ht8Uv9QPv9y7K0RvUyJIaXOZTfd.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.249642+00:00"
+  },
+  {
+    "id": "d8efce00-0924-4fb8-9440-751f81ba71ba",
+    "title": "Raya and the Last Dragon",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 527774,
+    "poster_path": "/5nVhgCzxKbK47OLIKxCR1syulOn.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:44.627013+00:00"
+  },
+  {
+    "id": "da0a6b10-db3d-4021-9316-a201c33679f5",
+    "title": "The Substance",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 933260,
+    "poster_path": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.099974+00:00"
+  },
+  {
+    "id": "dae6b1bd-a9c8-4c11-9a61-6b124f18f4ab",
+    "title": "The Invisible Guest",
+    "type": "Movie",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 411088,
+    "poster_path": "/fptnZJbLzKUHeNlYrAynbyoL5YJ.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:54.442916+00:00"
+  },
+  {
+    "id": "dcfe250b-9897-429d-b916-2eb9e3b3f7d6",
+    "title": "Me Before You",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 296096,
+    "poster_path": "/oo2Q3T8juOYFh2G1YJ3oSMAfUyq.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:34.155776+00:00"
+  },
+  {
+    "id": "e003cb40-e3f6-4346-a2ee-791815d5044b",
+    "title": "Spider-Man: Homecoming",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 315635,
+    "poster_path": "/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:52.921322+00:00"
+  },
+  {
+    "id": "e00f29b4-35db-4eea-a8c1-7f0747470091",
+    "title": "True Spirit",
+    "type": "Movie",
+    "genres": [
+      "Adventure",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 739986,
+    "poster_path": "/5qntAorVEzixuYOIPMCGwDiuGkd.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.6813+00:00"
+  },
+  {
+    "id": "e0828994-3c6c-464b-8b41-be271d8b1150",
+    "title": "Hereditary",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 493922,
+    "poster_path": "/4GFPuL14eXi66V96xBWY73Y9PfR.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:37.06653+00:00"
+  },
+  {
+    "id": "e0f26e8a-cc56-4ba0-bd57-f80c1140c090",
+    "title": "Thunderbolts",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 986056,
+    "poster_path": "/hqcexYHbiTBfDIdDWxrxPtVndBX.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:59.528348+00:00"
+  },
+  {
+    "id": "e1b6e9c1-48ad-425f-8939-dd3dec7881a3",
+    "title": "Gravity",
+    "type": "Movie",
+    "genres": [
+      "Sci-Fi",
+      "Space"
+    ],
+    "franchise": null,
+    "release_year": 2013,
+    "tmdb_id": 49047,
+    "poster_path": "/kZ2nZw8D681aphje8NJi8EfbL1U.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:36.55548+00:00"
+  },
+  {
+    "id": "e35c6bba-1521-4156-bd1b-67d2ed40ff45",
+    "title": "It Chapter Two",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2019,
+    "tmdb_id": 474350,
+    "poster_path": "/zfE0R94v1E8cuKAerbskfD3VfUt.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:27.061357+00:00"
+  },
+  {
+    "id": "e38b3c54-9016-4c9c-a6d2-4d5b0731805d",
+    "title": "When Life Gives You Tangerines",
+    "type": "TV Series",
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "franchise": null,
+    "release_year": 2025,
+    "tmdb_id": 219246,
+    "poster_path": "/1VC3sEFxYXYDqQUCAnvWfUsYg1s.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:43:00.559088+00:00"
+  },
+  {
+    "id": "e40e73bf-cdfa-4d74-99e0-8832f720d7aa",
+    "title": "Orphan",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2009,
+    "tmdb_id": 21208,
+    "poster_path": "/lCGpOgoTOGLtZnBiGY9HRg5Xnjd.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:42.506735+00:00"
+  },
+  {
+    "id": "e5631a24-ad20-4319-a795-f5a2b508e971",
+    "title": "Suzume",
+    "type": "Movie",
+    "genres": [
+      "Anime"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 916224,
+    "poster_path": "/yStW1TXF5s7Tbtu9KjIZEaWl6HL.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.563324+00:00"
+  },
+  {
+    "id": "e8cd6b61-f821-475a-a3cf-eafa66216a8d",
+    "title": "Red Notice",
+    "type": "Movie",
+    "genres": [
+      "Action",
+      "Comedy"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 512195,
+    "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:43.31483+00:00"
+  },
+  {
+    "id": "e9696adb-9a4d-44c8-8353-995a630bd3f3",
+    "title": "Exhuma",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 838209,
+    "poster_path": "/6dasJ58GGFcC62H9KuukAryltUp.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:02.444282+00:00"
+  },
+  {
+    "id": "e9764607-6738-42b1-8a23-1129b0aedc45",
+    "title": "The Conjuring 2",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2016,
+    "tmdb_id": 259693,
+    "poster_path": "/zEqyD0SBt6HL7W9JQoWwtd5Do1T.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.417239+00:00"
+  },
+  {
+    "id": "e9c1dc72-4b82-4dce-86a6-bfb9b8761c1d",
+    "title": "Top Gun: Maverick",
+    "type": "Movie",
+    "genres": [
+      "Action",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 2022,
+    "tmdb_id": 361743,
+    "poster_path": "/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:58.225779+00:00"
+  },
+  {
+    "id": "eeea7593-b366-401c-bb39-f8c2953a0f29",
+    "title": "The Dark Knight",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2008,
+    "tmdb_id": 155,
+    "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:53.680164+00:00"
+  },
+  {
+    "id": "eefd6241-21d2-4e8e-907f-992a0dadcbf8",
+    "title": "Behind Her Eyes",
+    "type": "TV Series",
+    "genres": [
+      "Psychological Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2021,
+    "tmdb_id": 97173,
+    "poster_path": "/sfd90NIf778KoBFmpdBTow4xTm7.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:55.360165+00:00"
+  },
+  {
+    "id": "f5903070-1598-4ab3-a10b-77f0cd61a4ac",
+    "title": "Moana",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2026,
+    "tmdb_id": 1108427,
+    "poster_path": "/gaet1xQ2nxrG0V1Ep9T20ZMNEIC.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:39.979385+00:00"
+  },
+  {
+    "id": "f5e8cb53-8e8b-4f3f-ad14-168b9eb88b5f",
+    "title": "Emily in Paris",
+    "type": "TV Series",
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "franchise": null,
+    "release_year": 2020,
+    "tmdb_id": 82596,
+    "poster_path": "/c0bkO416OU7YGdOFktk45H8REgL.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:35.138408+00:00"
+  },
+  {
+    "id": "f626968c-0a7f-4f61-ba43-051456781707",
+    "title": "Dead Silence",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Supernatural"
+    ],
+    "franchise": null,
+    "release_year": 2007,
+    "tmdb_id": 14001,
+    "poster_path": "/rvcUVdATIHKZt7BSSttUkKbeBXN.jpg",
+    "created_at": "2026-10-25T06:41:05.680069+00:00",
+    "updated_at": "2026-10-25T07:32:35.580514+00:00"
+  },
+  {
+    "id": "f6823779-06a4-4448-8457-2ea42a71af60",
+    "title": "Captain America: The First Avenger",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2011,
+    "tmdb_id": 1771,
+    "poster_path": "/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:57.070786+00:00"
+  },
+  {
+    "id": "f8221dd6-8b72-43e1-8a05-0c4d5ededa76",
+    "title": "Blue Beetle",
+    "type": "Movie",
+    "genres": [
+      "Superhero"
+    ],
+    "franchise": null,
+    "release_year": 2023,
+    "tmdb_id": 565770,
+    "poster_path": "/mXLOHHc1Zeuwsl4xYKjKh2280oL.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:55.257059+00:00"
+  },
+  {
+    "id": "f878a989-a3f0-4a35-9a38-38324e3d9ab8",
+    "title": "The Haunting of Hill House",
+    "type": "TV Series",
+    "genres": [
+      "Horror"
+    ],
+    "franchise": null,
+    "release_year": 2018,
+    "tmdb_id": 72844,
+    "poster_path": "/nWPZb800NCGiDPNGsKCfY0w44Z2.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:56.12979+00:00"
+  },
+  {
+    "id": "f88ea4fd-a917-4aba-aed4-25f42a5b5ba2",
+    "title": "Heretic",
+    "type": "Movie",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2024,
+    "tmdb_id": 1138194,
+    "poster_path": "/fr96XzlzsONrQrGfdLMiwtQjott.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:37.925092+00:00"
+  },
+  {
+    "id": "fa44337c-0269-4df0-b9d2-7e92a4d06280",
+    "title": "Coco",
+    "type": "Movie",
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 354912,
+    "poster_path": "/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:41:58.876693+00:00"
+  },
+  {
+    "id": "fb2e2f6e-3c9c-4a0d-8055-570e9cfd5994",
+    "title": "Dead Poets Society",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 1989,
+    "tmdb_id": 207,
+    "poster_path": "/erzbMlcNHOdx24AXOcn2ZKA7R1q.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T07:32:33.532984+00:00"
+  },
+  {
+    "id": "fcd9a0c8-da98-4058-a763-895b8ed9bf19",
+    "title": "Meet Joe Black",
+    "type": "Movie",
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "franchise": null,
+    "release_year": 1998,
+    "tmdb_id": 297,
+    "poster_path": "/fDPAjvfPMomkKF7cMRmL5Anak61.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:34.242212+00:00"
+  },
+  {
+    "id": "fd47658f-f198-4d24-81ff-b9b6ecdcecce",
+    "title": "Money Heist",
+    "type": "TV Series",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "franchise": null,
+    "release_year": 2017,
+    "tmdb_id": 71446,
+    "poster_path": "/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",
+    "created_at": "2026-10-25T06:40:02.064247+00:00",
+    "updated_at": "2026-10-25T06:42:38.431474+00:00"
+  }
+]
