@@ -5,12 +5,16 @@ export interface Movie {
   title: string;
   type: MediaType;
   genres: string[];
-  franchise?: string;
+  franchise?: string | null;
+  universe?: string;
+  universeOrder?: number;
   release_year?: number;
   tmdb_id?: number;
   poster_path?: string;
   backdrop_path?: string;
   overview?: string;
+  original_language?: string;
+  origin_country?: string[];
   release_date?: string;
   runtime?: number;
   total_seasons?: number;
@@ -31,6 +35,8 @@ export interface TMDBSearchResult {
   poster_path?: string;
   backdrop_path?: string;
   overview?: string;
+  original_language?: string;
+  origin_country?: string[];
   media_type?: 'movie' | 'tv' | 'person';
   genre_ids?: number[];
 }
@@ -46,6 +52,8 @@ export interface TMDBMovieDetails {
   poster_path?: string;
   backdrop_path?: string;
   overview?: string;
+  original_language?: string;
+  origin_country?: string[];
   runtime?: number;
   episode_run_time?: number[];
   number_of_seasons?: number;
@@ -58,6 +66,7 @@ export interface TMDBMovieDetails {
     poster_path?: string | null;
   }>;
   genres?: Array<{ id: number; name: string }>;
+  production_companies?: Array<{ id: number; name: string }>;
   belongs_to_collection?: {
     id: number;
     name: string;

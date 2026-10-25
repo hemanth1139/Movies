@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { GENRES, uniqueGenres } from '../lib/genres';
+import { uniqueGenres } from '../lib/genres';
 import type { Movie } from '../types/movie';
 
 interface GenreFiltersProps {
@@ -14,9 +14,9 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const collectionGenres = movies.flatMap((movie) => movie.genres);
-  const genres = uniqueGenres([...GENRES, ...collectionGenres, ...selectedGenres])
+  const genres = uniqueGenres(movies.flatMap((movie) => movie.genres))
     .filter((genre) => !excludeAnime || genre.toLowerCase() !== 'anime');
+  const countForGenre = (genre: string) => movies.filter((movie) => movie.genres.some((item) => item.toLowerCase() === genre.toLowerCase())).length;
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -52,14 +52,15 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
           }
         }}
       >
-        {genres.map((genre, index) => {
+        {['All', ...genres].map((genre, index) => {
         const selected = selectedGenres.includes(genre);
+        const isAll = genre === 'All';
         return (
           <button
             key={genre}
             type="button"
             style={{ animationDelay: `${index * 50}ms` }}
-            aria-pressed={selected}
+            aria-pressed={isAll ? selectedGenres.length === 0 : selected}
             onClick={() => onGenreToggle(genre)}
             className={`genre-chip shrink-0 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.04] ${
               selected
@@ -67,7 +68,7 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
                 : 'border-border bg-surface text-secondary hover:border-accent/50 hover:text-accent'
             }`}
           >
-            {genre}
+            {genre}{!isAll && <span className="genre-count">({countForGenre(genre)})</span>}
           </button>
         );
         })}

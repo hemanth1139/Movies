@@ -1,6 +1,6 @@
-import { Clapperboard, Film, Home, Plus, Sparkles, Tv, X } from 'lucide-react';
+import { Clapperboard, Film, Home, Plus, Sparkles, Tv, X, BookOpen } from 'lucide-react';
 
-export type AppView = 'Home' | 'Movies' | 'Series' | 'Anime';
+export type AppView = 'Home' | 'Movies' | 'Series' | 'Anime' | 'Logbook';
 
 interface SidebarProps {
   activeView: AppView;
@@ -15,6 +15,7 @@ const links: Array<{ label: AppView; icon: typeof Home }> = [
   { label: 'Movies', icon: Film },
   { label: 'Series', icon: Tv },
   { label: 'Anime', icon: Sparkles },
+  { label: 'Logbook', icon: BookOpen },
 ];
 
 export default function Sidebar({ activeView, isOpen, onViewChange, onLogWatch, onClose }: SidebarProps) {

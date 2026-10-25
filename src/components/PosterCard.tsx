@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import type { CSSProperties, PointerEvent } from 'react';
-import { Check, ChevronDown, Film, Heart, Pencil, Star, Trash2 } from 'lucide-react';
+import { Film, Heart, Pencil, Trash2 } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogEntry } from '../types/watchLog';
 import { getPosterUrl } from '../lib/tmdb';
@@ -36,11 +36,9 @@ function GenrePills({ genres }: { genres: string[] }) {
   );
 }
 
-export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, style, watchLogEntry, onOpen, isFavorite = false, onFavoriteToggle, rank }: PosterCardProps) {
+export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, style, onOpen, rank, watchLogEntry, isFavorite = false }: PosterCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [hoverExpanded, setHoverExpanded] = useState(false);
-  const hoverTimer = useRef<number | null>(null);
   const posterUrl = getPosterUrl(movie.poster_path, variant === 'list' ? 'w185' : 'w500');
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
@@ -61,15 +59,6 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
     event.currentTarget.style.setProperty('--ry', '0deg');
   };
 
-  const startHoverTimer = () => {
-    if (hoverTimer.current !== null) window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => setHoverExpanded(true), 300);
-  };
-  const cancelHoverTimer = () => {
-    if (hoverTimer.current !== null) window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = null;
-    setHoverExpanded(false);
-  };
 
   const actions = (onEdit || onDelete) && (
     <div className="absolute top-2 right-2 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-wl">
@@ -147,49 +136,29 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
         style={style}
         onPointerMove={handlePointerMove}
         onPointerLeave={resetCardPointer}
-        className={`poster-card group cursor-pointer ${hoverExpanded ? 'is-expanded' : ''}`}
+        className="poster-card group cursor-pointer"
         onClick={() => onOpen?.(movie)}
-        onMouseEnter={startHoverTimer}
-        onMouseLeave={cancelHoverTimer}
-        onFocusCapture={() => setHoverExpanded(true)}
-        onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHoverExpanded(false); }}
         onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen?.(movie); } }}
         tabIndex={onOpen ? 0 : undefined}
         aria-label={onOpen ? `Log watch for ${movie.title}` : undefined}
       >
         {rank !== undefined && <span className="poster-rank" aria-hidden="true">{rank}</span>}
-        <div className="poster-frame relative z-[2] aspect-[2/3] overflow-hidden rounded-wl-md bg-surface">
+        <div className="poster-frame relative aspect-[2/3] overflow-hidden rounded-lg bg-surface shadow-md transition-all duration-300 group-hover:scale-[1.05] group-hover:shadow-2xl group-hover:shadow-black">
           {!imageLoaded && posterUrl && <div className="poster-skeleton absolute inset-0" />}
           {poster}
-          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background/95 via-background/5 to-transparent opacity-50 transition-opacity duration-300 group-hover:opacity-100" />
-          {watchLogEntry?.rating ? <span className="rating-badge absolute right-2.5 top-2.5 z-[3]"><Star className="h-3 w-3 fill-amber-400 text-amber-400" /> {watchLogEntry.rating.toFixed(1)}</span> : null}
-          {actions}
-        </div>
-        <div className="poster-card-caption">
-          <h3>{movie.title}</h3>
-          <span>{movie.release_year ?? 'Year unknown'} <i>&bull;</i> {movie.type === 'Movie' ? 'Movie' : 'Series'}</span>
-        </div>
-        <div className="netflix-mini-modal" aria-hidden={!hoverExpanded}>
-          <div className="netflix-mini-actions" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="mini-action watched-action" aria-label="Watched"><Check /></button>
-            <button type="button" className={`mini-action ${isFavorite ? 'favorite-action active' : ''}`} aria-label={isFavorite ? `Remove ${movie.title} from favorites` : `Add ${movie.title} to favorites`} aria-pressed={isFavorite} onClick={() => onFavoriteToggle?.(movie.id)}><Heart /></button>
-            {onEdit && <button type="button" className="mini-action" aria-label={`Edit ${movie.title}`} onClick={() => onEdit(movie)}><Pencil /></button>}
-            <button type="button" className="mini-action more-action" aria-label={`View details for ${movie.title}`} onClick={() => onOpen?.(movie)}><ChevronDown /></button>
+          {isFavorite && <span className="poster-favorite-badge active" aria-label="Favorite"><Heart aria-hidden="true" /></span>}
+          {watchLogEntry?.rewatch && <span className="poster-rewatch-badge">↻ Rewatched</span>}
+          {movie.type === 'TV Series' && Boolean(watchLogEntry?.watchedSeasons.length) && <span className="poster-seasons-badge">✓ {watchLogEntry?.watchedSeasons.length} seasons watched</span>}
+          <div className="poster-hover-info" aria-hidden="true">
+            <h3>{movie.title}</h3>
+            <div><span>{watchLogEntry?.watchedDate || movie.release_year || movie.release_date?.slice(0, 4) || ''}</span><span>Edit Log →</span></div>
           </div>
-          <div className="mini-meta-line">
-            {watchLogEntry?.rating ? <span className="mini-rating"><Star /> {watchLogEntry.rating.toFixed(1)}/5</span> : <span className="mini-unrated">Not rated</span>}
-            {movie.release_year && <span>{movie.release_year}</span>}
-            <span className="mini-type-badge">{movie.type === 'Movie' ? 'MOVIE' : 'SERIES'}</span>
-          </div>
-          {movie.type === 'TV Series' && watchLogEntry && watchLogEntry.totalSeasons > 0 && <p className="mini-season-progress">{watchLogEntry.watchedSeasons.length} of {watchLogEntry.totalSeasons} seasons watched</p>}
-          <p className="netflix-card-genres">{movie.genres.slice(0, 3).join('  •  ')}</p>
-          <h3>{movie.title}</h3>
         </div>
       </article>
       <ConfirmDialog
         isOpen={confirmOpen}
         title="Delete this title?"
-        message={`${movie.title} will be removed from your watchlog.`}
+        message={`${movie.title} will move to Recently Deleted, where you can restore it from the Logbook.`}
         onCancel={() => setConfirmOpen(false)}
         onConfirm={() => {
           setConfirmOpen(false);

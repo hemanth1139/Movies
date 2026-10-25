@@ -1,20 +1,23 @@
-import { Info } from 'lucide-react';
+import { Info, Pencil } from 'lucide-react';
 import type { Movie } from '../types/movie';
 
 interface NetflixBillboardProps {
   movie: Movie;
   rating: number;
+  onEditLog: () => void;
   onDetails: () => void;
 }
 
 const imageBase = 'https://image.tmdb.org/t/p/original';
 
-export default function NetflixBillboard({ movie, rating, onDetails }: NetflixBillboardProps) {
+export default function NetflixBillboard({ movie, rating, onEditLog, onDetails }: NetflixBillboardProps) {
   const backdrop = movie.backdrop_path || movie.poster_path;
+  const backdropUrl = backdrop ? `${imageBase}${backdrop}` : undefined;
   const genres = movie.genres.slice(0, 3);
 
   return (
-    <section className="netflix-billboard" style={backdrop ? { backgroundImage: `url("${imageBase}${backdrop}")` } : undefined} aria-label={`Featured title: ${movie.title}`}>
+    <section className="netflix-billboard" aria-label={`Featured title: ${movie.title}`}>
+      {backdropUrl && <img className="billboard-image" src={backdropUrl} alt="" aria-hidden="true" />}
       <div className="billboard-shade" aria-hidden="true" />
       <div className="billboard-content">
         <p className="billboard-kicker"><span className="billboard-mark" /> From your watchlog</p>
@@ -26,9 +29,8 @@ export default function NetflixBillboard({ movie, rating, onDetails }: NetflixBi
           {genres.map((genre) => <span key={genre}>{genre}</span>)}
         </div>
         <p className="billboard-overview">{movie.overview || 'A story from your collection, ready to revisit.'}</p>
-        <button type="button" onClick={onDetails} className="billboard-details"><Info /> View details</button>
+        <div className="billboard-actions"><button type="button" onClick={onEditLog} className="billboard-details"><Pencil /> Edit Watch Log</button><button type="button" onClick={onDetails} className="billboard-secondary"><Info /> View Details</button></div>
       </div>
-      <div className="billboard-edge-fade" aria-hidden="true" />
     </section>
   );
 }

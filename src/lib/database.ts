@@ -59,9 +59,20 @@ export async function createMovie(
 ): Promise<Movie | null> {
   if (!supabase) return null;
 
+  // Keep optional TMDB display metadata in the client cache; the existing table
+  // only stores the core collection fields and franchise name.
+  const databaseMovie = {
+    title: movie.title,
+    type: movie.type,
+    genres: movie.genres,
+    franchise: movie.franchise,
+    release_year: movie.release_year,
+    tmdb_id: movie.tmdb_id,
+    poster_path: movie.poster_path,
+  };
   const { data, error } = await supabase
     .from('movies')
-    .insert(movie)
+    .insert(databaseMovie)
     .select()
     .single();
 
@@ -97,6 +108,30 @@ export async function deleteMovie(id: string): Promise<boolean> {
 
   if (error) { console.error('deleteMovie:', error); return false; }
   return (data?.length ?? 0) > 0;
+}
+
+export async function restoreMovie(movie: Movie): Promise<Movie | null> {
+  if (!supabase) return null;
+
+  const databaseMovie = {
+    id: movie.id,
+    title: movie.title,
+    type: movie.type,
+    genres: movie.genres,
+    franchise: movie.franchise,
+    release_year: movie.release_year,
+    tmdb_id: movie.tmdb_id,
+    poster_path: movie.poster_path,
+    created_at: movie.created_at,
+  };
+  const { data, error } = await supabase
+    .from('movies')
+    .insert(databaseMovie)
+    .select()
+    .single();
+
+  if (error) { console.error('restoreMovie:', error); return null; }
+  return data as Movie;
 }
 
 export async function bulkCreateMovies(

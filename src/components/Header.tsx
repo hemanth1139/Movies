@@ -10,7 +10,13 @@ interface HeaderProps {
   onViewChange: (view: AppView) => void;
 }
 
-const links: AppView[] = ['Home', 'Movies', 'Series', 'Anime'];
+const links: Array<{ label: string; view: AppView }> = [
+  { label: 'Home', view: 'Home' },
+  { label: 'Movies', view: 'Movies' },
+  { label: 'Series', view: 'Series' },
+  { label: 'Anime', view: 'Anime' },
+  { label: 'Logbook', view: 'Logbook' },
+];
 
 export default function Header({ searchQuery, onSearchChange, onAddClick, activeView, onViewChange }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,11 +24,28 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector(activeView === 'Logbook' ? '.vault-search-input' : '.netflix-search-input') as HTMLInputElement;
+        if (activeView !== 'Logbook') setIsSearchExpanded(true);
+        if (searchInput) searchInput.focus();
+      }
+      if (e.key === 'Escape') {
+        setIsSearchExpanded(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeView]);
 
   return (
     <header className={`netflix-navbar ${isScrolled ? 'scrolled' : ''}`}>
@@ -31,9 +54,9 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
 
         <ul className="netflix-nav-links" aria-label="Main navigation">
           {links.map((item) => (
-            <li key={item}>
-              <button type="button" className={`netflix-nav-link ${activeView === item ? 'active' : ''}`} aria-current={activeView === item ? 'page' : undefined} onClick={() => onViewChange(item)}>
-                {item}
+            <li key={item.view}>
+              <button type="button" className={`netflix-nav-link ${activeView === item.view ? 'active' : ''}`} aria-current={activeView === item.view ? 'page' : undefined} onClick={() => onViewChange(item.view)}>
+                {item.label}
               </button>
             </li>
           ))}

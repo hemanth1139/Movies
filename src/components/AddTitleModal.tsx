@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X, Search, Loader2, Film } from 'lucide-react';
-import type { TMDBSearchResult, Movie, MediaType } from '../types/movie';
+import type { TMDBSearchResult, TMDBMovieDetails, Movie, MediaType } from '../types/movie';
 import { searchTMDBDetailed, getMovieDetails, getReleaseYear, getPosterUrl, tmdbErrorMessage } from '../lib/tmdb';
 import { getMovieByTmdbId, createMovie } from '../lib/database';
 import { GENRES, mapTmdbGenreIds, mapTmdbGenreNames, uniqueGenres } from '../lib/genres';
@@ -11,15 +11,27 @@ interface AddTitleModalProps {
   onTitleAdded: (movie: Movie) => void;
 }
 
+const getUniverseSuggestion = (details: TMDBMovieDetails | null): string => {
+  const collection = details?.belongs_to_collection?.name.toLowerCase() ?? '';
+  const companies = (details?.production_companies ?? []).map((company) => company.name.toLowerCase());
+  if (companies.some((company) => company.includes('marvel studios')) || collection.includes('marvel cinematic universe')) return 'Marvel Cinematic Universe';
+  if (companies.some((company) => company.includes('dc studios') || company.includes('dc films') || company.includes('dc entertainment')) || collection.includes('dc universe')) return 'DC Universe';
+  if (collection.includes('conjuring') || collection.includes('annabelle') || collection.includes('the nun')) return 'The Conjuring Universe';
+  if (companies.some((company) => company.includes('pixar') || company.includes('walt disney') || company.includes('disneytoon'))) return 'Disney & Pixar';
+  return '';
+};
+
 export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitleModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<TMDBSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [tmdbError, setTmdbError] = useState<string | null>(null);
   const [selectedResult, setSelectedResult] = useState<TMDBSearchResult | null>(null);
+  const [selectedDetails, setSelectedDetails] = useState<TMDBMovieDetails | null>(null);
   const [title, setTitle] = useState('');
   const [selectedType, setSelectedType] = useState<MediaType>('Movie');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedUniverse, setSelectedUniverse] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -28,9 +40,11 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     setSearchQuery('');
     setSearchResults([]);
     setSelectedResult(null);
+    setSelectedDetails(null);
     setTitle('');
     setSelectedType('Movie');
     setSelectedGenres([]);
+    setSelectedUniverse('');
     setIsSearching(false);
     setIsAdding(false);
     setTmdbError(null);
@@ -88,13 +102,17 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   const handleSelectResult = async (result: TMDBSearchResult) => {
     const mediaType: MediaType = result.media_type === 'tv' ? 'TV Series' : 'Movie';
     setSelectedResult(result);
+    setSelectedDetails(null);
     setTitle(result.title || result.name || '');
     setSelectedType(mediaType);
     setSelectedGenres(mapTmdbGenreIds(result.genre_ids));
+    setSelectedUniverse('');
     setFormError(null);
 
     const type = result.media_type === 'tv' ? 'tv' : 'movie';
     const details = await getMovieDetails(result.id, type);
+    setSelectedDetails(details);
+    setSelectedUniverse(getUniverseSuggestion(details));
     if (details?.genres?.length) {
       setSelectedGenres(mapTmdbGenreNames(details.genres));
     }
@@ -131,14 +149,19 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
       title: title.trim(),
       type: selectedType,
       genres: selectedGenres,
+      franchise: selectedUniverse || null,
       release_year: getReleaseYear(selectedResult.release_date || selectedResult.first_air_date),
       tmdb_id: selectedResult.id,
       poster_path: selectedResult.poster_path,
+      backdrop_path: selectedResult.backdrop_path ?? selectedDetails?.backdrop_path,
+      overview: selectedResult.overview ?? selectedDetails?.overview,
+      original_language: selectedResult.original_language ?? selectedDetails?.original_language,
+      origin_country: selectedResult.origin_country ?? selectedDetails?.origin_country,
     };
 
     const created = await createMovie(movie);
     if (created) {
-      onTitleAdded(created);
+      onTitleAdded({ ...created, ...movie });
       onClose();
     } else {
       setFormError('Could not save this title. Check your connection and try again.');
@@ -178,18 +201,19 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
           {!selectedResult ? (
             <div>
               <div className="relative mb-4">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary" />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search TMDB for a movie or series..."
-                  className="w-full rounded-wl-sm border border-transparent bg-background py-3 pl-10 pr-10 text-sm text-primary placeholder:text-secondary/60"
-                  autoFocus
-                />
-                {isSearching && (
-                  <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-accent" />
-                )}
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary" />
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Search TMDB by title..."
+                    aria-label="Title to search on TMDB"
+                    className="w-full rounded-wl-sm border border-transparent bg-background py-3 pl-10 pr-10 text-sm text-primary placeholder:text-secondary/60"
+                    autoFocus
+                  />
+                  {isSearching && (
+                    <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-accent" />
+                  )}
               </div>
 
               {tmdbError && (
@@ -259,6 +283,10 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                   )}
                 </div>
                 <div className="min-w-0 flex-1 space-y-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-accent">TMDB match</p>
+                    <p className="mt-1 text-xs text-secondary">{selectedType === 'TV Series' ? 'Series' : 'Movie'}{getReleaseYear(selectedResult.release_date || selectedResult.first_air_date) ? ` • ${getReleaseYear(selectedResult.release_date || selectedResult.first_air_date)}` : ''}</p>
+                  </div>
                   <label className="block">
                     <span className="mb-1.5 block text-sm font-medium text-primary">Name</span>
                     <input
@@ -292,6 +320,20 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                   </div>
                 </div>
               </div>
+
+              <label className="mb-4 block">
+                <span className="mb-1.5 block text-sm font-medium text-primary">Universe / franchise</span>
+                <select value={selectedUniverse} onChange={(event) => setSelectedUniverse(event.target.value)} className="w-full rounded-wl-sm border border-border bg-background px-3 py-2 text-sm text-primary">
+                  <option value="">Standalone / none</option>
+                  <option value="Marvel Cinematic Universe">Marvel Cinematic Universe (MCU)</option>
+                  <option value="The Conjuring Universe">The Conjuring Universe</option>
+                  <option value="DC Universe">DC Universe</option>
+                  <option value="Disney & Pixar">Disney & Pixar</option>
+                </select>
+                <span className="mt-1 block text-xs text-secondary">TMDB studio and collection details suggest a universe when available; you can change it here.</span>
+              </label>
+
+              {(selectedDetails?.overview || selectedResult.overview) && <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-secondary">{selectedDetails?.overview || selectedResult.overview}</p>}
 
               <div>
                 <span className="mb-2 block text-sm font-medium text-primary">Genres</span>

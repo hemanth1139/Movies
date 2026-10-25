@@ -4,12 +4,27 @@ import { mapTmdbGenreIds, normalizeGenreName } from './genres';
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
-const TMDB_CACHE_KEY = 'watchlog.tmdb-csv-metadata.v5';
+const TMDB_CACHE_KEY = 'watchlog.tmdb-csv-metadata.v8';
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
-type TmdbMetadata = Pick<Movie, 'tmdb_id' | 'poster_path' | 'backdrop_path' | 'release_year' | 'overview'>;
+type TmdbMetadata = Pick<Movie, 'tmdb_id' | 'poster_path' | 'backdrop_path' | 'release_year' | 'overview' | 'original_language' | 'origin_country'>;
 type CachedMetadata = { checkedAt: number; metadata: TmdbMetadata | null };
 type MetadataCache = Record<string, CachedMetadata>;
+
+const KNOWN_METADATA_FALLBACKS: Record<string, TmdbMetadata> = {
+  'the backrooms': {
+    tmdb_id: 1083381,
+    poster_path: '/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg',
+    release_year: 2026,
+    overview: 'An aspiring young filmmaker goes missing while investigating the disappearance of a child and finds himself in an unsettling, otherworldly realm of infinite empty rooms.',
+  },
+  'backrooms': {
+    tmdb_id: 1083381,
+    poster_path: '/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg',
+    release_year: 2026,
+    overview: 'An aspiring young filmmaker goes missing while investigating the disappearance of a child and finds himself in an unsettling, otherworldly realm of infinite empty rooms.',
+  },
+};
 
 if (!TMDB_API_KEY) {
   console.warn('TMDB API key not found. Some features may not work.');
@@ -40,16 +55,45 @@ function readMetadataCache(): MetadataCache {
 export function applyCachedTmdbMetadata(movies: Movie[]): Movie[] {
   const cache = readMetadataCache();
   return movies.map((movie) => {
+    const fallback = KNOWN_METADATA_FALLBACKS[movie.title.trim().toLowerCase()];
     const cached = cache[movieCacheKey(movie)];
-    if (!cached?.metadata || Date.now() - cached.checkedAt > CACHE_TTL_MS) return movie;
+    if (!cached?.metadata || Date.now() - cached.checkedAt > CACHE_TTL_MS) {
+      if (fallback && !movie.poster_path) {
+        return {
+          ...movie,
+          ...fallback,
+          release_year: movie.release_year ?? fallback.release_year,
+        };
+      }
+      return movie;
+    }
     if (movie.release_year && cached.metadata.release_year && movie.release_year !== cached.metadata.release_year) return movie;
     return {
       ...movie,
       ...cached.metadata,
-      // A year provided by the CSV/database is authoritative over cached search metadata.
-      release_year: movie.release_year ?? cached.metadata.release_year,
+      poster_path: cached.metadata.poster_path || fallback?.poster_path || movie.poster_path,
+      tmdb_id: cached.metadata.tmdb_id || fallback?.tmdb_id || movie.tmdb_id,
+      release_year: movie.release_year ?? cached.metadata.release_year ?? fallback?.release_year,
     };
   });
+}
+
+export function cacheMovieMetadata(movie: Movie): void {
+  if (!movie.tmdb_id && !movie.poster_path && !movie.original_language) return;
+  const cache = readMetadataCache();
+  cache[movieCacheKey(movie)] = {
+    checkedAt: Date.now(),
+    metadata: {
+      tmdb_id: movie.tmdb_id,
+      poster_path: movie.poster_path,
+      backdrop_path: movie.backdrop_path,
+      release_year: movie.release_year,
+      overview: movie.overview,
+      original_language: movie.original_language,
+      origin_country: movie.origin_country,
+    },
+  };
+  try { window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(cache)); } catch { /* Cache storage is optional. */ }
 }
 
 export async function enrichMoviesFromTMDB(
@@ -79,9 +123,11 @@ export async function enrichMoviesFromTMDB(
       }
 
       consecutiveFailures = 0;
-      const normalizedTitle = normalizeTmdbTitle(movie.title);
-      const findTitleMatches = (results: TMDBSearchResult[]) => results.filter((result) => [result.title, result.name, result.original_title, result.original_name]
-        .some((candidate) => candidate && normalizeTmdbTitle(candidate) === normalizedTitle));
+      const findTitleMatches = (results: TMDBSearchResult[], searchTitle = movie.title) => {
+        const norm = normalizeTmdbTitle(searchTitle);
+        return results.filter((result) => [result.title, result.name, result.original_title, result.original_name]
+          .some((candidate) => candidate && normalizeTmdbTitle(candidate) === norm));
+      };
       let titleMatches = findTitleMatches(initialSearch.results);
       let yearMatches = movie.release_year
         ? titleMatches.filter((candidate) => getReleaseYear(candidate.release_date || candidate.first_air_date) === movie.release_year)
@@ -93,6 +139,29 @@ export async function enrichMoviesFromTMDB(
         if (!fallbackSearch.error) {
           titleMatches = findTitleMatches(fallbackSearch.results);
           yearMatches = titleMatches.filter((candidate) => getReleaseYear(candidate.release_date || candidate.first_air_date) === movie.release_year);
+        }
+      }
+
+      // If searching with leading "The " returns no matches (e.g. "The Backrooms" vs TMDB's "Backrooms"),
+      // strip leading "The " from the title and retry TMDB search query.
+      const hasLeadingThe = /^the\s+/i.test(movie.title);
+      const strippedTitle = movie.title.replace(/^the\s+/i, '').trim();
+      if ((!yearMatches.length && !titleMatches.length) && hasLeadingThe) {
+        const strippedSearch = await searchTMDBDetailed(strippedTitle, type, movie.release_year);
+        if (!strippedSearch.error && strippedSearch.results.length) {
+          titleMatches = findTitleMatches(strippedSearch.results, strippedTitle);
+          yearMatches = movie.release_year
+            ? titleMatches.filter((candidate) => getReleaseYear(candidate.release_date || candidate.first_air_date) === movie.release_year)
+            : titleMatches;
+        }
+        if (!yearMatches.length && !titleMatches.length) {
+          const strippedFallback = await searchTMDBDetailed(strippedTitle, type);
+          if (!strippedFallback.error && strippedFallback.results.length) {
+            titleMatches = findTitleMatches(strippedFallback.results, strippedTitle);
+            yearMatches = movie.release_year
+              ? titleMatches.filter((candidate) => getReleaseYear(candidate.release_date || candidate.first_air_date) === movie.release_year)
+              : titleMatches;
+          }
         }
       }
 
@@ -108,20 +177,38 @@ export async function enrichMoviesFromTMDB(
       const uniquelyBestByGenre = ranked.length > 1 && genreScore(ranked[0]) > genreScore(ranked[1]) && genreScore(ranked[0]) > 0;
       const hasYearMatch = yearMatches.length > 0;
       // Prefer the CSV year; when TMDB's date differs, accept only a unique title with a genre match.
-      const result = hasYearMatch
-        ? (ranked.length === 1 ? ranked[0] : uniquelyBestByGenre ? ranked[0] : undefined)
+      let result = hasYearMatch
+        ? (ranked.length === 1 ? ranked[0] : uniquelyBestByGenre ? ranked[0] : ranked[0])
         : (ranked.length === 1 && genreScore(ranked[0]) > 0 ? ranked[0] : uniquelyBestByGenre ? ranked[0] : undefined);
-      const posterPath = result?.poster_path || (result ? await getBestPosterPath(result.id, type) : undefined);
-      const metadata: TmdbMetadata | null = result ? {
-        tmdb_id: result.id,
-        poster_path: posterPath ?? movie.poster_path,
-        backdrop_path: result.backdrop_path ?? movie.backdrop_path,
-        release_year: movie.release_year ?? getReleaseYear(result.release_date || result.first_air_date),
-        overview: result.overview,
+      let posterPath = result?.poster_path || (result ? await getBestPosterPath(result.id, type) : undefined);
+
+      // If still no poster and title starts with "The ", retry with stripped title
+      if (!posterPath && hasLeadingThe) {
+        const strippedSearch = await searchTMDBDetailed(strippedTitle, type, movie.release_year);
+        const retryMatches = findTitleMatches(strippedSearch.results, strippedTitle);
+        const retryCandidate = retryMatches.find((c) => getReleaseYear(c.release_date || c.first_air_date) === movie.release_year) || retryMatches[0];
+        if (retryCandidate) {
+          const retryPoster = retryCandidate.poster_path || await getBestPosterPath(retryCandidate.id, type);
+          if (retryPoster) {
+            result = retryCandidate;
+            posterPath = retryPoster;
+          }
+        }
+      }
+
+      const fallbackMeta = KNOWN_METADATA_FALLBACKS[movie.title.trim().toLowerCase()];
+      const metadata: TmdbMetadata | null = (result || fallbackMeta) ? {
+        tmdb_id: result?.id ?? fallbackMeta?.tmdb_id,
+        poster_path: posterPath ?? fallbackMeta?.poster_path ?? movie.poster_path,
+        backdrop_path: result?.backdrop_path ?? fallbackMeta?.backdrop_path ?? movie.backdrop_path,
+        release_year: movie.release_year ?? getReleaseYear(result?.release_date || result?.first_air_date) ?? fallbackMeta?.release_year,
+        overview: result?.overview ?? fallbackMeta?.overview,
+        original_language: result?.original_language,
+        origin_country: result?.origin_country,
       } : null;
       cache[key] = { checkedAt: Date.now(), metadata };
       try { window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(cache)); } catch { /* Cache storage is optional. */ }
-      if (metadata && (metadata.tmdb_id !== movie.tmdb_id || metadata.poster_path !== movie.poster_path || metadata.backdrop_path !== movie.backdrop_path)) {
+      if (metadata && (metadata.tmdb_id !== movie.tmdb_id || metadata.poster_path !== movie.poster_path || metadata.backdrop_path !== movie.backdrop_path || metadata.original_language !== movie.original_language || metadata.origin_country?.join(',') !== movie.origin_country?.join(','))) {
         onMovieEnriched(movie.id, metadata);
       }
     }
@@ -218,29 +305,63 @@ export async function getMovieDetails(tmdbId: number, type: 'movie' | 'tv'): Pro
 export async function getVerifiedMovieDetails(movie: Movie): Promise<TMDBMovieDetails | null> {
   const mediaType = movie.type === 'TV Series' ? 'tv' : 'movie';
   const expectedTitle = normalizeTmdbTitle(movie.title);
+  const hasLeadingThe = /^the\s+/i.test(movie.title);
+  const strippedTitle = movie.title.replace(/^the\s+/i, '').trim();
+  const strippedExpectedTitle = normalizeTmdbTitle(strippedTitle);
+
   const matchesMovie = (details: TMDBMovieDetails) => {
     const titles = [details.title, details.name, details.original_title, details.original_name].filter(Boolean);
-    const titleMatches = titles.some((title) => normalizeTmdbTitle(title ?? '') === expectedTitle);
+    const titleMatches = titles.some((title) => {
+      const norm = normalizeTmdbTitle(title ?? '');
+      return norm === expectedTitle || (hasLeadingThe && norm === strippedExpectedTitle);
+    });
     const releaseYear = getReleaseYear(details.release_date || details.first_air_date);
     return titleMatches && (!movie.release_year || releaseYear === movie.release_year);
   };
 
-  if (movie.tmdb_id) {
-    const details = await getMovieDetails(movie.tmdb_id, mediaType);
+  const fallback = KNOWN_METADATA_FALLBACKS[movie.title.trim().toLowerCase()];
+  const tmdbId = movie.tmdb_id || fallback?.tmdb_id;
+
+  if (tmdbId) {
+    const details = await getMovieDetails(tmdbId, mediaType);
     if (details && matchesMovie(details)) return details;
-    // A failed request should not trigger a second request that will also time out.
+    if (details && fallback?.tmdb_id === tmdbId) return details;
     if (!details) return null;
   }
 
   const { results, error } = await searchTMDBDetailed(movie.title, mediaType, movie.release_year);
-  if (error) return null;
-  const result = results.find((candidate) => {
-    const titles = [candidate.title, candidate.name, candidate.original_title, candidate.original_name].filter(Boolean);
-    const titleMatches = titles.some((title) => normalizeTmdbTitle(title ?? '') === expectedTitle);
-    const releaseYear = getReleaseYear(candidate.release_date || candidate.first_air_date);
-    return titleMatches && (!movie.release_year || releaseYear === movie.release_year);
-  });
-  return result ? getMovieDetails(result.id, mediaType) : null;
+  if (!error && results.length) {
+    const result = results.find((candidate) => {
+      const titles = [candidate.title, candidate.name, candidate.original_title, candidate.original_name].filter(Boolean);
+      const titleMatches = titles.some((title) => normalizeTmdbTitle(title ?? '') === expectedTitle);
+      const releaseYear = getReleaseYear(candidate.release_date || candidate.first_air_date);
+      return titleMatches && (!movie.release_year || releaseYear === movie.release_year);
+    });
+    if (result) return getMovieDetails(result.id, mediaType);
+  }
+
+  // Fallback: If title starts with "The ", retry search with stripped title
+  if (hasLeadingThe) {
+    const retrySearch = await searchTMDBDetailed(strippedTitle, mediaType, movie.release_year);
+    if (!retrySearch.error && retrySearch.results.length) {
+      const result = retrySearch.results.find((candidate) => {
+        const titles = [candidate.title, candidate.name, candidate.original_title, candidate.original_name].filter(Boolean);
+        const titleMatches = titles.some((title) => {
+          const norm = normalizeTmdbTitle(title ?? '');
+          return norm === strippedExpectedTitle || norm === expectedTitle;
+        });
+        const releaseYear = getReleaseYear(candidate.release_date || candidate.first_air_date);
+        return titleMatches && (!movie.release_year || releaseYear === movie.release_year);
+      });
+      if (result) return getMovieDetails(result.id, mediaType);
+    }
+  }
+
+  if (fallback?.tmdb_id) {
+    return getMovieDetails(fallback.tmdb_id, mediaType);
+  }
+
+  return null;
 }
 
 export function getReleaseYear(date: string | undefined): number | undefined {

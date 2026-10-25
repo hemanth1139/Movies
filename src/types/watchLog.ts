@@ -6,6 +6,8 @@ export interface WatchLogEntry {
   watchedEpisodes: number[];
   totalSeasons: number;
   watchedSeasons: number[];
+  universe?: string;
+  universeOrder?: number;
 }
 
 export type WatchLogMap = Record<string, WatchLogEntry>;
@@ -18,4 +20,6 @@ export const emptyWatchLogEntry = (): WatchLogEntry => ({
   watchedEpisodes: [],
   totalSeasons: 0,
   watchedSeasons: [],
+  universe: '',
+  universeOrder: undefined,
 });
