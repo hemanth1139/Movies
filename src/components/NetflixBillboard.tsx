@@ -13,11 +13,14 @@ const imageBase = 'https://image.tmdb.org/t/p/original';
 export default function NetflixBillboard({ movie, rating, onEditLog, onDetails }: NetflixBillboardProps) {
   const backdrop = movie.backdrop_path || movie.poster_path;
   const backdropUrl = backdrop ? `${imageBase}${backdrop}` : undefined;
+  const mobileArtwork = movie.poster_path || backdrop;
+  const mobileArtworkUrl = mobileArtwork ? `${imageBase}${mobileArtwork}` : undefined;
   const genres = movie.genres.slice(0, 3);
 
   return (
     <section className="netflix-billboard" aria-label={`Featured title: ${movie.title}`}>
-      {backdropUrl && <img className="billboard-image" src={backdropUrl} alt="" aria-hidden="true" />}
+      {backdropUrl && <img className="billboard-image billboard-desktop-image" src={backdropUrl} alt="" aria-hidden="true" />}
+      {mobileArtworkUrl && <img className="billboard-image billboard-mobile-image" src={mobileArtworkUrl} alt="" aria-hidden="true" />}
       <div className="billboard-shade" aria-hidden="true" />
       <div className="billboard-content">
         <p className="billboard-kicker"><span className="billboard-mark" /> From your watchlog</p>

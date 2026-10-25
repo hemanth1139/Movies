@@ -1092,14 +1092,15 @@ body,.watch-app { background: #0b0b0e; }
 .watch-app::before { position: fixed; z-index: 0; top: 0; right: auto; left: 50%; width: min(900px,100vw); height: 220px; transform: translateX(-50%); background: radial-gradient(ellipse at center top,rgba(229,9,20,.12),transparent 68%); background-size: auto; filter: blur(90px); opacity: 1; animation: none; }
 .netflix-logo { background: linear-gradient(180deg,#ff1f2c,#b80710); background-clip: text; color: transparent; font-size: 34px; letter-spacing: .12em; filter: drop-shadow(0 2px 10px rgba(229,9,20,.4)); -webkit-background-clip: text; }
 .watchlog-logo { display: flex; flex: 0 0 auto; align-items: center; margin: 0; line-height: 0; }
-.watchlog-logo img { display: block; width: 190px; height: 58px; object-fit: contain; }
+.watchlog-logo img { display: block; width: 210px; height: 64px; object-fit: contain; }
 .sidebar-brand { display: flex; align-items: center; }
-.sidebar-logo-image { display: block; width: 190px; height: 58px; object-fit: contain; }
-@media (max-width: 680px) { .watchlog-logo img { width: 145px; height: 46px; } .sidebar-logo-image { width: 145px; height: 46px; } }
+.sidebar-logo-image { display: block; width: 210px; height: 64px; object-fit: contain; }
+@media (max-width: 680px) { .watchlog-logo img { width: 165px; height: 54px; } .sidebar-logo-image { width: 165px; height: 54px; } }
 .netflix-navbar { background: linear-gradient(180deg,rgba(0,0,0,.8),rgba(0,0,0,.4) 58%,transparent); transition: background 300ms ease,border-color 300ms ease,backdrop-filter 300ms ease; }
 .netflix-navbar.scrolled { border-bottom: 1px solid rgba(255,255,255,.05); background: rgba(11,11,14,.95); box-shadow: 0 12px 28px rgba(0,0,0,.3); backdrop-filter: blur(12px); }
 .netflix-billboard { min-height: 82vh; background-color: #0b0b0e; background-position: center top; }
 .billboard-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: .75; transform: scale(1.02); }
+.billboard-mobile-image { display: none; }
 .billboard-shade { background: linear-gradient(90deg,#0b0b0e 0%,rgba(11,11,14,.75) 42%,transparent 80%),linear-gradient(0deg,#0b0b0e 0%,rgba(11,11,14,.2) 48%,rgba(0,0,0,.3) 100%); }
 .billboard-rating { color: #fbbf24 !important; }
 .billboard-actions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -1374,30 +1375,38 @@ body,.watch-app { background: #0b0b0e; }
 .netflix-add-button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
 .netflix-add-button > svg { display: none; width: 17px; height: 17px; }
 .mobile-nav-icon { display: none; }
+.mobile-menu-button,.mobile-nav-scrim { display: none; }
 @media (max-width: 680px) {
   .watch-app { min-height: 100dvh; }
-  .app-main { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
+  .app-main { padding-bottom: 0; }
   .netflix-navbar { position: fixed; inset: 0 0 auto; display: flex; min-height: 70px; height: 70px; flex-wrap: nowrap; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,.07); background: rgba(10,10,12,.94); backdrop-filter: blur(18px); }
-  .netflix-navbar > div:first-child { min-width: 0; flex: 0 1 auto; gap: 0 !important; }
+  .netflix-navbar > div:first-child { min-width: 0; flex: 0 1 auto; gap: 8px !important; }
   .netflix-navbar > div:nth-child(2) { position: static; width: auto; flex: 0 0 auto; gap: 6px !important; margin: 0; }
-  .watchlog-logo img { width: 145px; height: 46px; }
-  .netflix-nav-links { position: fixed; z-index: 60; right: 0; bottom: 0; left: 0; display: flex; width: 100%; min-height: 60px; justify-content: space-around; gap: 0; overflow: visible; padding: 5px 5px calc(5px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.09); background: rgba(12,12,15,.97); backdrop-filter: blur(18px); }
-  .netflix-nav-links li { min-width: 0; flex: 1 1 20%; }
-  button.netflix-nav-link { position: relative; display: flex; width: 100%; min-height: 48px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 4px 2px; border-radius: 9px; color: #9999a2; font-size: 9px; line-height: 1.1; }
-  button.netflix-nav-link.active { color: #fff; }
-  button.netflix-nav-link.active::after { position: absolute; bottom: 3px; left: 50%; width: 14px; height: 2px; transform: translateX(-50%); border-radius: 2px; background: #E50914; content: ''; }
-  .mobile-nav-icon { display: block; width: 18px; height: 18px; stroke-width: 1.9; }
+  .mobile-menu-button { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 9px; background: rgba(255,255,255,.05); color: #fff; cursor: pointer; }
+  .mobile-menu-button svg { width: 19px; height: 19px; }
+  .watchlog-logo img { width: 165px; height: 54px; }
+  .mobile-nav-scrim { position: fixed; z-index: 55; inset: 70px 0 0; display: block; width: 100%; border: 0; background: rgba(0,0,0,.56); backdrop-filter: blur(2px); }
+  .netflix-nav-links { position: fixed; z-index: 60; top: 78px; right: auto; bottom: auto; left: 10px; display: none; width: min(310px,calc(100vw - 20px)); max-height: calc(100dvh - 92px); flex-direction: column; align-items: stretch; gap: 5px; overflow-y: auto; padding: 9px; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; background: rgba(18,18,22,.98); box-shadow: 0 20px 55px rgba(0,0,0,.55); }
+  .netflix-nav-links.mobile-menu-open { display: flex; }
+  .netflix-nav-links li { min-width: 0; flex: 0 0 auto; }
+  button.netflix-nav-link { position: relative; display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: flex-start; gap: 12px; padding: 0 13px; border-radius: 9px; color: #b2b2ba; font-size: 14px; line-height: 1.1; text-align: left; }
+  button.netflix-nav-link.active { background: rgba(229,9,20,.14); color: #fff; }
+  button.netflix-nav-link.active::after { position: absolute; top: 50%; bottom: auto; left: 0; width: 3px; height: 22px; transform: translateY(-50%); border-radius: 3px; background: #E50914; content: ''; }
+  .mobile-nav-icon { display: block; width: 19px; height: 19px; stroke-width: 1.9; }
   .netflix-search-container { min-height: 38px; width: 38px; justify-content: center; padding: 0; border: 1px solid transparent; border-radius: 9px; background: transparent; }
   .netflix-search-toggle { width: 38px; height: 38px; }
   .netflix-search-container.search-expanded { position: fixed; z-index: 70; top: 76px; right: 12px; left: 12px; width: auto; justify-content: flex-start; padding: 4px 8px; border-color: rgba(255,255,255,.13); background: #17171c; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
   .netflix-search-container.search-expanded .netflix-search-input { display: block; width: 100%; min-width: 0; height: 38px; margin-left: 4px; font-size: 16px; }
   .netflix-search-container:not(.search-expanded) .netflix-search-input { display: none; }
   .netflix-search-toggle:focus-visible,.netflix-nav-link:focus-visible,.netflix-add-button:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 2px; }
-  .netflix-add-button { min-width: 42px; min-height: 38px; gap: 0; padding: 0 10px; border-radius: 9px; font-size: 11px; }
+  .netflix-add-button { min-width: 84px; min-height: 40px; gap: 5px; padding: 0 10px; border-radius: 9px; font-size: 11px; white-space: nowrap; }
   .netflix-add-button > svg { display: block; }
-  .netflix-add-button > span { display: none; }
+  .netflix-add-button > span { display: inline; }
   .netflix-avatar { display: none; }
   .netflix-billboard { min-height: clamp(500px,78svh,690px); align-items: flex-end; padding: 112px 18px 94px; background-position: 58% center; }
+  .billboard-desktop-image { display: none; }
+  .billboard-mobile-image { top: 78px; right: 8px; bottom: auto; left: auto; display: block; width: min(58%,300px); height: min(72%,480px); object-fit: contain; object-position: center; opacity: .62; transform: none; }
+  .billboard-shade { background: linear-gradient(0deg,#0b0b0e 0%,rgba(11,11,14,.88) 26%,rgba(11,11,14,.14) 72%,rgba(0,0,0,.22) 100%),linear-gradient(90deg,rgba(11,11,14,.32),transparent 74%); }
   .billboard-content { width: min(100%,560px); padding: 12px 0; }
   .billboard-kicker { margin-bottom: 11px; font-size: 9px; }
   .billboard-content h2 { max-width: 100%; font-size: clamp(35px,11vw,54px); line-height: 1.02; }
@@ -1416,7 +1425,7 @@ body,.watch-app { background: #0b0b0e; }
   .category-heading h2 { font-size: 17px; }
   .category-heading span { font-size: 10px; }
   .poster-rail { gap: 10px; }
-  .poster-rail-item { flex-basis: clamp(112px,38vw,154px); width: clamp(112px,38vw,154px); }
+  .poster-rail-item { flex-basis: calc((100vw - 44px)/2); width: calc((100vw - 44px)/2); }
   .genre-toolbar { padding: 10px; }
   .genre-toolbar-heading { gap: 8px; }
   .genre-toolbar-heading > div { gap: 4px; }
@@ -1448,9 +1457,11 @@ body,.watch-app { background: #0b0b0e; }
   .watch-modal { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); overflow-y: auto; }
 }
 @media (max-width: 360px) {
-  .watchlog-logo img { width: 120px; height: 40px; }
+  .watchlog-logo img { width: 122px; height: 42px; }
   .netflix-navbar { padding-right: 8px; padding-left: 8px; }
-  .netflix-add-button { min-width: 38px; padding: 0 7px; }
+  .netflix-navbar > div:first-child { gap: 5px !important; }
+  .mobile-menu-button,.netflix-search-toggle { width: 34px; height: 36px; }
+  .netflix-add-button { min-width: 78px; padding: 0 8px; font-size: 10px; }
   .netflix-billboard { padding-right: 14px; padding-left: 14px; }
   .billboard-actions { gap: 6px; }
   .billboard-details,.billboard-secondary { padding: 0 9px; font-size: 10px; }

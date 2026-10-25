@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, Film, Home, Plus, Search, Sparkles, Tv } from 'lucide-react';
+import { BookOpen, Film, Home, Menu, Plus, Search, Sparkles, Tv, X } from 'lucide-react';
 import type { AppView } from './Sidebar';
 
 interface HeaderProps {
@@ -21,6 +21,7 @@ const links: Array<{ label: string; view: AppView; icon: typeof Home }> = [
 export default function Header({ searchQuery, onSearchChange, onAddClick, activeView, onViewChange }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +42,7 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
       }
       if (e.key === 'Escape') {
         setIsSearchExpanded(false);
+        setIsMenuOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -49,14 +51,18 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
 
   return (
     <header className={`netflix-navbar ${isScrolled ? 'scrolled' : ''}`}>
+      {isMenuOpen && <button type="button" className="mobile-nav-scrim" aria-label="Close navigation menu" onClick={() => setIsMenuOpen(false)} />}
       <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+        <button type="button" className="mobile-menu-button" aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMenuOpen} aria-controls="primary-navigation" onClick={() => setIsMenuOpen((open) => !open)}>
+          {isMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+        </button>
         <h1 className="watchlog-logo"><img src="/watchlog-logo.png?v=2" alt="Watchlog" /></h1>
 
-        <ul className="netflix-nav-links" aria-label="Main navigation">
+        <ul id="primary-navigation" className={`netflix-nav-links${isMenuOpen ? ' mobile-menu-open' : ''}`} aria-label="Main navigation">
           {links.map((item) => {
             const Icon = item.icon;
             return <li key={item.view}>
-              <button type="button" className={`netflix-nav-link ${activeView === item.view ? 'active' : ''}`} aria-current={activeView === item.view ? 'page' : undefined} onClick={() => onViewChange(item.view)}>
+              <button type="button" className={`netflix-nav-link ${activeView === item.view ? 'active' : ''}`} aria-current={activeView === item.view ? 'page' : undefined} onClick={() => { onViewChange(item.view); setIsMenuOpen(false); }}>
                 <Icon className="mobile-nav-icon" aria-hidden="true" />
                 <span>{item.label}</span>
               </button>
@@ -86,7 +92,7 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
         </div>
 
         <button type="button" onClick={onAddClick} className="netflix-add-button">
-          <Plus aria-hidden="true" /><span>Log Watched</span>
+          <Plus aria-hidden="true" /><span>Add Title</span>
         </button>
 
         <div className="netflix-avatar">

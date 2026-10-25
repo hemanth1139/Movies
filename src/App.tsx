@@ -16,6 +16,7 @@ import { deleteMovie, getMovies, restoreMovie, updateMovie } from './lib/databas
 import { supabase } from './lib/supabase';
 import { emptyWatchLogEntry, type WatchLogEntry, type WatchLogMap } from './types/watchLog';
 import { applyCachedTmdbMetadata, cacheMovieMetadata, enrichMoviesFromTMDB, getMovieDetails } from './lib/tmdb';
+import { applyBundledPosters } from './lib/bundledPosters';
 import { normalizeGenreName } from './lib/genres';
 
 type SortMode = 'az' | 'recent' | 'year' | 'rating' | 'timeline';
@@ -119,7 +120,7 @@ export default function App() {
   const loadMovies = async () => {
     setLoading(true);
     const data = await getMovies();
-    const withCachedMetadata = applyCachedTmdbMetadata(data);
+    const withCachedMetadata = applyBundledPosters(applyCachedTmdbMetadata(data));
     setMovies(withCachedMetadata);
     const today = new Date().toISOString().slice(0, 10);
     setWatchLog((current) => {
@@ -141,7 +142,7 @@ export default function App() {
       return next;
     });
     setLoading(false);
-    void enrichMoviesFromTMDB(withCachedMetadata, (movieId, metadata) => {
+    void enrichMoviesFromTMDB(withCachedMetadata.filter((movie) => !movie.poster_path), (movieId, metadata) => {
       setMovies((current) => current.map((movie) => movie.id === movieId ? { ...movie, ...metadata } : movie));
       if (supabase) {
         const { tmdb_id, poster_path, release_year } = metadata;
