@@ -115,7 +115,7 @@ export default function App() {
         onAddClick={() => setIsAddModalOpen(true)}
       />
 
-      <div className="border-b border-border bg-surface">
+      <div className="border-b border-border/70 bg-surface/55 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Navigation currentFilter={currentFilter} onFilterChange={setCurrentFilter} />
@@ -139,14 +139,17 @@ export default function App() {
       </div>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <section className="collection-hero relative mb-9 overflow-hidden rounded-[28px] border border-border/80 p-6 sm:p-9 lg:p-10">
+        <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent">Your library</p>
-            <h1 className="text-3xl font-semibold tracking-tight text-primary sm:text-4xl">Your collection</h1>
-            <p className="mt-2 text-sm text-secondary">A cozy home for everything you’ve watched.</p>
+            <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Your library
+            </p>
+            <h1 className="hero-title text-4xl font-bold tracking-tight sm:text-5xl">Your collection</h1>
+            <p className="mt-3 max-w-md text-sm leading-6 text-secondary">A home for the stories you love. Pick up where your next movie night begins.</p>
           </div>
           <div className="flex flex-col gap-3 sm:items-end">
-          <p className="text-sm text-secondary" aria-live="polite">
+          <p className="text-sm font-medium text-secondary" aria-live="polite">
             {loading ? 'Loading collection…' : statsLabel}
           </p>
           <div className="flex items-center gap-2">
@@ -201,6 +204,7 @@ export default function App() {
           </div>
           </div>
         </div>
+        </section>
 
         {movies.length === 0 && !loading && (
           <p className="mb-4 text-center text-xs text-secondary">

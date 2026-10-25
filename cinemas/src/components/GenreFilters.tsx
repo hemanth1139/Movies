@@ -21,7 +21,7 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle }: 
             type="button"
             aria-pressed={selected}
             onClick={() => onGenreToggle(genre)}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-wl ${
+            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${
               selected
                 ? 'bg-accent text-accent-text'
                 : 'bg-surface-2 text-secondary hover:text-primary'

@@ -84,11 +84,12 @@ export default function PosterGrid({
   if (view === 'list') {
     return (
       <div className="flex flex-col gap-2">
-        {movies.map((movie) => (
+        {movies.map((movie, index) => (
           <PosterCard
             key={movie.id}
             movie={movie}
             variant="list"
+            style={{ animationDelay: `${Math.min(index * 45, 360)}ms` }}
             onEdit={onMovieEdit}
             onDelete={onMovieDelete}
           />
@@ -99,11 +100,12 @@ export default function PosterGrid({
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-      {movies.map((movie) => (
+      {movies.map((movie, index) => (
         <PosterCard
           key={movie.id}
           movie={movie}
           variant="grid"
+          style={{ animationDelay: `${Math.min(index * 65, 520)}ms` }}
           onEdit={onMovieEdit}
           onDelete={onMovieDelete}
         />

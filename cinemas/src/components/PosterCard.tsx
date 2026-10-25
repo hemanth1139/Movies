@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import { Film, Pencil, Trash2 } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import { getPosterUrl } from '../lib/tmdb';
@@ -9,6 +10,7 @@ interface PosterCardProps {
   variant?: 'grid' | 'list';
   onEdit?: (movie: Movie) => void;
   onDelete?: (movie: Movie) => void;
+  style?: CSSProperties;
 }
 
 function TypeBadge({ type }: { type: Movie['type'] }) {
@@ -36,7 +38,7 @@ function GenrePills({ genres }: { genres: string[] }) {
   );
 }
 
-export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete }: PosterCardProps) {
+export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, style }: PosterCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const posterUrl = getPosterUrl(movie.poster_path, variant === 'list' ? 'w185' : 'w500');
@@ -73,7 +75,7 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete }
       loading="lazy"
       decoding="async"
       onLoad={() => setImageLoaded(true)}
-      className={`h-full w-full object-cover transition-opacity duration-wl ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+      className={`h-full w-full object-cover transition-[opacity,transform] duration-700 group-hover:scale-[1.04] ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
     />
   ) : (
     <div className="flex h-full w-full items-center justify-center bg-surface-2">
@@ -84,7 +86,7 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete }
   if (variant === 'list') {
     return (
       <>
-        <article className="group relative flex items-center gap-3 rounded-wl bg-surface p-2.5 pr-14 transition-colors duration-wl hover:bg-surface-2">
+        <article style={style} className="poster-enter group relative flex items-center gap-3 rounded-wl bg-surface p-2.5 pr-14 transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface-2 hover:shadow-md">
           <div className="relative h-16 w-11 shrink-0 overflow-hidden rounded-md bg-surface-2">
             {!imageLoaded && posterUrl && <div className="poster-skeleton absolute inset-0" />}
             {poster}
@@ -114,8 +116,8 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete }
 
   return (
     <>
-      <article className="group">
-        <div className="relative mb-2.5 aspect-[2/3] overflow-hidden rounded-wl bg-surface">
+      <article style={style} className="poster-enter group">
+        <div className="relative mb-2.5 aspect-[2/3] overflow-hidden rounded-wl bg-surface shadow-sm transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-slate-900/15">
           {!imageLoaded && posterUrl && <div className="poster-skeleton absolute inset-0" />}
           {poster}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 transition-opacity duration-wl md:group-hover:opacity-100" />

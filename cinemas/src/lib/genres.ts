@@ -10,6 +10,7 @@ export const GENRES = [
   'Adventure',
   'Comedy',
   'Animation',
+  'Anime',
   'Superhero',
   'Thriller',
   'Action',
