@@ -1,4 +1,4 @@
-import { Movie } from '../types/movie';
+import type { Movie } from '../types/movie';
 import { supabase } from './supabase';
 import { mockMovies } from './database.test';
 

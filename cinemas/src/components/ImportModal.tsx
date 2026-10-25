@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Upload, Loader2, Check, AlertCircle } from 'lucide-react';
-import { Movie, MediaType } from '../types/movie';
-import { searchTMDB, getMovieDetails, getReleaseYear } from '../lib/tmdb';
+import type { Movie, MediaType } from '../types/movie';
+import { searchTMDB, getReleaseYear } from '../lib/tmdb';
 import { getMovieByTmdbId, bulkCreateMovies } from '../lib/database';
 
 interface ImportModalProps {
@@ -25,9 +25,7 @@ interface ImportItem {
 }
 
 export default function ImportModal({ isOpen, onClose, onImportComplete }: ImportModalProps) {
-  const [file, setFile] = useState<File | null>(null);
   const [isParsing, setIsParsing] = useState(false);
-  const [isImporting, setIsImporting] = useState(false);
   const [importItems, setImportItems] = useState<ImportItem[]>([]);
   const [currentStep, setCurrentStep] = useState<'upload' | 'review' | 'importing' | 'complete'>('upload');
   const [importStats, setImportStats] = useState({ total: 0, imported: 0, skipped: 0, failed: 0 });
@@ -39,9 +37,7 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   }, [isOpen]);
 
   const resetForm = () => {
-    setFile(null);
     setIsParsing(false);
-    setIsImporting(false);
     setImportItems([]);
     setCurrentStep('upload');
     setImportStats({ total: 0, imported: 0, skipped: 0, failed: 0 });
@@ -74,7 +70,6 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   };
 
   const handleFileSelect = async (selectedFile: File) => {
-    setFile(selectedFile);
     setIsParsing(true);
 
     try {
@@ -97,7 +92,6 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
 
           if (results.length > 0) {
             const bestMatch = results[0];
-            const details = await getMovieDetails(bestMatch.id, searchType);
 
             // Check for duplicates
             const existing = await getMovieByTmdbId(bestMatch.id);
@@ -147,7 +141,6 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   };
 
   const handleImport = async () => {
-    setIsImporting(true);
     setCurrentStep('importing');
 
     const moviesToImport = importItems
@@ -165,20 +158,19 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
     });
 
     setCurrentStep('complete');
-    setIsImporting(false);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
-      <div className="bg-surface rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-background">
+      <div className="bg-surface rounded-wl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-border">
+        <div className="flex items-center justify-between p-6 border-b border-border">
           <h2 className="text-xl font-semibold text-primary">Import Collection</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-background rounded-lg transition-colors text-secondary hover:text-primary"
+            className="p-2 hover:bg-surface-2 rounded-wl-sm transition-colors text-secondary hover:text-primary"
+            aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>

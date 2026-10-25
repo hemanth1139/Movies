@@ -1,7 +1,7 @@
 // Test file to verify the app works without Supabase initially
 // This can be removed after setting up the real database
 
-import { Movie } from '../types/movie';
+import type { Movie } from '../types/movie';
 
 export const mockMovies: Movie[] = [
   {
@@ -12,8 +12,8 @@ export const mockMovies: Movie[] = [
     release_year: 2008,
     tmdb_id: 1726,
     poster_path: '/2n9Sgtp2SYoAvlKaVN0myZRDzUd.jpg',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 3 * 86400000).toISOString(),
   },
   {
     id: '2',
@@ -36,5 +36,16 @@ export const mockMovies: Movie[] = [
     poster_path: '/44s7u8V9Xg3myFDF0xL5I82eS9.jpg',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    title: 'Dark',
+    type: 'TV Series',
+    genres: ['Mystery', 'Sci-Fi', 'Thriller'],
+    release_year: 2017,
+    tmdb_id: 70523,
+    poster_path: '/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg',
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 86400000).toISOString(),
   },
 ];

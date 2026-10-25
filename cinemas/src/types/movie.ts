@@ -21,7 +21,8 @@ export interface TMDBSearchResult {
   first_air_date?: string;
   poster_path?: string;
   overview?: string;
-  media_type?: 'movie' | 'tv';
+  media_type?: 'movie' | 'tv' | 'person';
+  genre_ids?: number[];
 }
 
 export interface TMDBMovieDetails {

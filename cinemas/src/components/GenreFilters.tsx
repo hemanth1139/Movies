@@ -1,67 +1,36 @@
-import { useState } from 'react';
-
-const GENRES = [
-  'Horror',
-  'Psychological Thriller',
-  'Mystery',
-  'Crime',
-  'Romance',
-  'Drama',
-  'Sci-Fi',
-  'Fantasy',
-  'Adventure',
-  'Comedy',
-  'Animation',
-  'Superhero',
-  'Thriller',
-  'Action',
-  'Spy',
-  'Historical Drama',
-  'K-Drama',
-] as const;
-
-type Genre = typeof GENRES[number];
+import { GENRES, uniqueGenres } from '../lib/genres';
+import type { Movie } from '../types/movie';
 
 interface GenreFiltersProps {
+  movies: Movie[];
   selectedGenres: string[];
   onGenreToggle: (genre: string) => void;
 }
 
-export default function GenreFilters({ selectedGenres, onGenreToggle }: GenreFiltersProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const displayGenres = isExpanded ? GENRES : GENRES.slice(0, 8);
-  const hasMore = GENRES.length > 8;
+export default function GenreFilters({ movies, selectedGenres, onGenreToggle }: GenreFiltersProps) {
+  const collectionGenres = movies.flatMap((movie) => movie.genres);
+  const genres = uniqueGenres([...GENRES, ...collectionGenres, ...selectedGenres]);
 
   return (
-    <div className="border-b border-surface bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-3">
-          <div className="flex flex-wrap gap-2">
-            {displayGenres.map((genre) => (
-              <button
-                key={genre}
-                onClick={() => onGenreToggle(genre)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  selectedGenres.includes(genre)
-                    ? 'bg-accent text-background'
-                    : 'text-secondary hover:text-primary hover:bg-surface'
-                }`}
-              >
-                {genre}
-              </button>
-            ))}
-            {hasMore && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="px-3 py-1.5 rounded-md text-xs font-medium text-accent hover:bg-surface transition-colors"
-              >
-                {isExpanded ? 'Show less' : `+${GENRES.length - 8} more`}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+    <div className="chip-scroll flex min-w-0 flex-1 items-center gap-2 overflow-x-auto" role="group" aria-label="Filter by genre">
+      {genres.map((genre) => {
+        const selected = selectedGenres.includes(genre);
+        return (
+          <button
+            key={genre}
+            type="button"
+            aria-pressed={selected}
+            onClick={() => onGenreToggle(genre)}
+            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-wl ${
+              selected
+                ? 'bg-accent text-accent-text'
+                : 'bg-surface-2 text-secondary hover:text-primary'
+            }`}
+          >
+            {genre}
+          </button>
+        );
+      })}
     </div>
   );
 }
