@@ -42,6 +42,20 @@ const KNOWN_METADATA_FALLBACKS: Record<string, TmdbMetadata> = {
 
 export type TMDBSearchError = 'missing-key' | 'offline' | 'api' | null;
 
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = 20000): Promise<Response> {
+  const controller = new AbortController();
+  const upstreamSignal = init.signal;
+  const abortFromCaller = () => controller.abort();
+  upstreamSignal?.addEventListener('abort', abortFromCaller, { once: true });
+  const timeout = globalThis.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    globalThis.clearTimeout(timeout);
+    upstreamSignal?.removeEventListener('abort', abortFromCaller);
+  }
+}
+
 
 function movieCacheKey(movie: Pick<Movie, 'title' | 'type' | 'release_year' | 'genres'>): string {
   const title = movie.title.normalize('NFKC').trim().toLowerCase().replace(/\s+/g, ' ');
@@ -239,9 +253,7 @@ async function getBestPosterPath(tmdbId: number, type: 'movie' | 'tv'): Promise<
   if (!TMDB_API_KEY) return undefined;
   try {
     const params = new URLSearchParams({ api_key: TMDB_API_KEY });
-    const response = await fetch(`${TMDB_BASE_URL}/${type}/${tmdbId}/images?${params}`, {
-      signal: AbortSignal.timeout(8000),
-    });
+    const response = await fetchWithTimeout(`${TMDB_BASE_URL}/${type}/${tmdbId}/images?${params}`);
     if (!response.ok) return undefined;
     const data = await response.json() as { posters?: Array<{ file_path: string; iso_639_1: string | null; vote_average?: number; vote_count?: number }> };
     const posters = data.posters ?? [];
@@ -268,7 +280,8 @@ export function getPosterUrl(
 export async function searchTMDBDetailed(
   query: string,
   type?: 'movie' | 'tv',
-  year?: number
+  year?: number,
+  signal?: AbortSignal
 ): Promise<{ results: TMDBSearchResult[]; error: TMDBSearchError }> {
   if (!TMDB_API_KEY) return { results: [], error: 'missing-key' };
 
@@ -277,9 +290,9 @@ export async function searchTMDBDetailed(
     const params = new URLSearchParams({ api_key: TMDB_API_KEY, query });
     if (year && mediaType === 'movie') params.set('year', String(year));
     if (year && mediaType === 'tv') params.set('first_air_date_year', String(year));
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `${TMDB_BASE_URL}/search/${mediaType}?${params.toString()}`,
-      { signal: AbortSignal.timeout(8000) }
+      { signal }
     );
 
     if (!response.ok) {
@@ -304,10 +317,7 @@ export async function getMovieDetails(tmdbId: number, type: 'movie' | 'tv'): Pro
   if (!TMDB_API_KEY) return null;
 
   try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/${type}/${tmdbId}?api_key=${TMDB_API_KEY}`,
-      { signal: AbortSignal.timeout(10000) }
-    );
+    const response = await fetchWithTimeout(`${TMDB_BASE_URL}/${type}/${tmdbId}?api_key=${TMDB_API_KEY}`);
 
     if (!response.ok) {
       throw new Error(`TMDB API error: ${response.statusText}`);

@@ -84,9 +84,10 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     }
 
     let cancelled = false;
+    const controller = new AbortController();
     setIsSearching(true);
     const timer = window.setTimeout(async () => {
-      const { results, error } = await searchTMDBDetailed(query);
+      const { results, error } = await searchTMDBDetailed(query, undefined, undefined, controller.signal);
       if (cancelled) return;
       setSearchResults(results.filter((result) => result.media_type !== 'person'));
       setTmdbError(tmdbErrorMessage(error));
@@ -96,6 +97,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
+      controller.abort();
     };
   }, [searchQuery, isOpen, selectedResult]);
 
