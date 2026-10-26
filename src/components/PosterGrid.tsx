@@ -13,8 +13,6 @@ interface PosterGridProps {
   onMovieDelete?: (movie: Movie) => void;
   watchLog?: WatchLogMap;
   onMovieOpen?: (movie: Movie) => void;
-  onFavoriteToggle?: (movieId: string) => void;
-  favoriteIds?: string[];
   rail?: boolean;
   showRanks?: boolean;
 }
@@ -58,8 +56,6 @@ export default function PosterGrid({
   onMovieDelete,
   watchLog = {},
   onMovieOpen,
-  onFavoriteToggle,
-  favoriteIds = [],
   rail = false,
   showRanks = false,
 }: PosterGridProps) {
@@ -124,8 +120,6 @@ export default function PosterGrid({
             onOpen={onMovieOpen}
             onEdit={onMovieEdit}
             onDelete={onMovieDelete}
-            isFavorite={favoriteIds.includes(movie.id)}
-            onFavoriteToggle={onFavoriteToggle}
             rank={showRanks ? index + 1 : undefined}
           />
         </div>

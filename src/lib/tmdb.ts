@@ -34,7 +34,7 @@ const KNOWN_METADATA_FALLBACKS: Record<string, TmdbMetadata> = {
   },
   'perfect blue': {
     tmdb_id: 10494,
-    poster_path: '/7FRO4N5nQ7D1B7m1202eD33j0kM.jpg',
+    poster_path: '/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg',
     release_year: 1997,
     overview: 'A pop idol sheds her "good girl" image to venture into the acting world, but she quickly finds that the darker side of fame and obsession can be devastating to her sanity.',
   },
@@ -304,6 +304,7 @@ export function getPosterUrl(
   path: string | null | undefined,
   size: PosterSize = 'w500'
 ): string | undefined {
+  if (path === '/7FRO4N5nQ7D1B7m1202eD33j0kM.jpg') path = '/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg';
   if (!path) return undefined;
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;

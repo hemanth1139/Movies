@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CSSProperties, PointerEvent } from 'react';
-import { Film, Heart, Pencil, Star, Trash2 } from 'lucide-react';
+import { Film, Pencil, Star, Trash2 } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogEntry } from '../types/watchLog';
 import { getPosterUrl } from '../lib/tmdb';
@@ -14,8 +14,6 @@ interface PosterCardProps {
   style?: CSSProperties;
   watchLogEntry?: WatchLogEntry;
   onOpen?: (movie: Movie) => void;
-  isFavorite?: boolean;
-  onFavoriteToggle?: (movieId: string) => void;
   rank?: number;
 }
 
@@ -45,8 +43,6 @@ export default function PosterCard({
   onOpen,
   rank,
   watchLogEntry,
-  isFavorite = false,
-  onFavoriteToggle,
 }: PosterCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
@@ -166,7 +162,6 @@ export default function PosterCard({
     );
   }
 
-  const seasonsCount = watchLogEntry?.watchedSeasons?.length ?? 0;
 
   return (
     <>
@@ -185,31 +180,11 @@ export default function PosterCard({
           {!imageLoaded && posterUrl && !imageFailed && <div className="poster-skeleton absolute inset-0" />}
           {posterContent}
 
-          {onFavoriteToggle && (
-            <button
-              type="button"
-              className={`poster-favorite-badge ${isFavorite ? 'active' : 'inactive'}`}
-              aria-label={isFavorite ? `Remove ${movie.title} from favorites` : `Add ${movie.title} to favorites`}
-              aria-pressed={isFavorite}
-              onClick={(event) => {
-                event.stopPropagation();
-                onFavoriteToggle(movie.id);
-              }}
-            >
-              <Heart aria-hidden="true" />
-            </button>
-          )}
-
           {actions}
 
-          {(watchLogEntry?.rewatch || (movie.type === 'TV Series' && seasonsCount > 0)) && (
+          {watchLogEntry?.rewatch && (
             <div className="poster-badge-stack">
-              {watchLogEntry?.rewatch && <span className="poster-rewatch-badge">↻ Rewatched</span>}
-              {movie.type === 'TV Series' && seasonsCount > 0 && (
-                <span className="poster-seasons-badge">
-                  ✓ {seasonsCount} {seasonsCount === 1 ? 'season' : 'seasons'} watched
-                </span>
-              )}
+              <span className="poster-rewatch-badge">↻ Rewatched</span>
             </div>
           )}
 

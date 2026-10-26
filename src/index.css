@@ -1015,7 +1015,7 @@ body { margin: 0; background: #141414; color: #F5F5F5; }
 .quick-stats strong { color: #fff; font-size: 21px; line-height: 1; }
 .quick-stats span { color: #9299A4; font-size: 10px; }
 .category-page-content { padding-top: 0; }
-.logbook-page-content { position: relative; z-index: 0; padding-top: 90px; }
+.logbook-page-content { position: relative; z-index: 0; padding-top: 86px; }
 
 /* Low motion ambient lighting over the Netflix charcoal canvas */
 .watch-app { position: relative; isolation: isolate; background: #141414; }
@@ -1044,6 +1044,7 @@ button.netflix-nav-link { font-size: 13px; }
   .netflix-search-container { min-height: 38px; }
   .netflix-add-button { min-height: 38px; padding: 0 12px; font-size: 12px; }
 }
+
 .category-header { position: relative; display: flex; min-height: 130px; align-items: flex-end; justify-content: space-between; gap: 24px; overflow: hidden; padding: 90px 0 24px; }
 .category-header::before { position: absolute; z-index: -1; top: -100px; right: 3%; width: 48%; height: 220px; border-radius: 50%; background: rgba(229,9,20,.12); content: ''; filter: blur(70px); pointer-events: none; }
 .category-heading-copy h1 { margin: 0; color: #fff; font-family: Inter,sans-serif; font-size: clamp(30px,4vw,44px); font-weight: 750; letter-spacing: -.045em; }
@@ -1199,8 +1200,8 @@ body,.watch-app { background: #0b0b0e; }
 .vault-title-cell img { width: 32px; height: 44px; flex: 0 0 auto; border-radius: 4px; background: #222228; object-fit: cover; }
 .vault-title-cell > div { min-width: 0; }
 .vault-title-cell strong,.vault-title-cell small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.vault-title-cell strong { color: #eee; font-size: 11px; }
-.vault-title-cell small { margin-top: 3px; color: #85858e; font-size: 9px; }
+.vault-title-cell strong { color: #eee; font-size: 13px; }
+.vault-title-cell small { margin-top: 3px; color: #85858e; font-size: 11px; }
 .vault-universe-pill,.vault-type-pill { overflow: hidden; padding: 5px 8px; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; background: rgba(255,255,255,.035); color: #b9b9c0; text-overflow: ellipsis; white-space: nowrap; }
 .vault-favorite { width: 12px; height: 12px; fill: #E50914; color: #E50914; }
 .vault-rewatch { width: 12px; height: 12px; color: #aaa; }
@@ -1237,8 +1238,8 @@ body,.watch-app { background: #0b0b0e; }
 .poster-favorite-badge.active svg { fill: currentColor; }
 .poster-hover-info { position: absolute; z-index: 3; inset: auto 0 0; padding: 34px 12px 11px; background: linear-gradient(0deg,rgba(0,0,0,.96),rgba(0,0,0,.72) 58%,transparent); color: #fff; opacity: 0; transform: translateY(8px); transition: opacity 220ms ease,transform 220ms ease; pointer-events: none; }
 .poster-card:hover .poster-hover-info,.poster-card:focus-within .poster-hover-info { opacity: 1; transform: translateY(0); }
-.poster-hover-info h3 { overflow: hidden; margin: 0; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.poster-hover-info > div { display: flex; justify-content: space-between; gap: 8px; margin-top: 5px; color: #d4d4d4; font-size: 10px; }
+.poster-hover-info h3 { overflow: hidden; margin: 0; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.poster-hover-info > div { display: flex; justify-content: space-between; gap: 8px; margin-top: 5px; color: #d4d4d4; font-size: 9px; }
 .poster-hover-info > div span:last-child { color: #F87171; font-weight: 650; }
 .kpi-card { position: relative; min-height: 102px; overflow: hidden; padding: 18px 20px; border-color: rgba(255,255,255,.1); background: radial-gradient(circle at 0 0,rgba(229,9,20,.13),transparent 46%),linear-gradient(135deg,#1a1111,#121212 58%,#0d0d0d); }
 .kpi-card .kpi-value,.kpi-card .kpi-label { position: relative; z-index: 1; }
@@ -1256,7 +1257,7 @@ body,.watch-app { background: #0b0b0e; }
 .netflix-nav-links { display: flex; min-width: 0; flex: 1 1 auto; flex-wrap: nowrap; gap: clamp(10px,1.5vw,22px); overflow-x: auto; scrollbar-width: none; }
 .netflix-nav-links::-webkit-scrollbar { display: none; }
 .netflix-nav-links li { flex: 0 0 auto; }
-button.netflix-nav-link { display: block; padding: 8px 0; border: 0; background: transparent; color: #B3B3B3; font: inherit; font-size: 12px; white-space: nowrap; }
+button.netflix-nav-link { display: block; padding: 8px 0; border: 0; background: transparent; color: #B3B3B3; font: inherit; font-size: 13px; white-space: nowrap; }
 button.netflix-nav-link:hover,button.netflix-nav-link.active { color: #fff; }
 button.netflix-nav-link.active { font-weight: 700; }
 @media (max-width: 980px) {
@@ -1349,8 +1350,9 @@ body,.watch-app { background: #0b0b0e; }
 }
 
 /* Compact Movies heading and franchise filters below the genre controls. */
-.category-page-content { padding-top: 100px; }
-.collection-section > .category-header { min-height: 0; align-items: center; padding: 20px 0 16px; }
+.category-page-content { padding-top: 86px; }
+.logbook-page-content { position: relative; z-index: 0; padding-top: 86px; }
+.collection-section > .category-header { min-height: 0; align-items: center; padding: 6px 0 16px; }
 .category-heading-copy h1 { margin: 0; }
 .collection-section > .category-header .collection-controls { margin-left: auto; }
 .genre-toolbar { margin-bottom: 14px; }
@@ -1377,7 +1379,7 @@ body,.watch-app { background: #0b0b0e; }
 .vault-row-number { width: 22px; flex: 0 0 22px; color: #888891; font-variant-numeric: tabular-nums; }
 .vault-title-cell { display: flex; min-width: 0; align-items: center; gap: 9px; }
 .vault-title-cell img { width: 25px; height: 36px; flex: 0 0 auto; border-radius: 3px; background: #222228; object-fit: cover; }
-.vault-title-cell strong { overflow: hidden; color: #eee; font-size: 11px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.vault-title-cell strong { overflow: hidden; color: #eee; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .vault-group-rows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 850px) { .vault-group-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .vault-group-rows { grid-template-columns: 1fr; } .vault-row { min-height: 46px; gap: 7px; padding: 6px 10px; } .vault-title-cell { gap: 7px; } .vault-title-cell img { width: 23px; height: 33px; } }

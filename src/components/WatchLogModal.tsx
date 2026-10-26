@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, Check, Clapperboard, Film, Heart, Plus, Star, Tv, X, RefreshCw } from 'lucide-react';
+import { CalendarDays, Check, Clapperboard, Film, Plus, Star, Tv, X, RefreshCw } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import { emptyWatchLogEntry, type WatchLogEntry } from '../types/watchLog';
 import { getPosterUrl, getVerifiedMovieDetails } from '../lib/tmdb';
@@ -13,11 +13,9 @@ interface WatchLogModalProps {
   onSave: (movieId: string, entry: WatchLogEntry) => void;
   onAddTitle: () => void;
   onRemove?: (movieId: string) => void;
-  favoriteIds?: string[];
-  onFavoriteToggle?: (movieId: string) => void;
 }
 
-export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, onClose, onSave, onAddTitle, onRemove, favoriteIds = [], onFavoriteToggle }: WatchLogModalProps) {
+export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, onClose, onSave, onAddTitle, onRemove }: WatchLogModalProps) {
   const [movieId, setMovieId] = useState(initialMovie?.id ?? '');
   const [rating, setRating] = useState(0);
   const [rewatch, setRewatch] = useState(false);
@@ -237,7 +235,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
                     </div>
                   </div>
                   <label className="form-block"><span className="field-label">Watched date</span><span className="date-field"><CalendarDays className="h-4 w-4 text-gray-500" /><input type="date" value={watchedDate} onChange={(event) => setWatchedDate(event.target.value)} className="watch-input" /></span></label>
-                  <div className="form-block"><span className="field-label">Quick Toggles</span><div className="quick-toggles"><button type="button" aria-pressed={favoriteIds.includes(movie.id)} className={favoriteIds.includes(movie.id) ? 'quick-toggle active' : 'quick-toggle'} onClick={() => onFavoriteToggle?.(movie.id)}><Heart /> Favorite</button><button type="button" aria-pressed={rewatch} className={rewatch ? 'quick-toggle active' : 'quick-toggle'} onClick={() => setRewatch(!rewatch)}><RefreshCw /> Rewatch</button></div></div>
+                  <div className="form-block"><span className="field-label">Quick Toggles</span><div className="quick-toggles"><button type="button" aria-pressed={rewatch} className={rewatch ? 'quick-toggle active' : 'quick-toggle'} onClick={() => setRewatch(!rewatch)}><RefreshCw /> Rewatch</button></div></div>
                 </div>
                 {isSeries && seasonNumbers.length > 0 && (
                   <div className="seasons-watched-section mt-5 rounded-xl border border-white/[0.08] bg-black/20 p-3.5">

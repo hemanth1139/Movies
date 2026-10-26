@@ -21,7 +21,6 @@ const WATCH_LOG_STORAGE_KEY = 'watchlog.entries.v1';
 const TMDB_CACHE_STORAGE_KEY = 'watchlog.tmdb-csv-metadata.v8';
 const INITIAL_VISIBLE_MOVIES = 48;
 const MOVIES_PER_PAGE = 48;
-const FAVORITES_STORAGE_KEY = 'watchlog.favorites.v1';
 const FEATURED_MOVIES_STORAGE_KEY = 'watchlog.featured-movies.v1';
 const DELETED_MOVIES_STORAGE_KEY = 'watchlog.deleted-movies.v1';
 const UNIVERSE_CLEANUP_STORAGE_KEY = 'watchlog.universe-cleanup.v1';
@@ -75,13 +74,6 @@ function loadWatchLog(): WatchLogMap {
   }
 }
 
-function loadFavorites(): string[] {
-  try {
-    const saved = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return saved ? JSON.parse(saved) as string[] : [];
-  } catch { return []; }
-}
-
 function loadDeletedMovies(): Movie[] {
   try {
     const saved = window.localStorage.getItem(DELETED_MOVIES_STORAGE_KEY);
@@ -119,7 +111,6 @@ export default function App() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [watchLog, setWatchLog] = useState<WatchLogMap>(loadWatchLog);
-  const [favoriteIds, setFavoriteIds] = useState<string[]>(loadFavorites);
   const [deletedMovies, setDeletedMovies] = useState<Movie[]>(loadDeletedMovies);
   const deletedMoviesRef = useRef(deletedMovies);
   const [deleteError, setDeleteError] = useState('');
@@ -200,13 +191,6 @@ export default function App() {
     }, 150);
     return () => window.clearTimeout(timer);
   }, [watchLog]);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (!saveCriticalStorageValue(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteIds))) setStorageWarning(true);
-    }, 150);
-    return () => window.clearTimeout(timer);
-  }, [favoriteIds]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -335,12 +319,6 @@ export default function App() {
     });
   };
 
-  const toggleFavorite = (movieId: string) => {
-    setFavoriteIds((current) => current.includes(movieId)
-      ? current.filter((id) => id !== movieId)
-      : [...current, movieId]);
-  };
-
   const categoryWatchLog = selectedUniverse ? watchLog : EMPTY_WATCH_LOG;
   const categoryMovies = useMemo(() => movies.filter((movie) => {
     if (activeView === 'Movies' && (movie.type !== 'Movie' || isAnimeTitle(movie))) return false;
@@ -439,8 +417,6 @@ export default function App() {
       onMovieDelete={(movie) => void handleMovieDelete(movie)}
       onMovieOpen={openWatchLog}
       watchLog={watchLog}
-      favoriteIds={favoriteIds}
-      onFavoriteToggle={toggleFavorite}
     />;
   };
 
@@ -556,8 +532,6 @@ export default function App() {
               onMovieDelete={(movie) => void handleMovieDelete(movie)}
               onMovieOpen={openWatchLog}
               watchLog={watchLog}
-              favoriteIds={favoriteIds}
-              onFavoriteToggle={toggleFavorite}
             />
             {visibleMovieCount < globalFilteredMovies.length && (
               <button type="button" className="load-more-movies" onClick={() => setVisibleMovieCount((count) => count + MOVIES_PER_PAGE)}>
@@ -586,7 +560,14 @@ export default function App() {
           {activeView === 'Home' && (
             <div className="browse-sections">
               {loading ? (
-                <div className="rails-loading">Loading titles…</div>
+                <div className="poster-grid">
+                  {Array.from({ length: 12 }, (_, index) => (
+                    <div key={index}>
+                      <div className="poster-skeleton mb-2.5 aspect-[2/3] rounded-wl-md" />
+                      <div className="poster-skeleton h-4 w-4/5 rounded" />
+                    </div>
+                  ))}
+                </div>
               ) : curatedSections.length ? (
                 curatedSections.map((section) => renderCategory(section.title, section.movies))
               ) : (
@@ -734,8 +715,6 @@ export default function App() {
                     onMovieDelete={(movie) => void handleMovieDelete(movie)}
                     onMovieOpen={openWatchLog}
                     watchLog={watchLog}
-                    favoriteIds={favoriteIds}
-                    onFavoriteToggle={toggleFavorite}
                   />
                   {visibleMovieCount < filteredMovies.length && (
                     <button type="button" className="load-more-movies" onClick={() => setVisibleMovieCount((count) => count + MOVIES_PER_PAGE)}>
@@ -773,8 +752,6 @@ export default function App() {
             movies={movies}
             initialMovie={watchingMovie}
             watchLog={watchLog}
-            favoriteIds={favoriteIds}
-            onFavoriteToggle={toggleFavorite}
             onRemove={removeWatchLog}
             onClose={() => { setIsWatchModalOpen(false); setWatchingMovie(null); }}
             onSave={saveWatchLog}

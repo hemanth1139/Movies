@@ -20,8 +20,6 @@ interface CategoryShelfProps {
   onMovieDelete: (movie: Movie) => void;
   onMovieOpen: (movie: Movie) => void;
   watchLog: WatchLogMap;
-  favoriteIds: string[];
-  onFavoriteToggle: (movieId: string) => void;
 }
 
 export default function CategoryShelf({
@@ -37,8 +35,6 @@ export default function CategoryShelf({
   onMovieDelete,
   onMovieOpen,
   watchLog,
-  favoriteIds,
-  onFavoriteToggle,
 }: CategoryShelfProps) {
   const railRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -116,8 +112,6 @@ export default function CategoryShelf({
               onMovieDelete={onMovieDelete}
               onMovieOpen={onMovieOpen}
               watchLog={watchLog}
-              favoriteIds={favoriteIds}
-              onFavoriteToggle={onFavoriteToggle}
               showRanks={showRanks}
             />
           </div>
@@ -142,8 +136,6 @@ export default function CategoryShelf({
           onMovieDelete={onMovieDelete}
           onMovieOpen={onMovieOpen}
           watchLog={watchLog}
-          favoriteIds={favoriteIds}
-          onFavoriteToggle={onFavoriteToggle}
         />
       )}
     </section>
