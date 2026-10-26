@@ -12,11 +12,11 @@ interface LogbookPageProps {
   onMovieOpen: (movie: Movie) => void;
   deletedMovies: Movie[];
   onMovieRestore: (movie: Movie) => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
-export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovies, onMovieRestore, searchQuery, onSearchChange }: LogbookPageProps) {
+export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovies, onMovieRestore }: LogbookPageProps) {
   const [trashOpen, setTrashOpen] = useState(false);
   const movieCount = movies.filter((movie) => movie.type === 'Movie' && !isAnimeTitle(movie)).length;
   return (
@@ -37,7 +37,7 @@ export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovi
             <p>{movieCount} movies · {movies.length} total watched titles</p>
           </div>
         </div>
-        <MovieTable movies={movies} watchLog={watchLog} onOpen={onMovieOpen} searchQuery={searchQuery} onSearchChange={onSearchChange} />
+        <MovieTable movies={movies} watchLog={watchLog} onOpen={onMovieOpen} />
       </section>
 
       <section className="recently-deleted">

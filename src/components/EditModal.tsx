@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { X, Loader2, Film } from 'lucide-react';
 import type { Movie, MediaType } from '../types/movie';
 import { getPosterUrl } from '../lib/tmdb';
@@ -18,35 +18,28 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
   const [genres, setGenres] = useState<string[]>(movie.genres);
   const [isSaving, setIsSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const latestMovie = useRef(movie);
+
+  useEffect(() => { latestMovie.current = movie; }, [movie]);
 
   useEffect(() => {
     if (!isOpen) return;
-    setTitle(movie.title);
-    setType(movie.type);
-    setGenres(movie.genres);
+    const currentMovie = latestMovie.current;
+    setTitle(currentMovie.title);
+    setType(currentMovie.type);
+    setGenres(currentMovie.genres);
     setFormError(null);
     setIsSaving(false);
-  }, [isOpen, movie]);
+  }, [isOpen, movie.id]);
 
   useEffect(() => {
     if (!isOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'Enter') {
-        const target = event.target as HTMLElement | null;
-        if (target?.tagName === 'BUTTON') return;
-        event.preventDefault();
-        void handleSave();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
     };
-  }, [isOpen, onClose, title, type, genres, isSaving, movie.id]);
+  }, [isOpen]);
 
   const handleGenreToggle = (genre: string) => {
     setGenres((prev) =>
@@ -54,7 +47,7 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
     );
   };
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (isSaving) return;
     if (!title.trim()) {
       setFormError('Add a name for this title.');
@@ -68,21 +61,35 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
     setIsSaving(true);
     setFormError(null);
 
-    const updated = await updateMovie(movie.id, {
-      title: title.trim(),
-      type,
-      genres,
-    });
-
-    if (updated) {
+    try {
+      const updated = await updateMovie(movie.id, { title: title.trim(), type, genres });
+      if (!updated) {
+        setFormError('Could not save changes. Check your connection and try again.');
+        return;
+      }
       onMovieUpdated(updated);
       onClose();
-    } else {
+    } catch {
       setFormError('Could not save changes. Check your connection and try again.');
+    } finally {
+      setIsSaving(false);
     }
+  }, [isSaving, title, genres, movie.id, type, onMovieUpdated, onClose]);
 
-    setIsSaving(false);
-  };
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'Enter') {
+        const target = event.target as HTMLElement | null;
+        if (target?.tagName === 'BUTTON') return;
+        event.preventDefault();
+        void handleSave();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose, handleSave]);
 
   if (!isOpen) return null;
 
@@ -113,7 +120,7 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
         </div>
 
         <div className="flex-1 overflow-y-auto p-5">
-          <div className="mb-5 flex gap-4">
+          <div className="mb-5 flex flex-col sm:flex-row gap-4 items-center sm:items-start">
             <div className="h-36 w-24 shrink-0 overflow-hidden rounded-wl-sm bg-background">
               {posterUrl ? (
                 <img src={posterUrl} alt={`${title} poster`} className="h-full w-full object-cover" />
@@ -181,11 +188,11 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
           {formError && <p className="mt-4 text-sm text-danger">{formError}</p>}
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-border px-5 py-4">
+        <div className="flex justify-end gap-2 border-t border-border px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-wl-sm px-3 py-2 text-sm text-secondary hover:text-primary"
+            className="rounded-wl-sm px-4 py-2 text-sm text-secondary hover:text-primary min-h-[44px]"
           >
             Cancel
           </button>
@@ -193,7 +200,7 @@ export default function EditModal({ isOpen, onClose, movie, onMovieUpdated }: Ed
             type="button"
             onClick={() => void handleSave()}
             disabled={isSaving}
-            className="inline-flex items-center gap-2 rounded-wl-sm bg-accent px-4 py-2 text-sm font-medium text-accent-text hover:opacity-90 disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-wl-sm bg-accent px-5 py-2 text-sm font-medium text-accent-text hover:opacity-90 disabled:opacity-50 min-h-[44px]"
           >
             {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
             Save

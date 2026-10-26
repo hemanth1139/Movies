@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { X, Search, Loader2, Film } from 'lucide-react';
 import type { TMDBSearchResult, TMDBMovieDetails, Movie, MediaType } from '../types/movie';
 import { searchTMDBDetailed, getMovieDetails, getReleaseYear, getPosterUrl, tmdbErrorMessage } from '../lib/tmdb';
@@ -30,6 +30,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   const [selectedDetails, setSelectedDetails] = useState<TMDBMovieDetails | null>(null);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const selectionRequest = useRef(0);
+  const detailsController = useRef<AbortController | null>(null);
   const [title, setTitle] = useState('');
   const [selectedType, setSelectedType] = useState<MediaType>('Movie');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -38,7 +39,14 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      detailsController.current?.abort();
+      detailsController.current = null;
+      selectionRequest.current += 1;
+      return;
+    }
+    detailsController.current?.abort();
+    detailsController.current = null;
     selectionRequest.current += 1;
     setSearchQuery('');
     setSearchResults([]);
@@ -54,26 +62,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     setFormError(null);
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'Enter' && selectedResult && !event.shiftKey) {
-        const target = event.target as HTMLElement | null;
-        if (target?.tagName === 'BUTTON') return;
-        event.preventDefault();
-        void handleAddTitle();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, [isOpen, onClose, selectedResult, title, selectedType, selectedGenres, isAdding]);
+  useEffect(() => () => detailsController.current?.abort(), []);
 
   useEffect(() => {
     if (!isOpen || selectedResult) return;
@@ -105,6 +94,9 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   }, [searchQuery, isOpen, selectedResult]);
 
   const handleSelectResult = async (result: TMDBSearchResult) => {
+    detailsController.current?.abort();
+    const controller = new AbortController();
+    detailsController.current = controller;
     const requestId = ++selectionRequest.current;
     const mediaType: MediaType = result.media_type === 'tv' ? 'TV Series' : 'Movie';
     setSelectedResult(result);
@@ -117,8 +109,9 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     setFormError(null);
 
     const type = result.media_type === 'tv' ? 'tv' : 'movie';
-    const details = await getMovieDetails(result.id, type);
+    const details = await getMovieDetails(result.id, type, controller.signal);
     if (selectionRequest.current !== requestId) return;
+    detailsController.current = null;
     setSelectedDetails(details);
     setIsLoadingDetails(false);
     setSelectedUniverse(getUniverseSuggestion(details));
@@ -133,7 +126,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     );
   };
 
-  const handleAddTitle = async () => {
+  const handleAddTitle = useCallback(async () => {
     if (!selectedResult || isAdding) return;
     if (!title.trim()) {
       setFormError('Add a name for this title.');
@@ -147,37 +140,60 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     setIsAdding(true);
     setFormError(null);
 
-    const existing = await getMovieByTmdbId(selectedResult.id);
-    if (existing) {
-      setFormError('This title is already in your collection.');
-      setIsAdding(false);
-      return;
-    }
+    try {
+      const existing = await getMovieByTmdbId(selectedResult.id);
+      if (existing) {
+        setFormError('This title is already in your collection.');
+        return;
+      }
 
-    const movie: Omit<Movie, 'id' | 'created_at' | 'updated_at'> = {
-      title: title.trim(),
-      type: selectedType,
-      genres: selectedGenres,
-      franchise: selectedUniverse || null,
-      release_year: getReleaseYear(selectedResult.release_date || selectedResult.first_air_date),
-      tmdb_id: selectedResult.id,
-      poster_path: selectedResult.poster_path,
-      backdrop_path: selectedResult.backdrop_path ?? selectedDetails?.backdrop_path,
-      overview: selectedResult.overview ?? selectedDetails?.overview,
-      original_language: selectedResult.original_language ?? selectedDetails?.original_language,
-      origin_country: selectedResult.origin_country ?? selectedDetails?.origin_country,
-    };
+      const movie: Omit<Movie, 'id' | 'created_at' | 'updated_at'> = {
+        title: title.trim(),
+        type: selectedType,
+        genres: selectedGenres,
+        franchise: selectedUniverse || null,
+        release_year: getReleaseYear(selectedResult.release_date || selectedResult.first_air_date),
+        tmdb_id: selectedResult.id,
+        poster_path: selectedResult.poster_path,
+        backdrop_path: selectedResult.backdrop_path ?? selectedDetails?.backdrop_path,
+        overview: selectedResult.overview ?? selectedDetails?.overview,
+        original_language: selectedResult.original_language ?? selectedDetails?.original_language,
+        origin_country: selectedResult.origin_country ?? selectedDetails?.origin_country,
+      };
 
-    const created = await createMovie(movie);
-    if (created) {
-      onTitleAdded({ ...created, ...movie });
-      onClose();
-    } else {
+      const created = await createMovie(movie);
+      if (created) {
+        onTitleAdded({ ...created, ...movie });
+        onClose();
+      } else {
+        setFormError('Could not save this title. Check your connection and try again.');
+      }
+    } catch {
       setFormError('Could not save this title. Check your connection and try again.');
+    } finally {
+      setIsAdding(false);
     }
+  }, [selectedResult, isAdding, title, selectedGenres, selectedType, selectedUniverse, selectedDetails, onTitleAdded, onClose]);
 
-    setIsAdding(false);
-  };
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'Enter' && selectedResult && !event.shiftKey) {
+        const target = event.target as HTMLElement | null;
+        if (target?.tagName === 'BUTTON') return;
+        event.preventDefault();
+        void handleAddTitle();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, onClose, selectedResult, handleAddTitle]);
 
   const genreOptions = useMemo(() => uniqueGenres([...GENRES, ...selectedGenres]), [selectedGenres]);
   if (!isOpen) return null;
@@ -219,9 +235,18 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                     className="w-full rounded-wl-sm border border-transparent bg-background py-3 pl-10 pr-10 text-sm text-primary placeholder:text-secondary/60"
                     autoFocus
                   />
-                  {isSearching && (
+                  {isSearching ? (
                     <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-accent" />
-                  )}
+                  ) : searchQuery ? (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary p-1"
+                      aria-label="Clear search"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  ) : null}
               </div>
 
               {tmdbError && (
@@ -237,7 +262,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                       key={`${result.media_type}-${result.id}`}
                       type="button"
                       onClick={() => void handleSelectResult(result)}
-                      className="flex items-center gap-3 rounded-wl-sm bg-background p-2.5 text-left hover:bg-surface-2 transition-colors duration-wl"
+                      className="flex w-full items-center gap-3 rounded-wl-sm bg-background p-2.5 text-left hover:bg-surface-2 transition-colors duration-wl cursor-pointer"
                     >
                       <div className="h-16 w-11 shrink-0 overflow-hidden rounded-md bg-surface-2">
                         {posterUrl ? (
@@ -271,12 +296,12 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
               <button
                 type="button"
                 onClick={() => { selectionRequest.current += 1; setIsLoadingDetails(false); setSelectedResult(null); }}
-                className="mb-4 text-sm text-accent hover:opacity-80"
+                className="mb-4 inline-flex items-center min-h-[40px] text-sm text-accent hover:opacity-80"
               >
                 ← Back to search
               </button>
 
-              <div className="mb-5 flex gap-4">
+              <div className="mb-5 flex flex-col sm:flex-row gap-4 items-center sm:items-start">
                 <div className="h-36 w-24 shrink-0 overflow-hidden rounded-wl-sm bg-background">
                   {selectedResult.poster_path ? (
                     <img
@@ -367,11 +392,11 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
 
               {formError && <p className="mt-4 text-sm text-danger">{formError}</p>}
 
-              <div className="mt-6 flex justify-end gap-2 border-t border-border pt-4">
+              <div className="mt-6 flex justify-end gap-2 border-t border-border pt-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="rounded-wl-sm px-3 py-2 text-sm text-secondary hover:text-primary"
+                  className="rounded-wl-sm px-4 py-2.5 text-sm text-secondary hover:text-primary min-h-[44px]"
                 >
                   Cancel
                 </button>
@@ -379,7 +404,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                   type="button"
                   onClick={() => void handleAddTitle()}
                   disabled={isAdding}
-                  className="inline-flex items-center gap-2 rounded-wl-sm bg-accent px-4 py-2 text-sm font-medium text-accent-text hover:opacity-90 disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-wl-sm bg-accent px-5 py-2.5 text-sm font-medium text-accent-text hover:opacity-90 disabled:opacity-50 min-h-[44px]"
                 >
                   {isAdding && <Loader2 className="h-4 w-4 animate-spin" />}
                   Save

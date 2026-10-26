@@ -1,15 +1,10 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, LayoutGrid, List, Plus } from 'lucide-react';
+import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowDown, LayoutGrid, List, Plus, Search, X } from 'lucide-react';
 import Header from './components/Header';
 import type { AppView } from './components/Sidebar';
 import GenreFilters from './components/GenreFilters';
 import PosterGrid, { SkeletonGrid } from './components/PosterGrid';
 import NetflixBillboard from './components/NetflixBillboard';
-import NetflixDetailModal from './components/NetflixDetailModal';
-import AddTitleModal from './components/AddTitleModal';
-import EditModal from './components/EditModal';
-import WatchLogModal from './components/WatchLogModal';
-import LogbookPage from './components/LogbookPage';
 import CategoryShelf from './components/CategoryShelf';
 import type { Movie } from './types/movie';
 import { deleteMovie, getMovies, restoreMovie, updateMovie } from './lib/database';
@@ -20,7 +15,7 @@ import { applyBundledPosters } from './lib/bundledPosters';
 import { normalizeGenreName } from './lib/genres';
 import { isAnimeTitle } from './lib/animeUtils';
 
-type SortMode = 'az' | 'recent' | 'year' | 'rating' | 'timeline';
+type SortMode = 'recent' | 'az' | 'year' | 'rating' | 'timeline';
 type ViewMode = 'grid' | 'list';
 const WATCH_LOG_STORAGE_KEY = 'watchlog.entries.v1';
 const TMDB_CACHE_STORAGE_KEY = 'watchlog.tmdb-csv-metadata.v8';
@@ -31,6 +26,12 @@ const FEATURED_MOVIES_STORAGE_KEY = 'watchlog.featured-movies.v1';
 const DELETED_MOVIES_STORAGE_KEY = 'watchlog.deleted-movies.v1';
 const UNIVERSE_CLEANUP_STORAGE_KEY = 'watchlog.universe-cleanup.v1';
 const ALLOWED_UNIVERSES = new Set(['Marvel Cinematic Universe', 'The Conjuring Universe', 'DC Universe', 'Disney & Pixar']);
+const EMPTY_WATCH_LOG: WatchLogMap = {};
+const NetflixDetailModal = lazy(() => import('./components/NetflixDetailModal'));
+const AddTitleModal = lazy(() => import('./components/AddTitleModal'));
+const EditModal = lazy(() => import('./components/EditModal'));
+const WatchLogModal = lazy(() => import('./components/WatchLogModal'));
+const LogbookPage = lazy(() => import('./components/LogbookPage'));
 
 function saveCriticalStorageValue(key: string, value: string): boolean {
   try {
@@ -38,7 +39,6 @@ function saveCriticalStorageValue(key: string, value: string): boolean {
     return true;
   } catch {
     try {
-      // Keep the user's watch log and favorites ahead of rebuildable poster metadata.
       window.localStorage.removeItem(TMDB_CACHE_STORAGE_KEY);
       window.localStorage.setItem(key, value);
       return true;
@@ -97,8 +97,10 @@ export default function App() {
   const [enrichingMetadata, setEnrichingMetadata] = useState(false);
   const [moreMetadataAvailable, setMoreMetadataAvailable] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); // global navbar search
   const deferredSearchQuery = useDeferredValue(searchQuery);
+  const [localSearchQuery, setLocalSearchQuery] = useState(''); // per-tab search
+  const deferredLocalSearchQuery = useDeferredValue(localSearchQuery);
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [animeKind, setAnimeKind] = useState<'all' | 'movie' | 'series'>('all');
   const [selectedUniverse, setSelectedUniverse] = useState('');
@@ -128,37 +130,6 @@ export default function App() {
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   const loadStarted = useRef(false);
 
-  useEffect(() => {
-    if (loadStarted.current) return;
-    loadStarted.current = true;
-    void loadMovies();
-  }, []);
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (!saveCriticalStorageValue(WATCH_LOG_STORAGE_KEY, JSON.stringify(watchLog))) setStorageWarning(true);
-    }, 150);
-    return () => window.clearTimeout(timer);
-  }, [watchLog]);
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (!saveCriticalStorageValue(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteIds))) setStorageWarning(true);
-    }, 150);
-    return () => window.clearTimeout(timer);
-  }, [favoriteIds]);
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (!saveCriticalStorageValue(DELETED_MOVIES_STORAGE_KEY, JSON.stringify(deletedMovies))) setStorageWarning(true);
-    }, 150);
-    return () => window.clearTimeout(timer);
-  }, [deletedMovies]);
-  useEffect(() => {
-    const onScroll = () => setShowBackToTop(window.scrollY > 500);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  useEffect(() => { setVisibleMovieCount(INITIAL_VISIBLE_MOVIES); }, [activeView, searchQuery, selectedGenres, selectedUniverse, animeKind]);
-
   const runMetadataBatch = async (sourceMovies: Movie[]) => {
     setEnrichingMetadata(true);
     setMoreMetadataAvailable(false);
@@ -179,7 +150,6 @@ export default function App() {
   const loadMovies = async () => {
     setLoading(true);
     setLoadingMoreMovies(true);
-    const today = new Date().toISOString().slice(0, 10);
     let allMovies: Movie[] = [];
     const data = await getMovies((page, firstPage) => {
       const enrichedPage = applyBundledPosters(applyCachedTmdbMetadata(page));
@@ -192,7 +162,7 @@ export default function App() {
           const previous = next[movie.id];
           next[movie.id] = {
             rating: previous?.rating ?? 0,
-            watchedDate: previous?.watchedDate || today,
+            watchedDate: previous?.watchedDate ?? '',
             rewatch: previous?.rewatch ?? false,
             review: previous?.review ?? '',
             watchedEpisodes: previous?.watchedEpisodes ?? [],
@@ -218,19 +188,84 @@ export default function App() {
     void runMetadataBatch(allMovies);
   };
 
+  useEffect(() => {
+    if (loadStarted.current) return;
+    loadStarted.current = true;
+    void loadMovies();
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (!saveCriticalStorageValue(WATCH_LOG_STORAGE_KEY, JSON.stringify(watchLog))) setStorageWarning(true);
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [watchLog]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (!saveCriticalStorageValue(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteIds))) setStorageWarning(true);
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [favoriteIds]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (!saveCriticalStorageValue(DELETED_MOVIES_STORAGE_KEY, JSON.stringify(deletedMovies))) setStorageWarning(true);
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [deletedMovies]);
+
+  useEffect(() => {
+    const onScroll = () => setShowBackToTop(window.scrollY > 500);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    setVisibleMovieCount(INITIAL_VISIBLE_MOVIES);
+  }, [activeView, searchQuery, localSearchQuery, selectedGenres, selectedUniverse, animeKind, sortMode]);
+
   const handleGenreToggle = (genre: string) => {
     if (genre === 'All') { setSelectedGenres([]); return; }
     setSelectedGenres((prev) => prev.includes(genre) ? prev.filter((item) => item !== genre) : [...prev, genre]);
   };
-  const hasActiveFilters = selectedGenres.length > 0 || searchQuery.trim().length > 0;
-  const clearFilters = () => { setSelectedGenres([]); setSearchQuery(''); };
+
+  const hasActiveFilters = selectedGenres.length > 0
+    || localSearchQuery.trim().length > 0
+    || searchQuery.trim().length > 0
+    || Boolean(selectedUniverse)
+    || (activeView === 'Anime' && animeKind !== 'all');
+
+  const clearFilters = () => {
+    setSelectedGenres([]);
+    setSearchQuery('');
+    setLocalSearchQuery('');
+    setSelectedUniverse('');
+    setAnimeKind('all');
+  };
+
   const handleTitleAdded = (movie: Movie) => {
     cacheMovieMetadata(movie);
     setMovies((prev) => [...prev, movie]);
-    setWatchLog((prev) => ({ ...prev, [movie.id]: { ...emptyWatchLogEntry(), watchedDate: new Date().toISOString().slice(0, 10) } }));
+    setWatchLog((prev) => ({
+      ...prev,
+      [movie.id]: {
+        ...emptyWatchLogEntry(),
+        watchedDate: new Date().toISOString().slice(0, 10),
+      },
+    }));
   };
-  const handleMovieEdit = (movie: Movie) => { setEditingMovie(movie); setIsEditModalOpen(true); };
-  const handleMovieUpdated = (updatedMovie: Movie) => setMovies((prev) => prev.map((item) => item.id === updatedMovie.id ? updatedMovie : item));
+
+  const handleMovieEdit = (movie: Movie) => {
+    setEditingMovie(movie);
+    setIsEditModalOpen(true);
+  };
+
+  const handleMovieUpdated = (updatedMovie: Movie) => {
+    setMovies((prev) => prev.map((item) => item.id === updatedMovie.id ? updatedMovie : item));
+  };
+
   const handleMovieDelete = async (movie: Movie) => {
     setDeleteError('');
     if (!supabase) {
@@ -256,6 +291,7 @@ export default function App() {
       setDeleteError('Could not delete this title from the database. Check your connection and try again.');
     }
   };
+
   const handleMovieRestore = async (movie: Movie) => {
     setDeleteError('');
     const restored = await restoreMovie(movie);
@@ -268,24 +304,44 @@ export default function App() {
     deletedMoviesRef.current = remainingDeletedMovies;
     setDeletedMovies(remainingDeletedMovies);
   };
+
   const handlePageChange = (view: AppView) => {
     setActiveView(view);
+    setSearchQuery(''); // Clears global search so user isn't trapped in search view
     setSelectedGenres([]);
-    setSearchQuery('');
+    setLocalSearchQuery('');
     setSortMode('recent');
     setSelectedUniverse('');
+    setAnimeKind('all');
     setExpandedCategories({});
   };
-  const openWatchLog = (movie: Movie | null = null) => { setWatchingMovie(movie); setIsWatchModalOpen(true); };
+
+  const openWatchLog = (movie: Movie | null = null) => {
+    setWatchingMovie(movie);
+    setIsWatchModalOpen(true);
+  };
+
   const saveWatchLog = (movieId: string, entry: WatchLogEntry) => {
     setWatchLog((prev) => ({ ...prev, [movieId]: entry }));
     setMovies((current) => current.map((movie) => movie.id === movieId ? { ...movie, universe: entry.universe || undefined, universeOrder: entry.universeOrder, franchise: entry.universe || null } : movie));
     if (supabase) void updateMovie(movieId, { franchise: entry.universe || null });
   };
-  const removeWatchLog = (movieId: string) => setWatchLog((prev) => { const next = { ...prev }; delete next[movieId]; return next; });
-  const toggleFavorite = (movieId: string) => setFavoriteIds((current) => current.includes(movieId)
-    ? current.filter((id) => id !== movieId)
-    : [...current, movieId]);
+
+  const removeWatchLog = (movieId: string) => {
+    setWatchLog((prev) => {
+      const next = { ...prev };
+      delete next[movieId];
+      return next;
+    });
+  };
+
+  const toggleFavorite = (movieId: string) => {
+    setFavoriteIds((current) => current.includes(movieId)
+      ? current.filter((id) => id !== movieId)
+      : [...current, movieId]);
+  };
+
+  const categoryWatchLog = selectedUniverse ? watchLog : EMPTY_WATCH_LOG;
   const categoryMovies = useMemo(() => movies.filter((movie) => {
     if (activeView === 'Movies' && (movie.type !== 'Movie' || isAnimeTitle(movie))) return false;
     if (activeView === 'Series' && (movie.type !== 'TV Series' || isAnimeTitle(movie))) return false;
@@ -293,14 +349,24 @@ export default function App() {
     if (activeView === 'Anime' && animeKind === 'movie' && movie.type !== 'Movie') return false;
     if (activeView === 'Anime' && animeKind === 'series' && movie.type !== 'TV Series') return false;
     if (selectedUniverse && activeView === 'Movies') {
-      const universe = watchLog[movie.id]?.universe || movie.universe || movie.franchise || '';
+      const universe = categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '';
       if (universe !== selectedUniverse || movie.type !== 'Movie') return false;
     }
-    if (selectedUniverse && (activeView === 'Series' || activeView === 'Anime') && (watchLog[movie.id]?.universe || movie.universe || movie.franchise || '') !== selectedUniverse) return false;
+    if (selectedUniverse && (activeView === 'Series' || activeView === 'Anime') && (categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '') !== selectedUniverse) return false;
     return true;
-  }), [movies, activeView, animeKind, selectedUniverse, selectedUniverse ? watchLog : null]);
-  const filteredMovies = useMemo(() => {
+  }), [movies, activeView, animeKind, selectedUniverse, categoryWatchLog]);
+
+  const sortWatchLog = watchLog;
+
+  const globalFilteredMovies = useMemo(() => {
     const query = deferredSearchQuery.trim().toLowerCase();
+    if (!query) return [];
+    return dedupeMovies(movies.filter((movie) => movie.title.toLowerCase().includes(query)))
+      .sort((a, b) => a.title.localeCompare(b.title));
+  }, [movies, deferredSearchQuery]);
+
+  const filteredMovies = useMemo(() => {
+    const query = deferredLocalSearchQuery.trim().toLowerCase();
     const matchingMovies = categoryMovies.filter((movie) => {
       if (selectedGenres.length && !selectedGenres.some((genre) => genre.toLowerCase() === 'mcu'
         ? /marvel/i.test(movie.universe || movie.franchise || '') || movie.genres.some((item) => item.toLowerCase() === 'mcu')
@@ -309,21 +375,25 @@ export default function App() {
     });
     const titles = dedupeMovies(matchingMovies);
     if (activeView === 'Home') {
-      const watchedAt = (movie: Movie) => new Date(watchLog[movie.id]?.watchedDate || movie.created_at).getTime() || 0;
+      const watchedAt = (movie: Movie) => new Date(sortWatchLog[movie.id]?.watchedDate || movie.created_at).getTime() || 0;
       return titles.sort((a, b) => watchedAt(b) - watchedAt(a) || (b.release_year ?? 0) - (a.release_year ?? 0) || a.title.localeCompare(b.title));
     }
     return titles.sort((a, b) => {
-      if (sortMode === 'year' && activeView === 'Movies' && selectedUniverse) return (a.release_year ?? 0) - (b.release_year ?? 0) || a.title.localeCompare(b.title);
-      if (sortMode === 'timeline' && activeView === 'Movies' && selectedUniverse) return (watchLog[a.id]?.universeOrder ?? Number.MAX_SAFE_INTEGER) - (watchLog[b.id]?.universeOrder ?? Number.MAX_SAFE_INTEGER) || (a.release_year ?? 0) - (b.release_year ?? 0);
+      if (sortMode === 'timeline' && activeView === 'Movies' && selectedUniverse) {
+        return (sortWatchLog[a.id]?.universeOrder ?? Number.MAX_SAFE_INTEGER) - (sortWatchLog[b.id]?.universeOrder ?? Number.MAX_SAFE_INTEGER) || (a.release_year ?? 0) - (b.release_year ?? 0);
+      }
       if (sortMode === 'year') return (b.release_year ?? 0) - (a.release_year ?? 0) || a.title.localeCompare(b.title);
-      if (sortMode === 'rating') return (watchLog[b.id]?.rating ?? 0) - (watchLog[a.id]?.rating ?? 0) || a.title.localeCompare(b.title);
-      if (sortMode === 'recent') return new Date(watchLog[b.id]?.watchedDate || b.created_at).getTime() - new Date(watchLog[a.id]?.watchedDate || a.created_at).getTime();
-      return a.title.localeCompare(b.title);
+      if (sortMode === 'rating') return (sortWatchLog[b.id]?.rating ?? 0) - (sortWatchLog[a.id]?.rating ?? 0) || a.title.localeCompare(b.title);
+      if (sortMode === 'az') return a.title.localeCompare(b.title);
+      // 'recent'
+      const aTime = sortWatchLog[a.id]?.watchedDate ? new Date(sortWatchLog[a.id].watchedDate).getTime() : 0;
+      const bTime = sortWatchLog[b.id]?.watchedDate ? new Date(sortWatchLog[b.id].watchedDate).getTime() : 0;
+      return bTime - aTime || (b.release_year ?? 0) - (a.release_year ?? 0) || a.title.localeCompare(b.title);
     });
-  }, [categoryMovies, activeView, selectedGenres, deferredSearchQuery, sortMode, selectedUniverse,
-    activeView === 'Home' || ['recent', 'rating', 'timeline'].includes(sortMode) ? watchLog : null]);
+  }, [categoryMovies, activeView, selectedGenres, deferredLocalSearchQuery, sortMode, selectedUniverse, sortWatchLog]);
 
   const collectionView = ['Movies', 'Series', 'Anime'].includes(activeView);
+
   const curatedSections = useMemo(() => {
     const sections = new Map<string, Movie[]>([
       ['2025 & 2026 Releases', []], ['5-Star Masterpieces', []], ['Cinematic Universes Spotlight', []],
@@ -340,24 +410,38 @@ export default function App() {
       if (movie.type === 'TV Series' && genres.some((genre) => genre === 'foreign' || genre === 'drama')) add('K-Dramas & International');
       if (isAnimeTitle(movie)) add('Anime Showcase');
     }
-    const recentlyLogged = [...movies].sort((a, b) =>
-      new Date(watchLog[b.id]?.watchedDate || b.created_at).getTime() - new Date(watchLog[a.id]?.watchedDate || a.created_at).getTime()
-    ).slice(0, 12);
+    const recentlyLogged = [...movies].sort((a, b) => {
+      const aTime = watchLog[a.id]?.watchedDate ? new Date(watchLog[a.id].watchedDate).getTime() : (a.release_year ? new Date(`${a.release_year}-01-01`).getTime() : 0);
+      const bTime = watchLog[b.id]?.watchedDate ? new Date(watchLog[b.id].watchedDate).getTime() : (b.release_year ? new Date(`${b.release_year}-01-01`).getTime() : 0);
+      return bTime - aTime;
+    }).slice(0, 24);
+
     return [
-      { title: 'Recently Logged', movies: recentlyLogged },
-      ...[...sections].map(([title, items]) => ({ title, movies: items })),
+      { title: 'Recently Logged', movies: dedupeMovies(recentlyLogged) },
+      ...[...sections].map(([title, items]) => ({ title, movies: dedupeMovies(items) })),
     ].filter((section) => section.movies.length > 0);
   }, [movies, watchLog]);
+
   const renderCategory = (title: string, items: Movie[]) => {
     const key = `Home-${title}`;
-    return <CategoryShelf key={key} title={title} movies={items} view="grid" expanded={Boolean(expandedCategories[key])}
+    return <CategoryShelf
+      key={key}
+      title={title}
+      movies={items}
+      view="grid"
+      expanded={Boolean(expandedCategories[key])}
       previewOnly={true}
       rail={true}
       showRanks={false}
       onToggle={() => setExpandedCategories((current) => ({ ...current, [key]: !current[key] }))}
-      onAddClick={() => setIsAddModalOpen(true)} onMovieEdit={handleMovieEdit}
-      onMovieDelete={(movie) => void handleMovieDelete(movie)} onMovieOpen={openWatchLog} watchLog={watchLog}
-      favoriteIds={favoriteIds} onFavoriteToggle={toggleFavorite} />;
+      onAddClick={() => setIsAddModalOpen(true)}
+      onMovieEdit={handleMovieEdit}
+      onMovieDelete={(movie) => void handleMovieDelete(movie)}
+      onMovieOpen={openWatchLog}
+      watchLog={watchLog}
+      favoriteIds={favoriteIds}
+      onFavoriteToggle={toggleFavorite}
+    />;
   };
 
   const featuredMovies = useMemo(() => {
@@ -393,40 +477,105 @@ export default function App() {
     catch { /* Storage may be disabled. */ }
   }, [featuredMovies]);
 
-  const billboardMovie = activeView === 'Home' && !searchQuery.trim() && featuredMovies.length
+  const billboardMovie = activeView === 'Home' && !searchQuery.trim() && !globalFilteredMovies.length && featuredMovies.length
     ? featuredMovies[featuredIndex % featuredMovies.length]
     : null;
 
   useEffect(() => {
-    if (activeView !== 'Home' || searchQuery.trim() || featuredMovies.length < 2) return;
+    if (activeView !== 'Home' || searchQuery.trim() || globalFilteredMovies.length || featuredMovies.length < 2) return;
     const rotateBillboard = window.setInterval(() => {
       if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       setFeaturedIndex((index) => (index + 1) % featuredMovies.length);
     }, 5000);
     return () => window.clearInterval(rotateBillboard);
-  }, [activeView, searchQuery, featuredMovies.length]);
+  }, [activeView, searchQuery, globalFilteredMovies.length, featuredMovies.length]);
 
   useEffect(() => {
     if (!billboardMovie?.tmdb_id || billboardMovie.backdrop_path) return;
-    let current = true;
+    const controller = new AbortController();
     const mediaType = billboardMovie.type === 'TV Series' ? 'tv' : 'movie';
-    void getMovieDetails(billboardMovie.tmdb_id, mediaType).then((details) => {
-      if (!current || !details) return;
+    void getMovieDetails(billboardMovie.tmdb_id, mediaType, controller.signal).then((details) => {
+      if (controller.signal.aborted || !details) return;
       setMovies((items) => items.map((item) => item.id === billboardMovie.id
         ? { ...item, backdrop_path: details.backdrop_path ?? undefined, overview: details.overview ?? item.overview }
         : item));
     });
-    return () => { current = false; };
+    return () => controller.abort();
   }, [billboardMovie?.id, billboardMovie?.tmdb_id, billboardMovie?.backdrop_path, billboardMovie?.type]);
 
   return (
     <div className="watch-app">
       <div className="app-main">
-        <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} onAddClick={() => setIsAddModalOpen(true)} activeView={activeView} onViewChange={handlePageChange} />
+        <Header
+          searchQuery={searchQuery}
+          onSearchChange={(q) => setSearchQuery(q)}
+          onAddClick={() => setIsAddModalOpen(true)}
+          activeView={activeView}
+          onViewChange={handlePageChange}
+        />
 
-        {billboardMovie && <div className="home-hero-wrap"><NetflixBillboard key={billboardMovie.id} movie={billboardMovie} rating={watchLog[billboardMovie.id]?.rating ?? 0} onEditLog={() => openWatchLog(billboardMovie)} onDetails={() => setDetailsMovie(billboardMovie)} /><div className="hero-carousel-dots" aria-label="Featured titles">{featuredMovies.map((movie, index) => <button key={movie.id} type="button" aria-label={`Show featured title ${index + 1}: ${movie.title}`} aria-current={featuredIndex % featuredMovies.length === index ? 'true' : undefined} onClick={() => setFeaturedIndex(index)} />)}</div></div>}
+        {billboardMovie && (
+          <div className="home-hero-wrap">
+            <NetflixBillboard
+              key={billboardMovie.id}
+              movie={billboardMovie}
+              rating={watchLog[billboardMovie.id]?.rating ?? 0}
+              onEditLog={() => openWatchLog(billboardMovie)}
+              onDetails={() => setDetailsMovie(billboardMovie)}
+            />
+            <div className="hero-carousel-dots" aria-label="Featured titles">
+              {featuredMovies.map((movie, index) => (
+                <button
+                  key={movie.id}
+                  type="button"
+                  aria-label={`Show featured title ${index + 1}: ${movie.title}`}
+                  aria-current={featuredIndex % featuredMovies.length === index ? 'true' : undefined}
+                  onClick={() => setFeaturedIndex(index)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
-        <main className={`page-content ${activeView === 'Logbook' ? 'logbook-page-content' : collectionView ? 'category-page-content' : 'home-page-content'}`}>
+        {/* Global search results shown across all pages */}
+        {searchQuery.trim() && globalFilteredMovies.length > 0 && (
+          <section className="global-search-results page-content">
+            <div className="global-search-header">
+              <p className="global-search-label">
+                Search results for <strong>"{searchQuery.trim()}"</strong> — {globalFilteredMovies.length} {globalFilteredMovies.length === 1 ? 'title' : 'titles'} found
+              </p>
+              <button type="button" className="genre-clear-button" onClick={() => setSearchQuery('')}>Clear search</button>
+            </div>
+            <PosterGrid
+              movies={globalFilteredMovies.slice(0, visibleMovieCount)}
+              view="grid"
+              isEmptyCollection={false}
+              hasActiveFilters={true}
+              onAddClick={() => setIsAddModalOpen(true)}
+              onMovieEdit={handleMovieEdit}
+              onMovieDelete={(movie) => void handleMovieDelete(movie)}
+              onMovieOpen={openWatchLog}
+              watchLog={watchLog}
+              favoriteIds={favoriteIds}
+              onFavoriteToggle={toggleFavorite}
+            />
+            {visibleMovieCount < globalFilteredMovies.length && (
+              <button type="button" className="load-more-movies" onClick={() => setVisibleMovieCount((count) => count + MOVIES_PER_PAGE)}>
+                Show more ({globalFilteredMovies.length - visibleMovieCount} remaining)
+              </button>
+            )}
+          </section>
+        )}
+        {searchQuery.trim() && globalFilteredMovies.length === 0 && (
+          <section className="global-search-results page-content">
+            <div className="global-search-header">
+              <p className="global-search-label">No results found for <strong>"{searchQuery.trim()}"</strong></p>
+              <button type="button" className="genre-clear-button" onClick={() => setSearchQuery('')}>Clear search</button>
+            </div>
+          </section>
+        )}
+
+        <main className={`page-content ${activeView === 'Logbook' ? 'logbook-page-content' : collectionView ? 'category-page-content' : 'home-page-content'}`} style={searchQuery.trim() ? { display: 'none' } : undefined}>
           {deleteError && <div className="mb-5 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200" role="alert">{deleteError}</div>}
           {databaseError && <div className="mb-5 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200" role="alert">{databaseError}</div>}
           {storageWarning && <div className="mb-5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100" role="alert">Browser storage is full or unavailable. Recent watch log changes may not persist after closing this page.</div>}
@@ -434,35 +583,229 @@ export default function App() {
           {enrichingMetadata && <p className="metadata-loading" role="status">Fetching missing poster details…</p>}
           {moreMetadataAvailable && !enrichingMetadata && <button type="button" className="metadata-batch-button" onClick={() => void runMetadataBatch(movies)}>Fetch the next 24 metadata matches</button>}
 
-          {activeView === 'Home' && <div className="browse-sections">
-            {loading ? <div className="rails-loading">Loading titles…</div> : curatedSections.length ? curatedSections.map((section) => renderCategory(section.title, section.movies)) : (
-              <section className="empty-rail"><h2>Your collection is empty</h2><p>Add a movie or series to start your watch log.</p><button type="button" onClick={() => openWatchLog()} className="netflix-primary-button"><Plus size={16} /> Log a watch</button></section>
-            )}
-          </div>}
+          {activeView === 'Home' && (
+            <div className="browse-sections">
+              {loading ? (
+                <div className="rails-loading">Loading titles…</div>
+              ) : curatedSections.length ? (
+                curatedSections.map((section) => renderCategory(section.title, section.movies))
+              ) : (
+                <section className="empty-rail">
+                  <h2>Your collection is empty</h2>
+                  <p>Add a movie or series to start your watch log.</p>
+                  <button type="button" onClick={() => openWatchLog()} className="netflix-primary-button"><Plus size={16} /> Log a watch</button>
+                </section>
+              )}
+            </div>
+          )}
 
-            {activeView === 'Logbook' && <LogbookPage movies={movies} watchLog={watchLog} onMovieOpen={openWatchLog} deletedMovies={deletedMovies} onMovieRestore={(movie) => void handleMovieRestore(movie)} searchQuery={searchQuery} onSearchChange={setSearchQuery} />}
+          {activeView === 'Logbook' && (
+            <Suspense fallback={<p className="metadata-loading" role="status">Opening Logbook…</p>}>
+              <LogbookPage
+                movies={movies}
+                watchLog={watchLog}
+                onMovieOpen={openWatchLog}
+                deletedMovies={deletedMovies}
+                onMovieRestore={(movie) => void handleMovieRestore(movie)}
+              />
+            </Suspense>
+          )}
 
-          {collectionView && <section className="collection-section">
-            <div className="category-header"><div className="category-heading-copy"><h1>{activeView}</h1></div><div className="collection-controls"><div className="segmented-control view-control" role="group" aria-label="View mode"><button type="button" onClick={() => setViewMode('grid')} aria-pressed={viewMode === 'grid'} aria-label="Grid view"><LayoutGrid className="h-4 w-4" /></button><button type="button" onClick={() => setViewMode('list')} aria-pressed={viewMode === 'list'} aria-label="List view"><List className="h-4 w-4" /></button></div></div></div>
-            <div className="genre-toolbar"><div className="genre-toolbar-heading"><div><span className="genre-label">BROWSE BY GENRE</span><p>{selectedGenres.length ? `${selectedGenres.length} genre${selectedGenres.length === 1 ? '' : 's'} selected` : 'Find a film by its mood or style'}</p></div>{hasActiveFilters && <button type="button" onClick={clearFilters} className="genre-clear-button">Clear filters</button>}</div><GenreFilters movies={categoryMovies} selectedGenres={selectedGenres} onGenreToggle={handleGenreToggle} /></div>
-            {activeView === 'Movies' && <UniverseHub movies={movies} watchLog={watchLog} selectedUniverse={selectedUniverse} onSelect={setSelectedUniverse} />}
-            {(activeView === 'Series' || activeView === 'Anime') && <div className="universe-tag-row" role="group" aria-label="Filter by universe">{[...new Set(movies.filter((movie) => activeView === 'Anime' ? isAnimeTitle(movie) : movie.type === 'TV Series').map((movie) => watchLog[movie.id]?.universe || movie.universe || movie.franchise).filter((name): name is string => Boolean(name)))].map((name) => <button key={name} type="button" className={selectedUniverse === name ? 'universe-tag active' : 'universe-tag'} aria-pressed={selectedUniverse === name} onClick={() => setSelectedUniverse(selectedUniverse === name ? '' : name)}>{name}</button>)}</div>}
-            {activeView === 'Anime' && <div className="anime-kind-filters" role="group" aria-label="Filter anime by format">{([['all','All Anime'],['movie','Anime Movies'],['series','Anime Series']] as const).map(([kind,label]) => <button key={kind} type="button" aria-pressed={animeKind === kind} onClick={() => setAnimeKind(kind)}>{label} ({kind === 'all' ? movies.filter(isAnimeTitle).length : movies.filter((movie) => isAnimeTitle(movie) && (kind === 'movie' ? movie.type === 'Movie' : movie.type === 'TV Series')).length})</button>)}</div>}
-            {loading ? <SkeletonGrid view={viewMode} /> : <>
-              <PosterGrid movies={filteredMovies.slice(0, visibleMovieCount)} view={viewMode} isEmptyCollection={false} hasActiveFilters={hasActiveFilters} onAddClick={() => setIsAddModalOpen(true)} onMovieEdit={handleMovieEdit} onMovieDelete={(movie) => void handleMovieDelete(movie)} onMovieOpen={openWatchLog} watchLog={watchLog} favoriteIds={favoriteIds} onFavoriteToggle={toggleFavorite} />
-              {visibleMovieCount < filteredMovies.length && <button type="button" className="load-more-movies" onClick={() => setVisibleMovieCount((count) => count + MOVIES_PER_PAGE)}>Show more titles ({filteredMovies.length - visibleMovieCount} remaining)</button>}
-            </>}
-          </section>}
+          {collectionView && (
+            <section className="collection-section">
+              <div className="category-header">
+                <div className="category-heading-copy">
+                  <h1>{activeView}</h1>
+                </div>
+                <div className="collection-controls">
+                  <div className="tab-local-search">
+                    <Search size={15} />
+                    <input
+                      type="text"
+                      value={localSearchQuery}
+                      onChange={(e) => setLocalSearchQuery(e.target.value)}
+                      placeholder={`Search ${activeView.toLowerCase()}…`}
+                      className="tab-local-search-input"
+                      aria-label={`Search ${activeView}`}
+                    />
+                    {localSearchQuery && (
+                      <button type="button" className="tab-local-search-clear" onClick={() => setLocalSearchQuery('')} aria-label="Clear local search">
+                        <X size={13} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Sort Controls */}
+                  <div className="collection-sort-control">
+                    <select
+                      value={sortMode}
+                      onChange={(e) => setSortMode(e.target.value as SortMode)}
+                      className="collection-sort-select"
+                      aria-label="Sort collection by"
+                    >
+                      <option value="recent">Recently Logged</option>
+                      <option value="az">Title (A–Z)</option>
+                      <option value="year">Release Year</option>
+                      <option value="rating">Highest Rating</option>
+                      {selectedUniverse && <option value="timeline">Franchise Timeline</option>}
+                    </select>
+                  </div>
+
+                  {/* View Mode Toggle */}
+                  <div className="segmented-control view-control" role="group" aria-label="View mode">
+                    <button type="button" onClick={() => setViewMode('grid')} aria-pressed={viewMode === 'grid'} aria-label="Grid view">
+                      <LayoutGrid className="h-4 w-4" />
+                    </button>
+                    <button type="button" onClick={() => setViewMode('list')} aria-pressed={viewMode === 'list'} aria-label="List view">
+                      <List className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="genre-toolbar">
+                <div className="genre-toolbar-heading">
+                  <div>
+                    <span className="genre-label">BROWSE BY GENRE</span>
+                    <p>{selectedGenres.length ? `${selectedGenres.length} genre${selectedGenres.length === 1 ? '' : 's'} selected` : 'Find a film by its mood or style'}</p>
+                  </div>
+                  {hasActiveFilters && (
+                    <button type="button" onClick={clearFilters} className="genre-clear-button">Clear filters</button>
+                  )}
+                </div>
+                <GenreFilters
+                  movies={categoryMovies}
+                  selectedGenres={selectedGenres}
+                  onGenreToggle={handleGenreToggle}
+                />
+              </div>
+
+              {activeView === 'Movies' && (
+                <UniverseHub
+                  movies={movies}
+                  watchLog={watchLog}
+                  selectedUniverse={selectedUniverse}
+                  onSelect={setSelectedUniverse}
+                />
+              )}
+
+              {(activeView === 'Series' || activeView === 'Anime') && (
+                <div className="universe-tag-row" role="group" aria-label="Filter by universe">
+                  {[...new Set(movies.filter((movie) => activeView === 'Anime' ? isAnimeTitle(movie) : movie.type === 'TV Series').map((movie) => watchLog[movie.id]?.universe || movie.universe || movie.franchise).filter((name): name is string => Boolean(name)))].map((name) => (
+                    <button
+                      key={name}
+                      type="button"
+                      className={selectedUniverse === name ? 'universe-tag active' : 'universe-tag'}
+                      aria-pressed={selectedUniverse === name}
+                      onClick={() => setSelectedUniverse(selectedUniverse === name ? '' : name)}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {activeView === 'Anime' && (
+                <div className="anime-kind-filters" role="group" aria-label="Filter anime by format">
+                  {([['all','All Anime'],['movie','Anime Movies'],['series','Anime Series']] as const).map(([kind,label]) => (
+                    <button
+                      key={kind}
+                      type="button"
+                      aria-pressed={animeKind === kind}
+                      onClick={() => setAnimeKind(kind)}
+                    >
+                      {label} ({kind === 'all' ? dedupeMovies(movies.filter(isAnimeTitle)).length : dedupeMovies(movies.filter((movie) => isAnimeTitle(movie) && (kind === 'movie' ? movie.type === 'Movie' : movie.type === 'TV Series'))).length})
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {loading ? (
+                <SkeletonGrid view={viewMode} />
+              ) : (
+                <>
+                  <PosterGrid
+                    movies={filteredMovies.slice(0, visibleMovieCount)}
+                    view={viewMode}
+                    isEmptyCollection={false}
+                    hasActiveFilters={hasActiveFilters}
+                    onAddClick={() => setIsAddModalOpen(true)}
+                    onMovieEdit={handleMovieEdit}
+                    onMovieDelete={(movie) => void handleMovieDelete(movie)}
+                    onMovieOpen={openWatchLog}
+                    watchLog={watchLog}
+                    favoriteIds={favoriteIds}
+                    onFavoriteToggle={toggleFavorite}
+                  />
+                  {visibleMovieCount < filteredMovies.length && (
+                    <button type="button" className="load-more-movies" onClick={() => setVisibleMovieCount((count) => count + MOVIES_PER_PAGE)}>
+                      Show more titles ({filteredMovies.length - visibleMovieCount} remaining)
+                    </button>
+                  )}
+                </>
+              )}
+            </section>
+          )}
         </main>
-
       </div>
 
-      {showBackToTop && <button type="button" className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top"><ArrowDown className="h-4 w-4 rotate-180" /></button>}
+      {showBackToTop && (
+        <button
+          type="button"
+          className="back-to-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Back to top"
+        >
+          <ArrowDown className="h-4 w-4 rotate-180" />
+        </button>
+      )}
 
-      <AddTitleModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onTitleAdded={handleTitleAdded} />
-      <WatchLogModal isOpen={isWatchModalOpen} movies={movies} initialMovie={watchingMovie} watchLog={watchLog} favoriteIds={favoriteIds} onFavoriteToggle={toggleFavorite} onRemove={removeWatchLog} onClose={() => { setIsWatchModalOpen(false); setWatchingMovie(null); }} onSave={saveWatchLog} onAddTitle={() => { setIsWatchModalOpen(false); setWatchingMovie(null); setIsAddModalOpen(true); }} />
-      {detailsMovie && <NetflixDetailModal movie={detailsMovie} rating={watchLog[detailsMovie.id]?.rating ?? 0} watchedDate={watchLog[detailsMovie.id]?.watchedDate ?? ''} review={watchLog[detailsMovie.id]?.review ?? ''} onClose={() => setDetailsMovie(null)} />}
-      {editingMovie && <EditModal isOpen={isEditModalOpen} onClose={() => { setIsEditModalOpen(false); setEditingMovie(null); }} movie={editingMovie} onMovieUpdated={handleMovieUpdated} />}
+      {isAddModalOpen && (
+        <Suspense fallback={<p className="metadata-loading" role="status">Opening Add Title…</p>}>
+          <AddTitleModal isOpen onClose={() => setIsAddModalOpen(false)} onTitleAdded={handleTitleAdded} />
+        </Suspense>
+      )}
+
+      {isWatchModalOpen && (
+        <Suspense fallback={<p className="metadata-loading" role="status">Opening watch log…</p>}>
+          <WatchLogModal
+            isOpen
+            movies={movies}
+            initialMovie={watchingMovie}
+            watchLog={watchLog}
+            favoriteIds={favoriteIds}
+            onFavoriteToggle={toggleFavorite}
+            onRemove={removeWatchLog}
+            onClose={() => { setIsWatchModalOpen(false); setWatchingMovie(null); }}
+            onSave={saveWatchLog}
+            onAddTitle={() => { setIsWatchModalOpen(false); setWatchingMovie(null); setIsAddModalOpen(true); }}
+          />
+        </Suspense>
+      )}
+
+      {detailsMovie && (
+        <Suspense fallback={<p className="metadata-loading" role="status">Loading details…</p>}>
+          <NetflixDetailModal
+            movie={detailsMovie}
+            rating={watchLog[detailsMovie.id]?.rating ?? 0}
+            watchedDate={watchLog[detailsMovie.id]?.watchedDate ?? ''}
+            review={watchLog[detailsMovie.id]?.review ?? ''}
+            onClose={() => setDetailsMovie(null)}
+            onEdit={(movie) => openWatchLog(movie)}
+          />
+        </Suspense>
+      )}
+
+      {editingMovie && isEditModalOpen && (
+        <Suspense fallback={<p className="metadata-loading" role="status">Opening editor…</p>}>
+          <EditModal
+            isOpen
+            onClose={() => { setIsEditModalOpen(false); setEditingMovie(null); }}
+            movie={editingMovie}
+            onMovieUpdated={handleMovieUpdated}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
@@ -474,21 +817,29 @@ function UniverseHub({ movies, watchLog, selectedUniverse, onSelect }: {
   onSelect: (value: string) => void;
 }) {
   const countFor = (name: string) => movies.filter((movie) => (watchLog[movie.id]?.universe || movie.universe || movie.franchise) === name && movie.type === 'Movie' && !isAnimeTitle(movie)).length;
-  const universes = [...new Set(movies.filter((movie) => movie.type === 'Movie' && !isAnimeTitle(movie)).map((movie) => watchLog[movie.id]?.universe || movie.universe || movie.franchise).filter((value): value is string => Boolean(value)))].filter((name) => countFor(name) > 4).sort();
+  const universes = [...new Set(movies.filter((movie) => movie.type === 'Movie' && !isAnimeTitle(movie)).map((movie) => watchLog[movie.id]?.universe || movie.universe || movie.franchise).filter((value): value is string => Boolean(value)))].filter((name) => countFor(name) > 1).sort();
   if (!universes.length) return null;
-  return <>
+  return (
     <section className="universe-section" aria-label="Movie universes">
       <div className="universe-hub">
         {universes.map((name) => {
           const active = selectedUniverse === name;
           const theme = name === 'Marvel Cinematic Universe' ? 'mcu' : name === 'The Conjuring Universe' ? 'conjuring' : name === 'DC Universe' ? 'dc' : name === 'Disney & Pixar' ? 'disney' : 'default';
-          return <button key={name} type="button" className={`universe-card universe-card-${theme}${active ? ' active' : ''}`} aria-pressed={active} onClick={() => onSelect(active ? '' : name)}>
-            <strong>{name}</strong>
-          </button>;
+          return (
+            <button
+              key={name}
+              type="button"
+              className={`universe-card universe-card-${theme}${active ? ' active' : ''}`}
+              aria-pressed={active}
+              onClick={() => onSelect(active ? '' : name)}
+            >
+              <strong>{name}</strong>
+            </button>
+          );
         })}
       </div>
     </section>
-  </>;
+  );
 }
 
 function dedupeMovies(movies: Movie[]) {
@@ -506,6 +857,7 @@ function dedupeMovies(movies: Movie[]) {
     byTitle.set(key, {
       ...other,
       ...preferred,
+      id: preferred.id,
       poster_path: preferred.poster_path || other.poster_path,
       tmdb_id: preferred.tmdb_id || other.tmdb_id,
       overview: preferred.overview || other.overview,
@@ -515,4 +867,3 @@ function dedupeMovies(movies: Movie[]) {
   }
   return [...byTitle.values()];
 }
-

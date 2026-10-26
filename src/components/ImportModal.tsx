@@ -30,18 +30,18 @@ export default function ImportModal({ isOpen, onClose, onImportComplete }: Impor
   const [currentStep, setCurrentStep] = useState<'upload' | 'review' | 'importing' | 'complete'>('upload');
   const [importStats, setImportStats] = useState({ total: 0, imported: 0, skipped: 0, failed: 0 });
 
-  useEffect(() => {
-    if (!isOpen) {
-      resetForm();
-    }
-  }, [isOpen]);
-
   const resetForm = () => {
     setIsParsing(false);
     setImportItems([]);
     setCurrentStep('upload');
     setImportStats({ total: 0, imported: 0, skipped: 0, failed: 0 });
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
 
   const parseCSV = (text: string): CSVRow[] => {
     const lines = text.split('\n').filter(line => line.trim());

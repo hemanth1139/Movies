@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { CalendarDays, Check, Clapperboard, Film, Heart, Plus, Star, Tv, X, RefreshCw } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import { emptyWatchLogEntry, type WatchLogEntry } from '../types/watchLog';
@@ -22,7 +22,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
   const [rating, setRating] = useState(0);
   const [rewatch, setRewatch] = useState(false);
   const [review, setReview] = useState('');
-  const [watchedDate, setWatchedDate] = useState(new Date().toISOString().slice(0, 10));
+  const [watchedDate, setWatchedDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [universe, setUniverse] = useState('');
   const [isCustomUniverse, setIsCustomUniverse] = useState(false);
   const [universeOrder, setUniverseOrder] = useState('');
@@ -40,34 +40,45 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
   const backdrop = backdropPath ? `https://image.tmdb.org/t/p/original${backdropPath}` : undefined;
   const overview = movie?.overview || detailsOverview;
   const universeOptions = useMemo(() => [...new Set(movies.map((item) => watchLog[item.id]?.universe || item.universe || item.franchise).filter((value): value is string => Boolean(value)))].sort(), [movies, watchLog]);
-
+  const latestFormInputs = useRef({ movies, initialMovie, watchLog, universeOptions });
   useEffect(() => {
-    if (!isOpen) return;
-    const nextId = initialMovie?.id ?? movieId;
-    setMovieId(nextId);
-    const entry = nextId ? watchLog[nextId] : undefined;
+    latestFormInputs.current = { movies, initialMovie, watchLog, universeOptions };
+  }, [movies, initialMovie, watchLog, universeOptions]);
+
+  const resetForMovie = (nextId: string) => {
+    const latest = latestFormInputs.current;
+    const selectedMovie = latest.initialMovie?.id === nextId ? latest.initialMovie : latest.movies.find((item) => item.id === nextId);
+    const entry = nextId ? latest.watchLog[nextId] : undefined;
     const data = entry ?? emptyWatchLogEntry();
+    setMovieId(nextId);
     setRating(data.rating);
     setRewatch(data.rewatch);
     setReview(data.review);
     setWatchedDate(data.watchedDate || new Date().toISOString().slice(0, 10));
-    setTotalSeasons(data.totalSeasons || movie?.total_seasons || 0);
+    setTotalSeasons(data.totalSeasons || selectedMovie?.total_seasons || 0);
     setWatchedSeasons(data.watchedSeasons ?? []);
-    setUniverse(data.universe || movie?.universe || movie?.franchise || '');
+    setUniverse(data.universe || selectedMovie?.universe || selectedMovie?.franchise || '');
     setUniverseOrder(data.universeOrder ? String(data.universeOrder) : '');
-    setIsCustomUniverse(Boolean(data.universe && !universeOptions.includes(data.universe)));
-  }, [isOpen, initialMovie?.id, movieId, movie, watchLog, universeOptions]);
+    setIsCustomUniverse(Boolean(data.universe && !latest.universeOptions.includes(data.universe)));
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const targetId = initialMovie?.id;
+    if (targetId) {
+      resetForMovie(targetId);
+    }
+  }, [isOpen, initialMovie?.id]);
 
   useEffect(() => {
     if (!isOpen || !movie) return;
     let cancelled = false;
-    setIsMetadataLoading(true);
     setRuntime(movie.type === 'Movie' ? movie.runtime ?? null : null);
     setDetailsOverview(movie.overview ?? '');
     setDetailsBackdrop(movie.backdrop_path ?? '');
     setSeasonDetails([]);
 
-    void getVerifiedMovieDetails(movie).then((details) => {
+    getVerifiedMovieDetails(movie).then((details) => {
       if (cancelled) return;
       setDetailsOverview(details?.overview ?? movie.overview ?? '');
       setDetailsBackdrop(details?.backdrop_path ?? movie.backdrop_path ?? '');
@@ -88,7 +99,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
     });
 
     return () => { cancelled = true; };
-  }, [isOpen, movie?.id, movie?.tmdb_id, movie?.type, movie?.release_year]);
+  }, [isOpen, movie]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -151,7 +162,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
 
   return (
     <div className="watch-modal-backdrop fixed inset-0 z-[70] flex items-end justify-center p-0 sm:items-center sm:p-5" onClick={onClose}>
-      <section className="watch-modal relative flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="watch-modal-title" onClick={(event) => event.stopPropagation()}>
+      <section className="watch-modal relative flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="watch-modal-title" onClick={(event) => event.stopPropagation()}>
         {backdrop && <div className="watch-modal-backdrop-art" style={{ backgroundImage: `url("${backdrop}")` }} aria-hidden="true" />}
         <div className="watch-modal-scrim" aria-hidden="true" />
         <div className="relative z-10 flex min-h-0 flex-1 flex-col">
@@ -175,7 +186,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
                 </div>
               ) : (
                 <div className="flex gap-2">
-                  <select id="watch-title-select" value={movieId} onChange={(event) => setMovieId(event.target.value)} className="watch-input min-w-0 flex-1">
+                  <select id="watch-title-select" value={movieId} onChange={(event) => resetForMovie(event.target.value)} className="watch-input min-w-0 flex-1">
                     <option value="">Choose a title from your library</option>
                     {movies.map((item) => <option key={item.id} value={item.id}>{item.title} · {item.type}</option>)}
                   </select>
@@ -197,18 +208,32 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
                 <div className="watch-form-grid mt-6">
                   <div className="form-block">
                     <span className="field-label">Your rating</span>
-                    <div className="flex items-center gap-1" role="radiogroup" aria-label="Rating">
+                    <div className="flex items-center gap-1.5 flex-wrap" role="radiogroup" aria-label="Rating">
                       {Array.from({ length: 5 }, (_, index) => {
                         const value = index + 1;
                         const previewRating = hoveredRating || rating;
-                        return <button key={value} type="button" onPointerEnter={() => setHoveredRating(value)} onPointerLeave={() => setHoveredRating(0)} onClick={(event) => {
-                          const rect = event.currentTarget.getBoundingClientRect();
-                          setRating(event.clientX - rect.left < rect.width / 2 ? value - 0.5 : value);
-                        }} className="rating-star" aria-label={`Rate ${value} stars`} aria-checked={rating >= value - 0.5} role="radio">
-                          <Star className={previewRating >= value ? 'fill-amber-400 text-amber-400' : previewRating >= value - 0.5 ? 'fill-amber-400/50 text-amber-400' : 'text-gray-600'} />
-                        </button>;
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            onPointerEnter={() => setHoveredRating(value)}
+                            onPointerLeave={() => setHoveredRating(0)}
+                            onClick={(event) => {
+                              const rect = event.currentTarget.getBoundingClientRect();
+                              const isLeftHalf = (event.clientX - rect.left) < (rect.width / 2);
+                              const targetVal = isLeftHalf ? value - 0.5 : value;
+                              setRating(rating === targetVal ? 0 : targetVal);
+                            }}
+                            className="rating-star min-h-[44px] min-w-[36px] flex items-center justify-center p-1.5"
+                            aria-label={`Rate ${value} stars (tap left half for ${value - 0.5})`}
+                            aria-checked={rating >= value - 0.5}
+                            role="radio"
+                          >
+                            <Star className={`h-6 w-6 ${previewRating >= value ? 'fill-amber-400 text-amber-400' : previewRating >= value - 0.5 ? 'fill-amber-400/50 text-amber-400' : 'text-gray-600'}`} />
+                          </button>
+                        );
                       })}
-                      <span className="ml-2 font-mono text-xs text-gray-400">{rating ? rating.toFixed(1) : '—'}</span>
+                      <span className="ml-2 font-mono text-sm font-semibold text-amber-400">{rating ? `${rating.toFixed(1)} / 5` : 'Not rated'}</span>
                     </div>
                   </div>
                   <label className="form-block"><span className="field-label">Watched date</span><span className="date-field"><CalendarDays className="h-4 w-4 text-gray-500" /><input type="date" value={watchedDate} onChange={(event) => setWatchedDate(event.target.value)} className="watch-input" /></span></label>
@@ -252,7 +277,7 @@ export default function WatchLogModal({ isOpen, movies, initialMovie, watchLog, 
 
             </div>
           </div>
-          <footer className="watch-modal-actions flex shrink-0 justify-between gap-2 border-t border-white/[0.07] bg-[#161616] px-5 py-4 sm:px-7">
+          <footer className="watch-modal-actions flex shrink-0 justify-between gap-2 border-t border-white/[0.07] bg-[#161616] px-5 py-4 pb-[max(16px,env(safe-area-inset-bottom))] sm:px-7">
             <span>{movie && watchLog[movie.id] && <button type="button" onClick={() => { onRemove?.(movie.id); onClose(); }} className="remove-watched-button">Remove from Watched</button>}</span>
             <span className="flex gap-2">
               <button type="button" onClick={onClose} className="secondary-button">Cancel</button>

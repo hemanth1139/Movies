@@ -1,17 +1,34 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
-import { ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { ChevronDown, ChevronRight, Film, Search, Star, Tv, X } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogMap } from '../types/watchLog';
 import { isAnimeTitle } from '../lib/animeUtils';
+import { getPosterUrl } from '../lib/tmdb';
 
 type GroupSection = 'Movies' | 'TV Series';
-interface MovieTableProps { movies: Movie[]; watchLog: WatchLogMap; onOpen: (movie: Movie) => void; searchQuery: string; onSearchChange: (query: string) => void; }
-interface MovieGroup { id: string; title: string; movies: Movie[]; section?: GroupSection; }
-const INITIAL_VISIBLE_ROWS = 120;
-const ROWS_PER_PAGE = 120;
+interface MovieTableProps {
+  movies: Movie[];
+  watchLog: WatchLogMap;
+  onOpen: (movie: Movie) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+}
+interface MovieGroup {
+  id: string;
+  title: string;
+  movies: Movie[];
+  section?: GroupSection;
+}
+const INITIAL_VISIBLE_ROWS = 150;
+const ROWS_PER_PAGE = 100;
 
 const kDramaTitles = new Set(['The Glory', 'The Penthouse: War in Life', 'Where Stars Land', 'Karma', 'When Life Gives You Tangerines']);
-const emotionalMovieTitles = new Set(['Atonement', 'Beautiful Boy', 'Be With You', 'Call Me by Your Name', 'Dead Poets Society', 'Five Feet Apart', 'Forrest Gump', 'Gifted', 'Into the Wild', 'La La Land', 'Love, Rosie', 'Manchester by the Sea', 'Me Before You', 'Past Lives', 'The Blind Side', 'The Fault in Our Stars', 'The Notebook', 'The Perks of Being a Wallflower', 'The Pursuit of Happyness', 'The Theory of Everything', 'Whiplash']);
+const emotionalMovieTitles = new Set([
+  'Atonement', 'Beautiful Boy', 'Be With You', 'Call Me by Your Name', 'Dead Poets Society',
+  'Five Feet Apart', 'Forrest Gump', 'Gifted', 'Into the Wild', 'La La Land', 'Love, Rosie',
+  'Manchester by the Sea', 'Me Before You', 'Past Lives', 'The Blind Side', 'The Fault in Our Stars',
+  'The Notebook', 'The Perks of Being a Wallflower', 'The Pursuit of Happyness', 'The Theory of Everything', 'Whiplash'
+]);
 
 function getNotionCategory(movie: Movie, watchLog: WatchLogMap): { section: GroupSection; title: string } {
   const genres = movie.genres.map((genre) => genre.toLowerCase());
@@ -54,13 +71,19 @@ function getNotionCategory(movie: Movie, watchLog: WatchLogMap): { section: Grou
   return { section: 'Movies', title: 'Miscellaneous / Fun / Drama' };
 }
 
-export default function MovieTable({ movies, watchLog, onOpen, searchQuery, onSearchChange }: MovieTableProps) {
+export default function MovieTable({ movies, watchLog, onOpen }: MovieTableProps) {
+  const [localSearch, setLocalSearch] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
   const [visibleRows, setVisibleRows] = useState(INITIAL_VISIBLE_ROWS);
-  const deferredSearchQuery = useDeferredValue(searchQuery);
-  useEffect(() => setVisibleRows(INITIAL_VISIBLE_ROWS), [searchQuery, selectedGenre]);
+  const deferredSearchQuery = useDeferredValue(localSearch);
+
+  useEffect(() => {
+    setVisibleRows(INITIAL_VISIBLE_ROWS);
+  }, [localSearch, selectedGenre]);
+
   const allGenres = useMemo(() => ['All', ...new Set(movies.flatMap((movie) => movie.genres).sort((a, b) => a.localeCompare(b)))], [movies]);
+
   const filteredMovies = useMemo(() => movies.filter((movie) => {
     const query = deferredSearchQuery.trim().toLowerCase();
     return (!query || `${movie.title} ${movie.genres.join(' ')}`.toLowerCase().includes(query))
@@ -105,44 +128,120 @@ export default function MovieTable({ movies, watchLog, onOpen, searchQuery, onSe
       return items.length ? [{ id: `notion:${category.section}:${category.title}`, ...category, movies: items.sort((a, b) => a.title.localeCompare(b.title)) }] : [];
     });
   }, [filteredMovies, watchLog]);
+
   const visibleGroups = useMemo(() => {
     let remaining = visibleRows;
     return groups.map((group) => {
       const visible = group.movies.slice(0, remaining);
       remaining = Math.max(0, remaining - visible.length);
-      return { ...group, movies: visible };
+      return { ...group, movies: visible, totalCount: group.movies.length };
     }).filter((group) => group.movies.length > 0);
   }, [groups, visibleRows]);
 
   return (
     <div className="movie-table-container">
       <div className="vault-toolbar">
-        <label className="vault-search"><Search aria-hidden="true" /><input className="vault-search-input" type="search" placeholder="Search your watchlog… (Cmd+K)" value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} /></label>
-        <label className="vault-genre-filter"><span>Genre</span><select value={selectedGenre} onChange={(event) => setSelectedGenre(event.target.value)}>{allGenres.map((genre) => <option key={genre}>{genre}</option>)}</select></label>
+        <label className="vault-search">
+          <Search aria-hidden="true" />
+          <input
+            className="vault-search-input"
+            type="search"
+            placeholder="Search within Master Database…"
+            value={localSearch}
+            onChange={(event) => setLocalSearch(event.target.value)}
+          />
+          {localSearch && (
+            <button
+              type="button"
+              className="tab-local-search-clear"
+              aria-label="Clear vault search"
+              onClick={() => setLocalSearch('')}
+            >
+              <X size={14} />
+            </button>
+          )}
+        </label>
+        <label className="vault-genre-filter">
+          <span>Genre</span>
+          <select value={selectedGenre} onChange={(event) => setSelectedGenre(event.target.value)}>
+            {allGenres.map((genre) => <option key={genre}>{genre}</option>)}
+          </select>
+        </label>
       </div>
 
       <div className="vault-groups">
         {visibleGroups.map((group, index) => {
           const isCollapsed = Boolean(collapsedGroups[group.id]);
-          return <div key={group.id}>
-            {group.section && groups[index - 1]?.section !== group.section && <h2 className="vault-section-heading">{group.section}</h2>}
-            <section className="vault-group">
-            <button type="button" className="vault-group-heading" aria-expanded={!isCollapsed} onClick={() => setCollapsedGroups((current) => ({ ...current, [group.id]: !current[group.id] }))}>
-              {isCollapsed ? <ChevronRight aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}<i aria-hidden="true" /><strong>{group.title}</strong>
-            </button>
-            {!isCollapsed && <div className="vault-group-rows">
-              {group.movies.map((movie, index) => {
-                return <article className="vault-row" key={movie.id} role="button" tabIndex={0} aria-label={`Edit watch log for ${movie.title}`} onClick={() => onOpen(movie)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen(movie); } }}>
-                  <span className="vault-row-number">{index + 1}</span>
-                  <div className="vault-title-cell"><strong>{movie.title}</strong></div>
-                </article>;
-              })}
-            </div>}
-            </section>
-          </div>;
+          return (
+            <div key={group.id}>
+              {group.section && groups[index - 1]?.section !== group.section && (
+                <h2 className="vault-section-heading">{group.section}</h2>
+              )}
+              <section className="vault-group">
+                <button
+                  type="button"
+                  className="vault-group-heading"
+                  aria-expanded={!isCollapsed}
+                  onClick={() => setCollapsedGroups((current) => ({ ...current, [group.id]: !current[group.id] }))}
+                >
+                  {isCollapsed ? <ChevronRight aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}
+                  <i aria-hidden="true" />
+                  <strong>{group.title}</strong>
+                  <span className="vault-count">{group.totalCount}</span>
+                </button>
+                {!isCollapsed && (
+                  <div className="vault-group-rows">
+                    {group.movies.map((movie, movieIndex) => {
+                      const entry = watchLog[movie.id];
+                      const rating = entry?.rating ?? 0;
+                      const posterUrl = getPosterUrl(movie.poster_path || movie.backdrop_path, 'w92');
+                      return (
+                        <article
+                          className="vault-row"
+                          key={movie.id}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Edit watch log for ${movie.title}`}
+                          onClick={() => onOpen(movie)}
+                          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen(movie); } }}
+                        >
+                          <span className="vault-row-number">{movieIndex + 1}</span>
+                          <div className="vault-title-cell">
+                            {posterUrl ? (
+                              <img src={posterUrl} alt="" loading="lazy" />
+                            ) : (
+                              <div className="h-[36px] w-[25px] shrink-0 rounded bg-white/5 flex items-center justify-center text-gray-500">
+                                {movie.type === 'TV Series' ? <Tv size={13} /> : <Film size={13} />}
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <strong>{movie.title}</strong>
+                              <small>
+                                {movie.release_year ?? 'Year unknown'} · {movie.type === 'TV Series' ? 'Series' : 'Movie'}
+                                {rating > 0 && (
+                                  <span className="text-amber-400 font-semibold ml-1.5 inline-flex items-center gap-0.5">
+                                    <Star size={11} className="fill-amber-400 text-amber-400" />
+                                    {rating.toFixed(1)}
+                                  </span>
+                                )}
+                              </small>
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
+              </section>
+            </div>
+          );
         })}
         {!groups.length && <div className="vault-empty">No watched titles match these filters.</div>}
-        {visibleRows < filteredMovies.length && <button type="button" className="load-more-movies" onClick={() => setVisibleRows((count) => count + ROWS_PER_PAGE)}>Show more titles ({filteredMovies.length - visibleRows} remaining)</button>}
+        {visibleRows < filteredMovies.length && (
+          <button type="button" className="load-more-movies" onClick={() => setVisibleRows((count) => count + ROWS_PER_PAGE)}>
+            Show more titles ({filteredMovies.length - visibleRows} remaining)
+          </button>
+        )}
       </div>
     </div>
   );

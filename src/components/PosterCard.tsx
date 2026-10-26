@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CSSProperties, PointerEvent } from 'react';
-import { Film, Heart, Pencil, Trash2 } from 'lucide-react';
+import { Film, Heart, Pencil, Star, Trash2 } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogEntry } from '../types/watchLog';
 import { getPosterUrl } from '../lib/tmdb';
@@ -36,7 +36,18 @@ function GenrePills({ genres }: { genres: string[] }) {
   );
 }
 
-export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, style, onOpen, rank, watchLogEntry, isFavorite = false }: PosterCardProps) {
+export default function PosterCard({
+  movie,
+  variant = 'grid',
+  onEdit,
+  onDelete,
+  style,
+  onOpen,
+  rank,
+  watchLogEntry,
+  isFavorite = false,
+  onFavoriteToggle,
+}: PosterCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -62,14 +73,13 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
     event.currentTarget.style.setProperty('--ry', '0deg');
   };
 
-
   const actions = (onEdit || onDelete) && (
-    <div className="absolute top-2 right-2 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-wl">
-      {onEdit && variant === 'list' && (
+    <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-wl">
+      {onEdit && (
         <button
           type="button"
           onClick={(event) => { event.stopPropagation(); onEdit(movie); }}
-          className="rounded-md bg-background/80 p-1.5 text-secondary backdrop-blur hover:text-accent"
+          className="rounded-md bg-black/70 p-1.5 text-gray-300 backdrop-blur hover:text-white hover:bg-black/90 transition-colors"
           aria-label={`Edit ${movie.title}`}
         >
           <Pencil className="h-3.5 w-3.5" />
@@ -79,7 +89,7 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
         <button
           type="button"
           onClick={(event) => { event.stopPropagation(); setConfirmOpen(true); }}
-          className="rounded-md bg-background/80 p-1.5 text-secondary backdrop-blur hover:text-danger"
+          className="rounded-md bg-black/70 p-1.5 text-gray-300 backdrop-blur hover:text-red-400 hover:bg-black/90 transition-colors"
           aria-label={`Delete ${movie.title}`}
         >
           <Trash2 className="h-3.5 w-3.5" />
@@ -114,15 +124,28 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
   ) : poster;
 
   if (variant === 'list') {
+    const rating = watchLogEntry?.rating ?? 0;
     return (
       <>
-        <article style={style} className="poster-enter row-glass group relative flex cursor-pointer items-center gap-3 rounded-wl bg-surface p-2.5 pr-14 transition-all duration-300 hover:translate-x-1 hover:bg-surface-2 hover:shadow-md" onClick={() => onOpen?.(movie)}>
+        <article
+          style={style}
+          className="poster-enter row-glass group relative flex cursor-pointer items-center gap-3 rounded-wl bg-surface p-2.5 pr-20 transition-all duration-300 hover:translate-x-1 hover:bg-surface-2 hover:shadow-md"
+          onClick={() => onOpen?.(movie)}
+        >
           <div className="relative h-16 w-11 shrink-0 overflow-hidden rounded-md bg-surface-2">
             {!imageLoaded && posterUrl && !imageFailed && <div className="poster-skeleton absolute inset-0" />}
             {posterContent}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-sm font-medium text-primary">{movie.title}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="truncate text-sm font-medium text-primary">{movie.title}</h3>
+              {movie.release_year && <span className="text-xs text-gray-400 font-mono">({movie.release_year})</span>}
+              {rating > 0 && (
+                <span className="inline-flex items-center gap-0.5 text-xs text-amber-400 font-semibold ml-1">
+                  <Star className="h-3 w-3 fill-amber-400" /> {rating.toFixed(1)}
+                </span>
+              )}
+            </div>
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
               <GenrePills genres={movie.genres} />
             </div>
@@ -132,7 +155,7 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
         <ConfirmDialog
           isOpen={confirmOpen}
           title="Delete this title?"
-          message={`${movie.title} will be removed from your watchlog.`}
+          message={`${movie.title} will be removed from your collection.`}
           onCancel={() => setConfirmOpen(false)}
           onConfirm={() => {
             setConfirmOpen(false);
@@ -142,6 +165,8 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
       </>
     );
   }
+
+  const seasonsCount = watchLogEntry?.watchedSeasons?.length ?? 0;
 
   return (
     <>
@@ -159,12 +184,41 @@ export default function PosterCard({ movie, variant = 'grid', onEdit, onDelete, 
         <div className="poster-frame relative aspect-[2/3] overflow-hidden rounded-lg bg-surface shadow-md transition-all duration-300 group-hover:scale-[1.05] group-hover:shadow-2xl group-hover:shadow-black">
           {!imageLoaded && posterUrl && !imageFailed && <div className="poster-skeleton absolute inset-0" />}
           {posterContent}
-          {isFavorite && <span className="poster-favorite-badge active" aria-label="Favorite"><Heart aria-hidden="true" /></span>}
-          {watchLogEntry?.rewatch && <span className="poster-rewatch-badge">↻ Rewatched</span>}
-          {movie.type === 'TV Series' && Boolean(watchLogEntry?.watchedSeasons.length) && <span className="poster-seasons-badge">✓ {watchLogEntry?.watchedSeasons.length} seasons watched</span>}
-          <div className="poster-hover-info" aria-hidden="true">
+
+          {onFavoriteToggle && (
+            <button
+              type="button"
+              className={`poster-favorite-badge ${isFavorite ? 'active' : 'inactive'}`}
+              aria-label={isFavorite ? `Remove ${movie.title} from favorites` : `Add ${movie.title} to favorites`}
+              aria-pressed={isFavorite}
+              onClick={(event) => {
+                event.stopPropagation();
+                onFavoriteToggle(movie.id);
+              }}
+            >
+              <Heart aria-hidden="true" />
+            </button>
+          )}
+
+          {actions}
+
+          {(watchLogEntry?.rewatch || (movie.type === 'TV Series' && seasonsCount > 0)) && (
+            <div className="poster-badge-stack">
+              {watchLogEntry?.rewatch && <span className="poster-rewatch-badge">↻ Rewatched</span>}
+              {movie.type === 'TV Series' && seasonsCount > 0 && (
+                <span className="poster-seasons-badge">
+                  ✓ {seasonsCount} {seasonsCount === 1 ? 'season' : 'seasons'} watched
+                </span>
+              )}
+            </div>
+          )}
+
+          <div className="poster-hover-info">
             <h3>{movie.title}</h3>
-            <div><span>{watchLogEntry?.watchedDate || movie.release_year || movie.release_date?.slice(0, 4) || ''}</span><span>Edit Log →</span></div>
+            <div>
+              <span>{watchLogEntry?.watchedDate || movie.release_year || movie.release_date?.slice(0, 4) || ''}</span>
+              <span>Edit Log →</span>
+            </div>
           </div>
         </div>
       </article>

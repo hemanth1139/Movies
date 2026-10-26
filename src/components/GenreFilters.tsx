@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { uniqueGenres } from '../lib/genres';
+import { normalizeGenreName, uniqueGenres } from '../lib/genres';
 import type { Movie } from '../types/movie';
 
 interface GenreFiltersProps {
@@ -20,9 +20,10 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
     ...(hasMcuMovies ? ['MCU'] : []),
   ])
     .filter((genre) => !excludeAnime || genre.toLowerCase() !== 'anime');
+
   const countForGenre = (genre: string) => movies.filter((movie) => genre.toLowerCase() === 'mcu'
     ? /marvel/i.test(movie.universe || movie.franchise || '') || movie.genres.some((item) => item.toLowerCase() === 'mcu')
-    : movie.genres.some((item) => item.toLowerCase() === genre.toLowerCase())).length;
+    : movie.genres.some((item) => normalizeGenreName(item).toLowerCase().includes(normalizeGenreName(genre).toLowerCase()))).length;
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -43,7 +44,13 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
 
   return (
     <div className="genre-scroll-shell">
-      <button type="button" className="genre-scroll-arrow" disabled={!canScrollLeft} aria-label="Scroll genres left" onClick={() => scrollRef.current?.scrollBy({ left: -280, behavior: 'smooth' })}>
+      <button
+        type="button"
+        className="genre-scroll-arrow"
+        disabled={!canScrollLeft}
+        aria-label="Scroll genres left"
+        onClick={() => scrollRef.current?.scrollBy({ left: -280, behavior: 'smooth' })}
+      >
         <ChevronLeft aria-hidden="true" />
       </button>
       <div
@@ -51,35 +58,35 @@ export default function GenreFilters({ movies, selectedGenres, onGenreToggle, ex
         className="chip-scroll flex min-w-0 flex-1 items-center gap-2 overflow-x-auto"
         role="group"
         aria-label="Filter by genre"
-        onWheel={(event) => {
-          if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-            event.currentTarget.scrollLeft += event.deltaY;
-            event.preventDefault();
-          }
-        }}
       >
         {['All', ...genres].map((genre, index) => {
-        const selected = selectedGenres.includes(genre);
-        const isAll = genre === 'All';
-        return (
-          <button
-            key={genre}
-            type="button"
-            style={{ animationDelay: `${index * 50}ms` }}
-            aria-pressed={isAll ? selectedGenres.length === 0 : selected}
-            onClick={() => onGenreToggle(genre)}
-            className={`genre-chip shrink-0 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.04] ${
-              selected
-                ? 'border-white/20 bg-surface-2 text-primary'
-                : 'border-border bg-surface text-secondary hover:border-accent/50 hover:text-accent'
-            }`}
-          >
-            {genre}{!isAll && <span className="genre-count">({countForGenre(genre)})</span>}
-          </button>
-        );
+          const selected = selectedGenres.includes(genre);
+          const isAll = genre === 'All';
+          return (
+            <button
+              key={genre}
+              type="button"
+              style={{ animationDelay: `${index * 50}ms` }}
+              aria-pressed={isAll ? selectedGenres.length === 0 : selected}
+              onClick={() => onGenreToggle(genre)}
+              className={`genre-chip shrink-0 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.04] ${
+                selected
+                  ? 'border-white/20 bg-surface-2 text-primary'
+                  : 'border-border bg-surface text-secondary hover:border-accent/50 hover:text-accent'
+              }`}
+            >
+              {genre}{!isAll && <span className="genre-count">({countForGenre(genre)})</span>}
+            </button>
+          );
         })}
       </div>
-      <button type="button" className="genre-scroll-arrow" disabled={!canScrollRight} aria-label="Scroll genres right" onClick={() => scrollRef.current?.scrollBy({ left: 280, behavior: 'smooth' })}>
+      <button
+        type="button"
+        className="genre-scroll-arrow"
+        disabled={!canScrollRight}
+        aria-label="Scroll genres right"
+        onClick={() => scrollRef.current?.scrollBy({ left: 280, behavior: 'smooth' })}
+      >
         <ChevronRight aria-hidden="true" />
       </button>
     </div>

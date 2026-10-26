@@ -334,6 +334,7 @@ export async function searchTMDBDetailed(
     const data = await response.json();
     return { results: data.results || [], error: null };
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') return { results: [], error: null };
     console.error('Error searching TMDB:', error);
     const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
     return { results: [], error: offline ? 'offline' : 'api' };
@@ -345,11 +346,11 @@ export async function searchTMDB(query: string, type?: 'movie' | 'tv'): Promise<
   return results;
 }
 
-export async function getMovieDetails(tmdbId: number, type: 'movie' | 'tv'): Promise<TMDBMovieDetails | null> {
+export async function getMovieDetails(tmdbId: number, type: 'movie' | 'tv', signal?: AbortSignal): Promise<TMDBMovieDetails | null> {
   if (!TMDB_API_KEY) return null;
 
   try {
-    const response = await fetchWithTimeout(`${TMDB_BASE_URL}/${type}/${tmdbId}?api_key=${TMDB_API_KEY}`);
+    const response = await fetchWithTimeout(`${TMDB_BASE_URL}/${type}/${tmdbId}?api_key=${TMDB_API_KEY}`, { signal });
 
     if (!response.ok) {
       throw new Error(`TMDB API error: ${response.statusText}`);
@@ -357,7 +358,9 @@ export async function getMovieDetails(tmdbId: number, type: 'movie' | 'tv'): Pro
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching movie details:', error);
+    if (!(error instanceof Error && error.name === 'AbortError')) {
+      console.error('Error fetching movie details:', error);
+    }
     return null;
   }
 }
