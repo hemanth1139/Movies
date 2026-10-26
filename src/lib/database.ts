@@ -2,30 +2,43 @@ import type { Movie } from '../types/movie';
 import { supabase } from './supabase';
 import { csvMovies } from './csvMovies';
 
-let moviesLoadPromise: Promise<Movie[]> | null = null;
+const MOVIE_PAGE_SIZE = 250;
 
-export function getMovies(): Promise<Movie[]> {
-  if (moviesLoadPromise) return moviesLoadPromise;
-  moviesLoadPromise = loadMovies().finally(() => { moviesLoadPromise = null; });
-  return moviesLoadPromise;
-}
-
-async function loadMovies(): Promise<Movie[]> {
+export async function getMovies(onPage?: (movies: Movie[], isFirstPage: boolean) => void): Promise<Movie[]> {
   if (!supabase) {
-    return csvMovies;
+    const result: Movie[] = [];
+    for (let start = 0; start < csvMovies.length; start += MOVIE_PAGE_SIZE) {
+      const page = csvMovies.slice(start, start + MOVIE_PAGE_SIZE);
+      result.push(...page);
+      onPage?.(page, start === 0);
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+    }
+    if (!csvMovies.length) onPage?.([], true);
+    return result;
   }
 
-  const { data, error } = await supabase
-    .from('movies')
-    .select('*')
-    .order('title');
+  const result: Movie[] = [];
+  for (let start = 0; ; start += MOVIE_PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('movies')
+      .select('*')
+      .order('title')
+      .range(start, start + MOVIE_PAGE_SIZE - 1);
 
-  if (error) {
-    console.error('getMovies:', error);
-    return csvMovies;
+    if (error) {
+      console.error('getMovies:', error);
+      onPage?.(csvMovies, true);
+      return csvMovies;
+    }
+
+    const page = (data ?? []) as Movie[];
+    if (start === 0) onPage?.(page, true);
+    else onPage?.(page, false);
+    result.push(...page);
+    if (page.length < MOVIE_PAGE_SIZE) break;
   }
 
-  return ((data ?? []) as Movie[]).sort((a, b) => a.title.localeCompare(b.title));
+  return result;
 }
 
 export async function getMovieById(id: string): Promise<Movie | null> {

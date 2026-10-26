@@ -1,15 +1,15 @@
 import type { Movie } from '../types/movie';
 import { Clapperboard, Film, Sparkles, Tv } from 'lucide-react';
+import { isAnimeTitle } from '../lib/animeUtils';
 
 interface LogbookStatsProps {
   movies: Movie[];
 }
 
 export default function LogbookStats({ movies }: LogbookStatsProps) {
-  const isAnime = (movie: Movie) => (movie.type as string) === 'Anime' || movie.original_language === 'ja';
-  const totalMovies = movies.filter((movie) => movie.type === 'Movie' && !isAnime(movie)).length;
-  const totalSeries = movies.filter((movie) => movie.type === 'TV Series' && !isAnime(movie)).length;
-  const totalAnime = movies.filter(isAnime).length;
+  const totalMovies = movies.filter((movie) => movie.type === 'Movie' && !isAnimeTitle(movie)).length;
+  const totalSeries = movies.filter((movie) => movie.type === 'TV Series' && !isAnimeTitle(movie)).length;
+  const totalAnime = movies.filter(isAnimeTitle).length;
 
   return (
     <div className="kpi-grid">

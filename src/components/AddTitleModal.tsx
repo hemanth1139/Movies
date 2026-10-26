@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { X, Search, Loader2, Film } from 'lucide-react';
 import type { TMDBSearchResult, TMDBMovieDetails, Movie, MediaType } from '../types/movie';
 import { searchTMDBDetailed, getMovieDetails, getReleaseYear, getPosterUrl, tmdbErrorMessage } from '../lib/tmdb';
@@ -28,6 +28,8 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   const [tmdbError, setTmdbError] = useState<string | null>(null);
   const [selectedResult, setSelectedResult] = useState<TMDBSearchResult | null>(null);
   const [selectedDetails, setSelectedDetails] = useState<TMDBMovieDetails | null>(null);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  const selectionRequest = useRef(0);
   const [title, setTitle] = useState('');
   const [selectedType, setSelectedType] = useState<MediaType>('Movie');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -37,6 +39,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
 
   useEffect(() => {
     if (!isOpen) return;
+    selectionRequest.current += 1;
     setSearchQuery('');
     setSearchResults([]);
     setSelectedResult(null);
@@ -92,7 +95,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
       setSearchResults(results.filter((result) => result.media_type !== 'person'));
       setTmdbError(tmdbErrorMessage(error));
       setIsSearching(false);
-    }, 300);
+    }, 500);
 
     return () => {
       cancelled = true;
@@ -102,9 +105,11 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
   }, [searchQuery, isOpen, selectedResult]);
 
   const handleSelectResult = async (result: TMDBSearchResult) => {
+    const requestId = ++selectionRequest.current;
     const mediaType: MediaType = result.media_type === 'tv' ? 'TV Series' : 'Movie';
     setSelectedResult(result);
     setSelectedDetails(null);
+    setIsLoadingDetails(true);
     setTitle(result.title || result.name || '');
     setSelectedType(mediaType);
     setSelectedGenres(mapTmdbGenreIds(result.genre_ids));
@@ -113,7 +118,9 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
 
     const type = result.media_type === 'tv' ? 'tv' : 'movie';
     const details = await getMovieDetails(result.id, type);
+    if (selectionRequest.current !== requestId) return;
     setSelectedDetails(details);
+    setIsLoadingDetails(false);
     setSelectedUniverse(getUniverseSuggestion(details));
     if (details?.genres?.length) {
       setSelectedGenres(mapTmdbGenreNames(details.genres));
@@ -172,9 +179,8 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
     setIsAdding(false);
   };
 
+  const genreOptions = useMemo(() => uniqueGenres([...GENRES, ...selectedGenres]), [selectedGenres]);
   if (!isOpen) return null;
-
-  const genreOptions = uniqueGenres([...GENRES, ...selectedGenres]);
 
   return (
     <div className="modal-backdrop fixed inset-0 z-50 flex items-start justify-center bg-background/80 px-0 pb-3 pt-[calc(82px+env(safe-area-inset-top))] backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
@@ -264,7 +270,7 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
             <div>
               <button
                 type="button"
-                onClick={() => setSelectedResult(null)}
+                onClick={() => { selectionRequest.current += 1; setIsLoadingDetails(false); setSelectedResult(null); }}
                 className="mb-4 text-sm text-accent hover:opacity-80"
               >
                 ← Back to search
@@ -322,6 +328,8 @@ export default function AddTitleModal({ isOpen, onClose, onTitleAdded }: AddTitl
                   </div>
                 </div>
               </div>
+
+              {isLoadingDetails && <p className="mb-4 flex items-center gap-2 text-sm text-secondary" role="status"><Loader2 className="h-4 w-4 animate-spin" /> Loading title details…</p>}
 
               <label className="mb-4 block">
                 <span className="mb-1.5 block text-sm font-medium text-primary">Universe / franchise</span>

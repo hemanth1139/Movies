@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BookOpen, Film, Home, Menu, Plus, Search, Sparkles, Tv, X } from 'lucide-react';
 import type { AppView } from './Sidebar';
 
@@ -22,6 +22,11 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isSearchExpanded && window.matchMedia('(hover: none)').matches) searchInputRef.current?.focus();
+  }, [isSearchExpanded]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +54,17 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeView]);
 
+  const handleSearchToggle = () => {
+    setIsMenuOpen(false);
+    setIsSearchExpanded((expanded) => !expanded);
+  };
+  const expandSearchOnHover = () => {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) setIsSearchExpanded(true);
+  };
+  const collapseSearchOnMouseLeave = () => {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) setIsSearchExpanded(false);
+  };
+
   return (
     <header className={`netflix-navbar ${isScrolled ? 'scrolled' : ''}`}>
       {isMenuOpen && <button type="button" className="mobile-nav-scrim" aria-label="Close navigation menu" onClick={() => setIsMenuOpen(false)} />}
@@ -74,15 +90,16 @@ export default function Header({ searchQuery, onSearchChange, onAddClick, active
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <div
           className={`netflix-search-container${isSearchExpanded ? ' search-expanded' : ''}`}
-          onMouseEnter={() => setIsSearchExpanded(true)}
-          onMouseLeave={() => setIsSearchExpanded(false)}
+          onMouseEnter={expandSearchOnHover}
+          onMouseLeave={collapseSearchOnMouseLeave}
         >
-          <button type="button" className="netflix-search-toggle" aria-label="Search titles" aria-expanded={isSearchExpanded} onClick={() => setIsSearchExpanded((expanded) => !expanded)}>
+          <button type="button" className="netflix-search-toggle" aria-label="Search titles" aria-expanded={isSearchExpanded} onClick={handleSearchToggle}>
             <Search size={20} aria-hidden="true" />
           </button>
           {isSearchExpanded && (
             <input
               type="text"
+              ref={searchInputRef}
               placeholder="Titles, people, genres"
               className="netflix-search-input"
               value={searchQuery}

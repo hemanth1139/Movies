@@ -1,35 +1,35 @@
-﻿import { useMemo, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { ChevronDown, ChevronRight, Search } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogMap } from '../types/watchLog';
+import { isAnimeTitle } from '../lib/animeUtils';
 
 type GroupSection = 'Movies' | 'TV Series';
-interface MovieTableProps { movies: Movie[]; watchLog: WatchLogMap; onOpen: (movie: Movie) => void; }
+interface MovieTableProps { movies: Movie[]; watchLog: WatchLogMap; onOpen: (movie: Movie) => void; searchQuery: string; onSearchChange: (query: string) => void; }
 interface MovieGroup { id: string; title: string; movies: Movie[]; section?: GroupSection; }
+const INITIAL_VISIBLE_ROWS = 120;
+const ROWS_PER_PAGE = 120;
 
-const isAnime = (movie: Movie) => (movie.type as string) === 'Anime'
-  || movie.original_language === 'ja'
-  || movie.genres.some((genre) => genre.toLowerCase().includes('animation'));
 const kDramaTitles = new Set(['The Glory', 'The Penthouse: War in Life', 'Where Stars Land', 'Karma', 'When Life Gives You Tangerines']);
 const emotionalMovieTitles = new Set(['Atonement', 'Beautiful Boy', 'Be With You', 'Call Me by Your Name', 'Dead Poets Society', 'Five Feet Apart', 'Forrest Gump', 'Gifted', 'Into the Wild', 'La La Land', 'Love, Rosie', 'Manchester by the Sea', 'Me Before You', 'Past Lives', 'The Blind Side', 'The Fault in Our Stars', 'The Notebook', 'The Perks of Being a Wallflower', 'The Pursuit of Happyness', 'The Theory of Everything', 'Whiplash']);
 
 function getNotionCategory(movie: Movie, watchLog: WatchLogMap): { section: GroupSection; title: string } {
   const genres = movie.genres.map((genre) => genre.toLowerCase());
   const hasGenre = (...names: string[]) => genres.some((genre) => names.some((name) => genre.includes(name)));
-  const isAnimeTitle = isAnime(movie) && movie.title !== 'Alice in Borderland';
+  const animeTitle = isAnimeTitle(movie);
   const normalizedTitle = movie.title.toLowerCase();
   const universeLabel = watchLog[movie.id]?.universe || movie.universe || movie.franchise || '';
   const universe = universeLabel.toLowerCase();
 
   if (movie.type === 'TV Series') {
-    if (isAnimeTitle) return { section: 'TV Series', title: 'Anime TV Series' };
+    if (animeTitle) return { section: 'TV Series', title: 'Anime TV Series' };
     if (movie.original_language === 'ko' || movie.origin_country?.includes('KR') || kDramaTitles.has(movie.title)) {
       return { section: 'TV Series', title: 'K-Drama' };
     }
     return { section: 'TV Series', title: 'International & English Series' };
   }
 
-  if (isAnimeTitle) return { section: 'Movies', title: 'Anime Movies' };
+  if (animeTitle) return { section: 'Movies', title: 'Anime Movies' };
   if (/\bharry potter\b|\bfantastic beasts\b/.test(normalizedTitle)) return { section: 'Movies', title: 'Harry Potter Wizarding World' };
   if (universe.includes('marvel')) return { section: 'Movies', title: 'Marvel Cinematic Universe (MCU)' };
   if (universe.includes('dc')) return { section: 'Movies', title: 'DC Movies' };
@@ -54,16 +54,18 @@ function getNotionCategory(movie: Movie, watchLog: WatchLogMap): { section: Grou
   return { section: 'Movies', title: 'Miscellaneous / Fun / Drama' };
 }
 
-export default function MovieTable({ movies, watchLog, onOpen }: MovieTableProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function MovieTable({ movies, watchLog, onOpen, searchQuery, onSearchChange }: MovieTableProps) {
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const [visibleRows, setVisibleRows] = useState(INITIAL_VISIBLE_ROWS);
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  useEffect(() => setVisibleRows(INITIAL_VISIBLE_ROWS), [searchQuery, selectedGenre]);
   const allGenres = useMemo(() => ['All', ...new Set(movies.flatMap((movie) => movie.genres).sort((a, b) => a.localeCompare(b)))], [movies]);
   const filteredMovies = useMemo(() => movies.filter((movie) => {
-    const query = searchQuery.trim().toLowerCase();
+    const query = deferredSearchQuery.trim().toLowerCase();
     return (!query || `${movie.title} ${movie.genres.join(' ')}`.toLowerCase().includes(query))
       && (selectedGenre === 'All' || movie.genres.includes(selectedGenre));
-  }), [movies, searchQuery, selectedGenre]);
+  }), [movies, deferredSearchQuery, selectedGenre]);
 
   const groups = useMemo<MovieGroup[]>(() => {
     const franchiseCategories: Array<{ section: GroupSection; title: string }> = [
@@ -103,16 +105,24 @@ export default function MovieTable({ movies, watchLog, onOpen }: MovieTableProps
       return items.length ? [{ id: `notion:${category.section}:${category.title}`, ...category, movies: items.sort((a, b) => a.title.localeCompare(b.title)) }] : [];
     });
   }, [filteredMovies, watchLog]);
+  const visibleGroups = useMemo(() => {
+    let remaining = visibleRows;
+    return groups.map((group) => {
+      const visible = group.movies.slice(0, remaining);
+      remaining = Math.max(0, remaining - visible.length);
+      return { ...group, movies: visible };
+    }).filter((group) => group.movies.length > 0);
+  }, [groups, visibleRows]);
 
   return (
     <div className="movie-table-container">
       <div className="vault-toolbar">
-        <label className="vault-search"><Search aria-hidden="true" /><input className="vault-search-input" type="search" placeholder="Search your watchlogâ€¦ (Cmd+K)" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} /></label>
+        <label className="vault-search"><Search aria-hidden="true" /><input className="vault-search-input" type="search" placeholder="Search your watchlog… (Cmd+K)" value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} /></label>
         <label className="vault-genre-filter"><span>Genre</span><select value={selectedGenre} onChange={(event) => setSelectedGenre(event.target.value)}>{allGenres.map((genre) => <option key={genre}>{genre}</option>)}</select></label>
       </div>
 
       <div className="vault-groups">
-        {groups.map((group, index) => {
+        {visibleGroups.map((group, index) => {
           const isCollapsed = Boolean(collapsedGroups[group.id]);
           return <div key={group.id}>
             {group.section && groups[index - 1]?.section !== group.section && <h2 className="vault-section-heading">{group.section}</h2>}
@@ -132,6 +142,7 @@ export default function MovieTable({ movies, watchLog, onOpen }: MovieTableProps
           </div>;
         })}
         {!groups.length && <div className="vault-empty">No watched titles match these filters.</div>}
+        {visibleRows < filteredMovies.length && <button type="button" className="load-more-movies" onClick={() => setVisibleRows((count) => count + ROWS_PER_PAGE)}>Show more titles ({filteredMovies.length - visibleRows} remaining)</button>}
       </div>
     </div>
   );

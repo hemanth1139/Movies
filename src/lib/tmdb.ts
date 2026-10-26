@@ -76,6 +76,24 @@ function readMetadataCache(): MetadataCache {
   }
 }
 
+function writeMetadataCache(cache: MetadataCache): boolean {
+  const now = Date.now();
+  const entries = Object.entries(cache).filter(([, value]) => now - value.checkedAt <= CACHE_TTL_MS);
+  try {
+    window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(Object.fromEntries(entries)));
+    return true;
+  } catch {
+    try {
+      const trimmed = Object.fromEntries(entries.sort((a, b) => b[1].checkedAt - a[1].checkedAt).slice(0, 1500));
+      window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(trimmed));
+      return true;
+    } catch {
+      console.warn('TMDB metadata cache could not be saved; metadata remains available for this session.');
+      return false;
+    }
+  }
+}
+
 export function applyCachedTmdbMetadata(movies: Movie[]): Movie[] {
   const cache = readMetadataCache();
   return movies.map((movie) => {
@@ -119,14 +137,14 @@ export function cacheMovieMetadata(movie: Movie): void {
       origin_country: movie.origin_country,
     },
   };
-  try { window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(cache)); } catch { /* Cache storage is optional. */ }
+  writeMetadataCache(cache);
 }
 
 export async function enrichMoviesFromTMDB(
   movies: Movie[],
   onMovieEnriched: (movieId: string, metadata: TmdbMetadata) => void
-): Promise<void> {
-  if (!TMDB_API_KEY || typeof window === 'undefined') return;
+): Promise<boolean> {
+  if (!TMDB_API_KEY || typeof window === 'undefined') return false;
 
   const cache = readMetadataCache();
   const queue = movies.filter((movie) => {
@@ -138,18 +156,26 @@ export async function enrichMoviesFromTMDB(
       && Date.now() - cached.checkedAt > 24 * 60 * 60 * 1000);
     return cacheExpired || posterMissingFromCache;
   });
+  const batch = queue.slice(0, 24);
   let nextIndex = 0;
   let consecutiveFailures = 0;
+  let nextEnrichmentStart = 0;
+  let processedSinceCacheWrite = 0;
 
   const worker = async () => {
-    while (nextIndex < queue.length && consecutiveFailures < 4) {
-      const movie = queue[nextIndex++];
+    while (nextIndex < batch.length && consecutiveFailures < 4) {
+      const movie = batch[nextIndex++];
+      const scheduledStart = Math.max(Date.now(), nextEnrichmentStart);
+      nextEnrichmentStart = scheduledStart + 900;
+      if (scheduledStart > Date.now()) await new Promise((resolve) => window.setTimeout(resolve, scheduledStart - Date.now()));
       const key = movieCacheKey(movie);
       const type = movie.type === 'TV Series' ? 'tv' : 'movie';
       const initialSearch = await searchTMDBDetailed(movie.title, type, movie.release_year);
 
       if (initialSearch.error) {
         consecutiveFailures += 1;
+        cache[key] = { checkedAt: Date.now(), metadata: null };
+        processedSinceCacheWrite += 1;
         continue;
       }
 
@@ -238,14 +264,20 @@ export async function enrichMoviesFromTMDB(
         origin_country: result?.origin_country,
       } : null;
       cache[key] = { checkedAt: Date.now(), metadata };
-      try { window.localStorage.setItem(TMDB_CACHE_KEY, JSON.stringify(cache)); } catch { /* Cache storage is optional. */ }
+      processedSinceCacheWrite += 1;
+      if (processedSinceCacheWrite >= 20) {
+        writeMetadataCache(cache);
+        processedSinceCacheWrite = 0;
+      }
       if (metadata && (metadata.tmdb_id !== movie.tmdb_id || metadata.poster_path !== movie.poster_path || metadata.backdrop_path !== movie.backdrop_path || metadata.original_language !== movie.original_language || metadata.origin_country?.join(',') !== movie.origin_country?.join(','))) {
         onMovieEnriched(movie.id, metadata);
       }
     }
   };
 
-  await Promise.all(Array.from({ length: Math.min(4, queue.length) }, () => worker()));
+  await Promise.all(Array.from({ length: Math.min(2, batch.length) }, () => worker()));
+  writeMetadataCache(cache);
+  return queue.length > batch.length;
 }
 
 /** Select a well-rated poster from all languages for an already title/year/genre-matched TMDB record. */

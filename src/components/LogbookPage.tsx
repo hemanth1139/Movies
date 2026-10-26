@@ -4,6 +4,7 @@ import type { Movie } from '../types/movie';
 import MovieTable from './MovieTable';
 import LogbookStats from './LogbookStats';
 import type { WatchLogMap } from '../types/watchLog';
+import { isAnimeTitle } from '../lib/animeUtils';
 
 interface LogbookPageProps {
   movies: Movie[];
@@ -11,11 +12,13 @@ interface LogbookPageProps {
   onMovieOpen: (movie: Movie) => void;
   deletedMovies: Movie[];
   onMovieRestore: (movie: Movie) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
-export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovies, onMovieRestore }: LogbookPageProps) {
+export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovies, onMovieRestore, searchQuery, onSearchChange }: LogbookPageProps) {
   const [trashOpen, setTrashOpen] = useState(false);
-  const movieCount = movies.filter((movie) => movie.type === 'Movie' && movie.original_language !== 'ja' && (movie.type as string) !== 'Anime').length;
+  const movieCount = movies.filter((movie) => movie.type === 'Movie' && !isAnimeTitle(movie)).length;
   return (
     <div className="logbook-page">
       <div className="page-intro">
@@ -34,7 +37,7 @@ export default function LogbookPage({ movies, watchLog, onMovieOpen, deletedMovi
             <p>{movieCount} movies · {movies.length} total watched titles</p>
           </div>
         </div>
-        <MovieTable movies={movies} watchLog={watchLog} onOpen={onMovieOpen} />
+        <MovieTable movies={movies} watchLog={watchLog} onOpen={onMovieOpen} searchQuery={searchQuery} onSearchChange={onSearchChange} />
       </section>
 
       <section className="recently-deleted">
