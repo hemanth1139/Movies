@@ -298,7 +298,7 @@ async function getBestPosterPath(tmdbId: number, type: 'movie' | 'tv'): Promise<
   }
 }
 
-export type PosterSize = 'w92' | 'w185' | 'w300' | 'w500' | 'w780' | 'original';
+export type PosterSize = 'w92' | 'w154' | 'w185' | 'w300' | 'w342' | 'w500' | 'w780' | 'original';
 
 export function getPosterUrl(
   path: string | null | undefined,

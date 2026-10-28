@@ -1,4 +1,4 @@
-import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, LayoutGrid, List, Plus, Search, X } from 'lucide-react';
 import Header from './components/Header';
 import type { AppView } from './components/Sidebar';
@@ -188,14 +188,14 @@ export default function App() {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       if (!saveCriticalStorageValue(WATCH_LOG_STORAGE_KEY, JSON.stringify(watchLog))) setStorageWarning(true);
-    }, 150);
+    }, 1000);
     return () => window.clearTimeout(timer);
   }, [watchLog]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       if (!saveCriticalStorageValue(DELETED_MOVIES_STORAGE_KEY, JSON.stringify(deletedMovies))) setStorageWarning(true);
-    }, 150);
+    }, 1000);
     return () => window.clearTimeout(timer);
   }, [deletedMovies]);
 
@@ -210,10 +210,10 @@ export default function App() {
     setVisibleMovieCount(INITIAL_VISIBLE_MOVIES);
   }, [activeView, searchQuery, localSearchQuery, selectedGenres, selectedUniverse, animeKind, sortMode]);
 
-  const handleGenreToggle = (genre: string) => {
+  const handleGenreToggle = useCallback((genre: string) => {
     if (genre === 'All') { setSelectedGenres([]); return; }
     setSelectedGenres((prev) => prev.includes(genre) ? prev.filter((item) => item !== genre) : [...prev, genre]);
-  };
+  }, []);
 
   const hasActiveFilters = selectedGenres.length > 0
     || localSearchQuery.trim().length > 0
@@ -221,15 +221,15 @@ export default function App() {
     || Boolean(selectedUniverse)
     || (activeView === 'Anime' && animeKind !== 'all');
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSelectedGenres([]);
     setSearchQuery('');
     setLocalSearchQuery('');
     setSelectedUniverse('');
     setAnimeKind('all');
-  };
+  }, []);
 
-  const handleTitleAdded = (movie: Movie) => {
+  const handleTitleAdded = useCallback((movie: Movie) => {
     cacheMovieMetadata(movie);
     setMovies((prev) => [...prev, movie]);
     setWatchLog((prev) => ({
@@ -239,16 +239,16 @@ export default function App() {
         watchedDate: new Date().toISOString().slice(0, 10),
       },
     }));
-  };
+  }, []);
 
-  const handleMovieEdit = (movie: Movie) => {
+  const handleMovieEdit = useCallback((movie: Movie) => {
     setEditingMovie(movie);
     setIsEditModalOpen(true);
-  };
+  }, []);
 
-  const handleMovieUpdated = (updatedMovie: Movie) => {
+  const handleMovieUpdated = useCallback((updatedMovie: Movie) => {
     setMovies((prev) => prev.map((item) => item.id === updatedMovie.id ? updatedMovie : item));
-  };
+  }, []);
 
   const handleMovieDelete = async (movie: Movie) => {
     setDeleteError('');
@@ -289,7 +289,7 @@ export default function App() {
     setDeletedMovies(remainingDeletedMovies);
   };
 
-  const handlePageChange = (view: AppView) => {
+  const handlePageChange = useCallback((view: AppView) => {
     setActiveView(view);
     setSearchQuery(''); // Clears global search so user isn't trapped in search view
     setSelectedGenres([]);
@@ -298,41 +298,51 @@ export default function App() {
     setSelectedUniverse('');
     setAnimeKind('all');
     setExpandedCategories({});
-  };
+  }, []);
 
-  const openWatchLog = (movie: Movie | null = null) => {
+  const openWatchLog = useCallback((movie: Movie | null = null) => {
     setWatchingMovie(movie);
     setIsWatchModalOpen(true);
-  };
+  }, []);
 
-  const saveWatchLog = (movieId: string, entry: WatchLogEntry) => {
+  const saveWatchLog = useCallback((movieId: string, entry: WatchLogEntry) => {
     setWatchLog((prev) => ({ ...prev, [movieId]: entry }));
     setMovies((current) => current.map((movie) => movie.id === movieId ? { ...movie, universe: entry.universe || undefined, universeOrder: entry.universeOrder, franchise: entry.universe || null } : movie));
     if (supabase) void updateMovie(movieId, { franchise: entry.universe || null });
-  };
+  }, []);
 
-  const removeWatchLog = (movieId: string) => {
+  const removeWatchLog = useCallback((movieId: string) => {
     setWatchLog((prev) => {
       const next = { ...prev };
       delete next[movieId];
       return next;
     });
-  };
+  }, []);
 
   const categoryWatchLog = selectedUniverse ? watchLog : EMPTY_WATCH_LOG;
-  const categoryMovies = useMemo(() => movies.filter((movie) => {
-    if (activeView === 'Movies' && (movie.type !== 'Movie' || isAnimeTitle(movie))) return false;
-    if (activeView === 'Series' && (movie.type !== 'TV Series' || isAnimeTitle(movie))) return false;
-    if (activeView === 'Anime' && !isAnimeTitle(movie)) return false;
-    if (activeView === 'Anime' && animeKind === 'movie' && movie.type !== 'Movie') return false;
-    if (activeView === 'Anime' && animeKind === 'series' && movie.type !== 'TV Series') return false;
-    if (selectedUniverse && activeView === 'Movies') {
-      const universe = categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '';
-      if (universe !== selectedUniverse || movie.type !== 'Movie') return false;
-    }
-    if (selectedUniverse && (activeView === 'Series' || activeView === 'Anime') && (categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '') !== selectedUniverse) return false;
-    return true;
-  }), [movies, activeView, animeKind, selectedUniverse, categoryWatchLog]);
+
+  // Split categoryMovies into smaller memoized computations
+  const moviesByTypeAndAnime = useMemo(() => {
+    return movies.filter((movie) => {
+      if (activeView === 'Movies' && (movie.type !== 'Movie' || isAnimeTitle(movie))) return false;
+      if (activeView === 'Series' && (movie.type !== 'TV Series' || isAnimeTitle(movie))) return false;
+      if (activeView === 'Anime' && !isAnimeTitle(movie)) return false;
+      if (activeView === 'Anime' && animeKind === 'movie' && movie.type !== 'Movie') return false;
+      if (activeView === 'Anime' && animeKind === 'series' && movie.type !== 'TV Series') return false;
+      return true;
+    });
+  }, [movies, activeView, animeKind]);
+
+  const categoryMovies = useMemo(() => {
+    return moviesByTypeAndAnime.filter((movie) => {
+      if (selectedUniverse && activeView === 'Movies') {
+        const universe = categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '';
+        if (universe !== selectedUniverse || movie.type !== 'Movie') return false;
+      }
+      if (selectedUniverse && (activeView === 'Series' || activeView === 'Anime') && (categoryWatchLog[movie.id]?.universe || movie.universe || movie.franchise || '') !== selectedUniverse) return false;
+      return true;
+    });
+  }, [moviesByTypeAndAnime, selectedUniverse, activeView, categoryWatchLog]);
 
   const sortWatchLog = watchLog;
 
@@ -372,7 +382,16 @@ export default function App() {
 
   const collectionView = ['Movies', 'Series', 'Anime'].includes(activeView);
 
-  const curatedSections = useMemo(() => {
+  // Split curatedSections into smaller memoized computations
+  const recentlyLoggedMovies = useMemo(() => {
+    return [...movies].sort((a, b) => {
+      const aTime = watchLog[a.id]?.watchedDate ? new Date(watchLog[a.id].watchedDate).getTime() : (a.release_year ? new Date(`${a.release_year}-01-01`).getTime() : 0);
+      const bTime = watchLog[b.id]?.watchedDate ? new Date(watchLog[b.id].watchedDate).getTime() : (b.release_year ? new Date(`${b.release_year}-01-01`).getTime() : 0);
+      return bTime - aTime;
+    }).slice(0, 24);
+  }, [movies, watchLog]);
+
+  const sectionMovies = useMemo(() => {
     const sections = new Map<string, Movie[]>([
       ['2025 & 2026 Releases', []], ['5-Star Masterpieces', []], ['Cinematic Universes Spotlight', []],
       ['Spine-Chilling Horror', []], ['Sci-Fi & Mind-Benders', []], ['K-Dramas & International', []], ['Anime Showcase', []],
@@ -388,17 +407,15 @@ export default function App() {
       if (movie.type === 'TV Series' && genres.some((genre) => genre === 'foreign' || genre === 'drama')) add('K-Dramas & International');
       if (isAnimeTitle(movie)) add('Anime Showcase');
     }
-    const recentlyLogged = [...movies].sort((a, b) => {
-      const aTime = watchLog[a.id]?.watchedDate ? new Date(watchLog[a.id].watchedDate).getTime() : (a.release_year ? new Date(`${a.release_year}-01-01`).getTime() : 0);
-      const bTime = watchLog[b.id]?.watchedDate ? new Date(watchLog[b.id].watchedDate).getTime() : (b.release_year ? new Date(`${b.release_year}-01-01`).getTime() : 0);
-      return bTime - aTime;
-    }).slice(0, 24);
-
-    return [
-      { title: 'Recently Logged', movies: dedupeMovies(recentlyLogged) },
-      ...[...sections].map(([title, items]) => ({ title, movies: dedupeMovies(items) })),
-    ].filter((section) => section.movies.length > 0);
+    return sections;
   }, [movies, watchLog]);
+
+  const curatedSections = useMemo(() => {
+    return [
+      { title: 'Recently Logged', movies: dedupeMovies(recentlyLoggedMovies) },
+      ...[...sectionMovies].map(([title, items]) => ({ title, movies: dedupeMovies(items) })),
+    ].filter((section) => section.movies.length > 0);
+  }, [recentlyLoggedMovies, sectionMovies]);
 
   const renderCategory = (title: string, items: Movie[]) => {
     const key = `Home-${title}`;

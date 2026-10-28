@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { CSSProperties, PointerEvent } from 'react';
 import { Film, Pencil, Star, Trash2 } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import type { WatchLogEntry } from '../types/watchLog';
 import { getPosterUrl } from '../lib/tmdb';
 import ConfirmDialog from './ConfirmDialog';
+
+// Check if device is touch-enabled
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
 
 interface PosterCardProps {
   movie: Movie;
@@ -17,7 +22,7 @@ interface PosterCardProps {
   rank?: number;
 }
 
-function GenrePills({ genres }: { genres: string[] }) {
+const GenrePills = memo(function GenrePills({ genres }: { genres: string[] }) {
   const visible = genres.slice(0, 3);
   const extra = genres.length - visible.length;
   return (
@@ -32,9 +37,9 @@ function GenrePills({ genres }: { genres: string[] }) {
       )}
     </div>
   );
-}
+});
 
-export default function PosterCard({
+const PosterCard = function PosterCard({
   movie,
   variant = 'grid',
   onEdit,
@@ -49,10 +54,32 @@ export default function PosterCard({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const hasPosterPath = Boolean(movie.poster_path);
   const imagePath = movie.poster_path || movie.backdrop_path;
-  const posterUrl = getPosterUrl(imagePath, variant === 'list' ? (hasPosterPath ? 'w185' : 'w300') : (hasPosterPath ? 'w500' : 'w780'));
+
+  // Optimize image sizes based on variant
+  const imageSize = variant === 'list'
+    ? (hasPosterPath ? 'w185' : 'w300')
+    : (hasPosterPath ? 'w500' : 'w780');
+
+  const posterUrl = getPosterUrl(imagePath, imageSize);
+
+  // Generate srcset for responsive images
+  const srcSet = imagePath ? [
+    getPosterUrl(imagePath, 'w92'),
+    getPosterUrl(imagePath, 'w154'),
+    getPosterUrl(imagePath, 'w185'),
+    getPosterUrl(imagePath, 'w342'),
+    getPosterUrl(imagePath, 'w500'),
+    getPosterUrl(imagePath, 'w780'),
+  ].map((url, i) => `${url} ${[92, 154, 185, 342, 500, 780][i]}w`).join(', ') : undefined;
+
+  // Responsive sizes attribute
+  const sizes = variant === 'list'
+    ? '(max-width: 680px) 44px, 185px'
+    : '(max-width: 480px) 50vw, (max-width: 680px) 33vw, (max-width: 900px) 25vw, (max-width: 1200px) 20vw, 16vw';
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== 'mouse') return;
+    // Disable 3D tilt effect on touch devices for better performance
+    if (event.pointerType !== 'mouse' || isTouchDevice()) return;
     const frame = event.currentTarget.querySelector<HTMLElement>('.poster-frame');
     if (!frame) return;
     const bounds = frame.getBoundingClientRect();
@@ -97,6 +124,8 @@ export default function PosterCard({
   const poster = posterUrl ? (
     <img
       src={posterUrl}
+      srcSet={srcSet}
+      sizes={sizes}
       alt={`${movie.title} poster`}
       loading="lazy"
       decoding="async"
@@ -209,4 +238,6 @@ export default function PosterCard({
       />
     </>
   );
-}
+};
+
+export default memo(PosterCard);

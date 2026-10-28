@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Clapperboard, Plus } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import PosterCard from './PosterCard';
@@ -17,7 +18,7 @@ interface PosterGridProps {
   showRanks?: boolean;
 }
 
-export function SkeletonGrid({ view }: { view: 'grid' | 'list' }) {
+export const SkeletonGrid = memo(function SkeletonGrid({ view }: { view: 'grid' | 'list' }) {
   if (view === 'list') {
     return (
       <div className="flex flex-col gap-2">
@@ -44,9 +45,9 @@ export function SkeletonGrid({ view }: { view: 'grid' | 'list' }) {
       ))}
     </div>
   );
-}
+});
 
-export default function PosterGrid({
+const PosterGrid = function PosterGrid({
   movies,
   view,
   isEmptyCollection,
@@ -112,7 +113,7 @@ export default function PosterGrid({
   return (
     <div className={rail ? 'poster-rail' : 'poster-grid'}>
       {movies.map((movie, index) => (
-        <div key={movie.id} className={`poster-enter ${rail ? `poster-rail-item${showRanks ? ' ranked-item' : ''}` : ''}`} style={{ animationDelay: `${Math.min(index * 65, 520)}ms` }}>
+        <div key={movie.id} className={`poster-enter ${rail ? `poster-rail-item${showRanks ? ' ranked-item' : ''}` : ''}`} style={{ animationDelay: `${Math.min(index * 30, 300)}ms` }}>
           <PosterCard
             movie={movie}
             variant="grid"
@@ -126,4 +127,6 @@ export default function PosterGrid({
       ))}
     </div>
   );
-}
+};
+
+export default memo(PosterGrid);

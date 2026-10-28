@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, LayoutGrid, Rows } from 'lucide-react';
 import PosterGrid from './PosterGrid';
 import type { Movie } from '../types/movie';
@@ -22,7 +22,7 @@ interface CategoryShelfProps {
   watchLog: WatchLogMap;
 }
 
-export default function CategoryShelf({
+const CategoryShelf = function CategoryShelf({
   title,
   movies,
   view,
@@ -140,4 +140,6 @@ export default function CategoryShelf({
       )}
     </section>
   );
-}
+};
+
+export default memo(CategoryShelf);
